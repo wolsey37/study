@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light dark">
-<meta name="description" content="에이전트 팀(Agent Teams) — 담당을 필요할 때 한 명씩 띄우고 결과를 반환값으로 받는 위임 구조. PubMed 근거 조사를 예제로. 약사 세미나 3주차 교육 자료.">
+<meta name="description" content="에이전트 팀(Agent Teams) — 담당을 필요할 때 한 명씩 띄우고 결과를 SendMessage로 받는 위임 구조. PubMed 근거 조사를 예제로. 약사 세미나 3주차 교육 자료.">
 <meta property="og:title" content="에이전트 팀(Agent Teams) — 약사 세미나 3주차">
 <title>에이전트 팀(Agent Teams) — 약사 세미나 3주차</title>
 <style>
@@ -296,10 +296,6 @@
     <span>폴더는 지난 시간 것 그대로</span>
   </div>
 
-  <p style="margin:var(--s2) 0 0">
-    <a class="dl" href="https://github.com/wolsey37/study/raw/main/pharmacist/pubmed-workshop-agent-teams.zip">
-      ↓ 실습 폴더 내려받기 <small>zip · 67KB</small></a>
-  </p>
 </header>
 
 <div class="modebar">
@@ -347,13 +343,21 @@
     </ol>
     <p>
       오늘 만드는 명령은 이렇게 답합니다 —
-      <strong>필요할 때 한 명씩 띄우고, 결과는 그냥 반환받습니다.</strong>
+      <strong>필요할 때 한 명씩 띄우고, 결과는 SendMessage로 직접 받습니다.</strong>
       <code>miner</code>는 <code>scout</code>이 끝난 뒤에 태어나므로
       <strong>PMID를 손에 쥔 채로 시작</strong>합니다.
       그리고 채굴하는 동안 <strong>PMID마다 scout에게 되묻습니다</strong> —
       <strong>이미 끝난 담당을 이름으로 다시 깨워서</strong>입니다.
     </p>
   </div>
+
+  <p class="quote quote--warn">
+    <strong>「반환값」에 기대면 결과가 사라집니다.</strong>
+    팀원이 끝나면 메인에는 <code>Teammate @scout finished</code> 같은
+    <strong>알림만 오고 내용은 실리지 않습니다.</strong>
+    그래서 소집 프롬프트마다 <strong>「결과를 SendMessage로 보내라」는 지시를 반드시 넣습니다</strong> —
+    빠뜨리면 담당이 일을 다 해놓고 조용히 사라집니다.
+  </p>
 
   <p class="quote quote--warn">
     <strong>오늘 만드는 파일은 하나입니다.</strong>
@@ -367,7 +371,7 @@
   <a class="toc__item" href="#s1"><span class="toc__n">01</span><span class="toc__t">에이전트 팀이 뭔가</span><span class="toc__d">서브에이전트와 무엇이 다른지 · 언제 쓰고 언제 쓰면 안 되는지</span><span class="toc__time">3분</span></a>
   <a class="toc__item" href="#s2"><span class="toc__n">02</span><span class="toc__t">사용법</span><span class="toc__d">띄우기 · 목록에서 고르기 · 직접 말 걸기</span><span class="toc__time">2분</span></a>
   <a class="toc__item" href="#s3"><span class="toc__n">03</span><span class="toc__t">담당 둘이 무엇을 하는가</span><span class="toc__d">지난 시간 것 · 04를 보기 위한 최소한</span><span class="toc__time">1분</span></a>
-  <a class="toc__item" href="#s4"><span class="toc__n">04</span><span class="toc__t">명령 하나가 하는 일</span><span class="toc__d">오늘의 핵심 · 필요할 때 한 명씩 · 결과는 반환값으로</span><span class="toc__time">7분 · 핵심</span></a>
+  <a class="toc__item" href="#s4"><span class="toc__n">04</span><span class="toc__t">명령 하나가 하는 일</span><span class="toc__d">오늘의 핵심 · 필요할 때 한 명씩 · 결과는 SendMessage로</span><span class="toc__time">7분 · 핵심</span></a>
   <a class="toc__item" href="#s5"><span class="toc__n">05</span><span class="toc__t">손에 남는 것</span><span class="toc__d">evidence-pack.json · 폐기된 슬롯이 왜 성과인가</span><span class="toc__time">2분</span></a>
   <a class="toc__item" href="#s6"><span class="toc__n">06</span><span class="toc__t">한 줄로 굳히기</span><span class="toc__d">다음 주제부터는 /진행 한 줄</span><span class="toc__time">1분</span></a>
   <a class="toc__item" href="#s8"><span class="toc__n">07</span><span class="toc__t">팀이라야 되는 것</span><span class="toc__d">되묻기 · 이어서 묻기</span><span class="toc__time">1분</span></a>
@@ -511,9 +515,6 @@ CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS 를 "1" 로 넣어줘.
   <rect class="bx bx-mate" x="608" y="166" width="80" height="28" rx="3"/>
   <text class="nm" x="648" y="184" text-anchor="middle">팀원 C</text>
 
-  <path class="ln ln-o" d="M504,180 L513,180" marker-end="url(#a2)" marker-start="url(#a2s)"/>
-  <path class="ln ln-o" d="M597,180 L606,180" marker-end="url(#a2)" marker-start="url(#a2s)"/>
-
   <path class="ln ln-o" d="M462,194 L462,214" marker-end="url(#a2)"/>
   <path class="ln ln-o" d="M555,194 L555,214" marker-end="url(#a2)"/>
   <path class="ln ln-o" d="M648,194 L648,214" marker-end="url(#a2)"/>
@@ -538,7 +539,7 @@ CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS 를 "1" 로 넣어줘.
       <p class="cmp__t">에이전트 팀</p>
       <div class="cmp__pros">
         <p class="p"><b>＋</b><span>담당끼리 <strong>직접</strong> 주고받습니다. <strong>메인을 안 거칩니다</strong></span></p>
-        <p class="p"><b>＋</b><span>끝나도 <strong>이름이 살아 있어</strong> 이어서 물을 수 있습니다</span></p>
+        <p class="p"><b>＋</b><span>끝나도 <strong>이름이 살아 있어</strong> 이어서 물을 수 있습니다 <em>(메인 세션이 떠 있는 동안만 — 세션이 끝나면 이름도 함께 사라집니다)</em></span></p>
         <p class="m"><b>－</b><span>각자 별도 세션이라 <strong>토큰을 더 씁니다</strong></span></p>
         <p class="m"><b>－</b><span>결과가 자동으로 안 옵니다 — <strong>직접 보내야</strong> 합니다</span></p>
       </div>
@@ -569,7 +570,7 @@ CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS 를 "1" 로 넣어줘.
         <tr><th>서로 대화</th><td class="no">못 합니다</td><td class="hard">이름을 불러 직접 메시지</td></tr>
         <tr><th>결과 전달</th><td>끝나면 <strong>자동으로</strong> 메인에게</td><td>같습니다 — 다만 <strong>이름으로 깨운 뒤</strong>에는 메시지로 보내야 함</td></tr>
         <tr><th>일하는 중 말 걸기</th><td class="no">못 함. 끝날 때까지 기다림</td><td class="hard">일하는 중에 끼어들 수 있음</td></tr>
-        <tr><th>끝난 뒤</th><td class="no">사라짐 — 다시 물으려면 처음부터</td><td class="hard">끝나도 <strong>이름이 살아 있음</strong> — 부르면 그 대화 그대로 깨어남</td></tr>
+        <tr><th>끝난 뒤</th><td class="no">사라짐 — 다시 물으려면 처음부터</td><td class="hard">끝나도 <strong>이름이 살아 있음</strong> — 부르면 그 대화 그대로 깨어남<br><span style="font-weight:400">(단, 메인 세션이 살아 있는 동안만 — 세션 종료 시 함께 소멸, 영구 보존 아님)</span></td></tr>
         <tr><th>비용</th><td class="hard">낮음</td><td class="no">높음 — 각자 별도 세션</td></tr>
       </tbody>
     </table>
@@ -861,7 +862,7 @@ CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS 를 "1" 로 넣어줘.
 
   <div class="diagram">P1  정규화 <i>(메인이 직접)</i>
    ↓
-① <b>scout</b> 을 띄운다  →  검색·판정  →  <b>반환값으로 JSON</b>
+① <b>scout</b> 을 띄운다  →  검색·판정  →  <b>SendMessage로 JSON</b>
    ↓                      <u>그 JSON이 곧 채굴 요청서다</u>
 ② <b>miner</b> 를 띄운다  →  <b>PMID를 손에 쥐고 태어나</b> 채굴
    │
@@ -869,7 +870,7 @@ CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS 를 "1" 로 넣어줘.
    │     miner ──→ <b>scout</b>   "이 논문 intervention 뭐로 판정했나?"
    │     miner ←── <b>scout</b>   "Mg+B6 복합제. 마그네슘 단독 아님"
    │
-   ↓  반환값
+   ↓  SendMessage로 배열
 P6  검증 <i>(스크립트)</i>
 
   <b>scout 은 끝났지만 사라지지 않았습니다.</b>
@@ -995,9 +996,9 @@ scout의 금지 사항이 <b>이 답에도 그대로</b> 걸립니다.</i></p>
 
   <div class="num">
     <div class="num__i"><span class="num__k">톤 판정</span><span class="num__v">T3</span><span class="num__was">정정형</span></div>
-    <div class="num__i"><span class="num__k">on-target 논문</span><span class="num__v">9편</span><span class="num__was">off_target 6편 제외</span></div>
+    <div class="num__i"><span class="num__k">on-target 논문</span><span class="num__v">8편</span><span class="num__was">off_target 7편 제외</span></div>
     <div class="num__i"><span class="num__k">채굴 대상</span><span class="num__v">4편</span></div>
-    <div class="num__i"><span class="num__k">폐기된 슬롯</span><span class="num__v">8칸</span><span class="num__was">20칸 중</span></div>
+    <div class="num__i"><span class="num__k">검증 통과 슬롯</span><span class="num__v">11칸</span><span class="num__was">20칸 중</span></div>
   </div>
 
   <div class="need">
@@ -1025,12 +1026,14 @@ scout의 금지 사항이 <b>이 답에도 그대로</b> 걸립니다.</i></p>
   </div>
 
   <div class="need">
-    <p class="need__lab">폐기된 슬롯 8칸이 실패가 아닙니다</p>
+    <p class="need__lab">채워지지 않은 슬롯 9칸이 실패가 아닙니다</p>
     <p>
-      검사기가 <strong>초록을 다시 받아 대조했더니</strong> 그 문장에 없는 값이었습니다.
-      <strong>그 8칸이 그냥 통과했다면 틀린 숫자가 그대로 나갔을 것입니다.</strong>
-      <strong>빈 슬롯은 정보</strong>입니다 — 저자가 크기를 안 밝혔거나,
-      담당이 앞 논문 숫자를 흘렸다는 뜻입니다.
+      이번 4편에서는 <strong>20칸 중 11칸만 값이 찼습니다.</strong>
+      나머지 9칸은 검사기가 걸러낸 것이 아니라, <code>miner</code>가 애초에
+      <strong>초록에 없어서 null로 보고한 것</strong>입니다 —
+      저자가 크기를 안 밝혔다는 뜻이지, 담당이 틀렸다는 뜻이 아닙니다.
+      <strong>검사기가 실제로 대조해 폐기한 슬롯은 이번에 0건</strong>이었습니다.
+      만약 있었다면 <strong>그 칸이 그냥 통과했을 때 틀린 숫자가 그대로 나갔을 것입니다.</strong>
     </p>
   </div>
 
@@ -1232,19 +1235,9 @@ scout의 금지 사항이 <b>이 답에도 그대로</b> 걸립니다.</i></p>
     여기 적는 것은 <strong>그 밖에 필요한 것들</strong>입니다.
   </p>
 
-  <p class="prep__note" style="margin-bottom:.15rem">
-    <strong>실습 폴더는 여기서 받으시면 됩니다.</strong>
-    담당 둘 · 절차 문서 · 검사기가 <strong>그대로 들어 있습니다.</strong>
-  </p>
-
-  <p style="margin:0 0 var(--s1)">
-    <a class="dl" href="https://github.com/wolsey37/study/raw/main/pharmacist/pubmed-workshop-agent-teams.zip">
-      ↓ 실습 폴더 내려받기 <small>zip · 67KB</small></a>
-  </p>
-
   <ul>
     <li><strong>지난 시간 폴더</strong> — <code>pubmed-workshop</code>. 이미 갖고 계시면 그대로 쓰셔도 됩니다.
-      위 zip 을 받으시면 <code>pubmed-workshop-agent-teams</code> 로 풀리는데, <strong>이번 주차용으로 정리한 같은 폴더</strong>입니다.
+      이번 주차용으로 정리한 같은 폴더는 <code>pubmed-workshop-agent-teams</code> 입니다.
       <strong>그 폴더에서 Claude Code를 열면</strong> <code>.claude/</code> 안의 담당·스킬이 잡힙니다</li>
     <li><strong>NCBI API 키</strong> — <code>.claude/settings.json</code> 의 <code>NCBI_API_KEY</code>.
       <strong>비어 있으면 초당 3회 제한</strong>이라 조회가 자주 막힙니다</li>
@@ -1271,7 +1264,7 @@ scout의 금지 사항이 <b>이 답에도 그대로</b> 걸립니다.</i></p>
   <p>
     정한 것은 <strong>위임 구조 하나</strong>입니다 —
     <strong>언제 띄우고, 결과를 어떻게 받는가.</strong>
-    담당을 <strong>필요할 때 한 명씩</strong> 띄우고, <strong>결과는 그냥 반환</strong>받습니다.
+    담당을 <strong>필요할 때 한 명씩</strong> 띄우고, <strong>결과는 SendMessage로 직접</strong> 받습니다.
   </p>
 
   <p>
