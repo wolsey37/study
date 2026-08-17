@@ -189,6 +189,13 @@
   .need p { margin:0; font-size:1rem; max-width:var(--measure); }
 
 
+  .dl { display:inline-flex; align-items:baseline; gap:.5rem; text-decoration:none;
+    padding:.65rem 1.1rem; border:1.5px solid var(--green); background:var(--green-soft);
+    color:var(--green); font-weight:750; font-size:.98rem; border-radius:2px;
+    transition:background .12s, color .12s; }
+  .dl:hover, .dl:focus-visible { background:var(--green); color:var(--paper); }
+  .dl small { font-family:var(--mono); font-weight:400; font-size:.78em; opacity:.8; }
+
   /* 비교 구조도 */
   .cmp { display:grid; grid-template-columns:repeat(auto-fit,minmax(17rem,1fr)); gap:var(--s2); }
   .cmp__panel { border:1px solid var(--rule); background:var(--paper-2); padding:var(--s3) var(--s2) var(--s2);
@@ -1144,6 +1151,15 @@ scout의 금지 사항이 <b>이 답에도 그대로</b> 걸립니다.</i></p>
   <p class="prep__note">
     <strong>설정 두 가지</strong>는 앞에 있습니다 — <strong>기능 켜기는 01</strong>, <strong>창 나누기는 02</strong>.
     여기 적는 것은 <strong>그 밖에 필요한 것들</strong>입니다.
+  </p>
+
+  <p style="margin:0">
+    <a class="dl" href="https://github.com/wolsey37/study/raw/main/pharmacist/pubmed-workshop-agent-teams.zip">
+      ↓ 실습 폴더 내려받기 <small>zip · 68KB</small></a>
+  </p>
+  <p class="prep__note" style="margin-top:-.4rem">
+    풀면 <code>pubmed-workshop-agent-teams</code> 폴더가 나옵니다.
+    담당 둘 · 절차 문서 · 검사기가 <strong>그대로 들어 있습니다.</strong>
   </p>
 
   <ul>
