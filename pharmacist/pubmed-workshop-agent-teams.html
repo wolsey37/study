@@ -317,6 +317,24 @@
     </p>
   </div>
 
+  <div class="diagram">pubmed-workshop-agent-teams/
+├── README.txt
+├── .claude/
+│   ├── settings.json              <i>← NCBI API 키를 넣는 곳</i>
+│   ├── agents/
+│   │   ├── evidence-scout.md      <i>← 담당 하나 (정찰)</i>
+│   │   └── abstract-miner.md      <i>← 담당 둘 (채굴)</i>
+│   ├── commands/
+│   │   └── <b>진행.md</b>                <i>← 오늘 더하는 파일</i>
+│   └── skills/
+│       └── pubmed-evidence/
+│           ├── SKILL.md            <i>← 절차를 적어둔 문서</i>
+│           └── references/
+│               └── normalize.md    <i>← 용어 사전</i>
+└── scripts/
+    ├── verify_evidence.py         <i>← 검사기</i>
+    └── test_verify_evidence.py    <i>← 검사기의 시험지</i></div>
+
   <div class="diagram"><b>P1</b>  정규화     magnesium × sleep quality        <i>← 메인이 직접</i>
 <b>P2</b>  정찰       <b>evidence-scout</b> — 논문 지형을 훑고 톤 판정
 <b>P3</b>  채굴       <b>abstract-miner</b> — 초록에서 숫자 5칸을 오려냄
