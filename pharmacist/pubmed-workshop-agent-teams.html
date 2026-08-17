@@ -280,7 +280,7 @@
 </header>
 
 <div class="modebar">
-  <span class="modebar__total">전체 약 17분 · 읽는 자료</span>
+  <span class="modebar__total">전체 약 18분 · 읽는 자료</span>
 </div>
 
 <!-- 배경 -->
@@ -372,6 +372,7 @@
   <a class="toc__item" href="#s3"><span class="toc__n">03</span><span class="toc__t">담당 둘이 무엇을 하는가</span><span class="toc__d">지난 시간 것 · 04를 보기 위한 최소한</span><span class="toc__time">1분</span></a>
   <a class="toc__item" href="#s4"><span class="toc__n">04</span><span class="toc__t">명령 하나가 하는 일</span><span class="toc__d">오늘의 핵심 · 필요할 때 한 명씩 · 결과는 SendMessage로</span><span class="toc__time">7분 · 핵심</span></a>
   <a class="toc__item" href="#s5"><span class="toc__n">05</span><span class="toc__t">한 줄로 굳히기</span><span class="toc__d">다음 주제부터는 /진행 한 줄</span><span class="toc__time">1분</span></a>
+  <a class="toc__item" href="#s6"><span class="toc__n">06</span><span class="toc__t">팀이라야 되는 것</span><span class="toc__d">되묻기 · 이어서 묻기</span><span class="toc__time">1분</span></a>
   <a class="toc__item" href="#s7"><span class="toc__n">마지막</span><span class="toc__t">막혔을 때 · 마무리</span><span class="toc__d">증상별 대처</span><span class="toc__time">1분</span></a>
 </nav>
 
@@ -953,7 +954,7 @@ scout의 금지 사항이 <b>이 답에도 그대로</b> 걸립니다.</i></p>
     <strong>검증이 무의미해집니다.</strong>
   </p>
 
-  <p class="claim">팀을 쓰는 기준은 하나입니다.<br><em>끝난 담당을 다시 부를 일이</em> 있는가.</p>
+  <p class="claim">팀으로 만들 수 있다고 해서<br><em>팀처럼 써야 하는 건</em> 아닙니다.</p>
 </section>
 
 
@@ -996,6 +997,82 @@ scout의 금지 사항이 <b>이 답에도 그대로</b> 걸립니다.</i></p>
         </ul>
       </div>
 
+</section>
+
+
+<!-- 06 -->
+<section class="sec" id="s6">
+  <p class="sec__n">06 · 활용 · 1분</p>
+  <h2 class="sec__h">팀이라야 되는 것</h2>
+
+  <p class="sec__lead">
+    담당을 <strong>순서대로 부르는 것</strong>은 팀이 아니어도 됩니다.
+    <strong>끝난 담당이 이름으로 남아 있다는 것</strong> — 그것만이 팀의 몫입니다.
+    그 이름으로 <strong>무엇을 할 수 있는지</strong> 둘을 놓았습니다.
+  </p>
+
+  <div class="cards">
+
+    <div class="card">
+      <div class="card__top"><span class="card__tag">하나</span><h3 class="card__h"><code>miner</code> → <code>scout</code> 되묻기</h3></div>
+      <p>
+        <strong>둘 다 떠 있을 때</strong> 눈으로 확인해 볼 수 있습니다.
+        <strong>↑↓로 <code>miner</code>를 고르고 Enter</strong>로 들어가서, <strong>그 화면에 직접</strong> 칩니다.
+      </p>
+      <div class="say">
+        <p class="say__lab">miner 화면에서</p>
+        <p class="say__box">scout 한테 <b>PMID 34211088</b> 을 뭐로 판정했는지 물어봐줘.</p>
+      </div>
+
+      <div class="duo">
+        <div class="reply">
+          <p class="reply__lab">miner 화면에 찍히는 것</p>
+          <p class="reply__box">→ [scout] PMID 34211088 판정 조회
+← [scout] PMID 34211088 = Mg+B6 복합제 / off_target 권고</p>
+        </div>
+        <div class="reply">
+          <p class="reply__lab">scout 화면으로 옮겨가면</p>
+          <p class="reply__box">← [miner] PMID 34211088 판정 조회 받음
+→ [miner] PMID 34211088 = Mg+B6 복합제 / off_target 권고</p>
+        </div>
+      </div>
+
+      <p>
+        <strong>같은 교신이 양쪽에 찍히고 화살표 방향만 반대</strong>입니다.
+        <strong>메인 화면에는 이 두 줄이 안 뜹니다</strong> — 둘 사이에서만 오간 것이라서요.
+      </p>
+      <p>
+        <strong>왜 팀이어야 하나</strong> — <code>scout</code>은 <strong>이미 끝났습니다.</strong>
+        서브에이전트였다면 <strong>그 판정과 함께 사라져</strong> 물어볼 데가 없습니다.
+      </p>
+    </div>
+
+    <div class="card">
+      <div class="card__top"><span class="card__tag">둘</span><h3 class="card__h">메인 → 끝난 <code>miner</code> 다시 부르기</h3></div>
+      <p>
+        결과를 받아 보다가 <strong>미심쩍은 대목</strong>이 나왔을 때.
+        <strong>커맨드를 처음부터 다시 돌릴 필요가 없습니다.</strong>
+      </p>
+      <div class="say">
+        <p class="say__lab">이렇게 지시합니다</p>
+        <p class="say__box">miner 한테, <u>34211088 이거 하나만</u> 다시 봐달라고 해줘.</p>
+      </div>
+      <p>
+        <strong>왜 팀이어야 하나</strong> — 이름을 부르면 <strong>그 대화 그대로 깨어납니다.</strong>
+        <strong>자기가 뭘 뽑았는지 기억한 채로</strong> 답하니, 다시 설명할 필요가 없습니다.
+      </p>
+    </div>
+
+  </div>
+
+  <p class="quote quote--warn">
+    <strong>반대로, 이런 일에는 팀이 필요 없습니다.</strong>
+    앞사람 결과를 뒷사람에게 <strong>넘기기만 하면 되는 일</strong>,
+    <strong>한 번 시키고 끝나는 일</strong>.
+    <strong>되묻거나 다시 부를 일이 없다면</strong> 그냥 시키는 게 빠르고 쌉니다.
+  </p>
+
+  <p class="claim">팀을 쓰는 기준은 하나입니다.<br><em>끝난 담당을 다시 부를 일이</em> 있는가.</p>
 </section>
 
 
