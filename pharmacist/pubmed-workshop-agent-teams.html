@@ -132,8 +132,6 @@
   .ok b { color:var(--green); }
   .stuck { margin:0; padding:var(--s2) var(--s3); background:var(--amber-soft); border-left:3px solid var(--amber); font-size:.94rem; }
   .stuck b { color:var(--amber); }
-  .step { margin:0; font-size:.98rem; font-weight:700; display:flex; gap:.5rem; align-items:baseline; }
-  .step span { font-family:var(--mono); font-size:.78rem; color:var(--green); }
 
   .cards { display:flex; flex-direction:column; gap:var(--s2); }
   .card { border:1px solid var(--rule); padding:var(--s3); display:flex; flex-direction:column; gap:var(--s2); }
@@ -164,15 +162,6 @@
   .diagram b { font-weight:700; color:var(--green); }
   .diagram u { text-decoration:none; color:var(--clay); font-weight:650; }
 
-  .arc { display:grid; grid-template-columns:repeat(auto-fit,minmax(14rem,1fr)); gap:var(--s2); }
-  .arc__i { padding:var(--s3); border:1px solid var(--rule); display:flex; flex-direction:column; gap:.35rem; }
-  .arc__i--now { border-color:var(--green); border-width:2px; background:var(--green-soft); }
-  .arc__i--past { background:var(--paper-2); }
-  .arc__n { font-family:var(--mono); font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint); }
-  .arc__i--now .arc__n { color:var(--green); font-weight:700; }
-  .arc__t { margin:0; font-size:1.04rem; font-weight:730; letter-spacing:-.01em; }
-  .arc__d { margin:0; font-size:.92rem; color:var(--ink-soft); }
-
   pre.code { margin:0; min-width:0; background:var(--paper-2); border:1px solid var(--rule);
     padding:var(--s3); overflow-x:auto; font-family:var(--mono); font-size:.83rem; line-height:1.75; color:var(--ink); }
   pre.code b { font-weight:700; color:var(--green); }
@@ -188,7 +177,6 @@
   .end ul { margin:0; padding-left:1.2rem; display:flex; flex-direction:column; gap:.45rem;
     max-width:var(--measure); color:color-mix(in srgb,var(--paper) 76%, transparent); }
   .end code { background:color-mix(in srgb,var(--paper) 16%, transparent); color:var(--paper); }
-  .end__final { margin-top:var(--s3); padding-top:var(--s3); border-top:1px solid color-mix(in srgb,var(--paper) 25%, transparent); font-size:1.05rem; }
 
   hr.r { width:100%; height:1px; border:0; background:var(--rule); margin:0; }
   a { color:var(--green); }
@@ -200,12 +188,6 @@
     text-transform:uppercase; color:var(--clay); font-weight:700; }
   .need p { margin:0; font-size:1rem; max-width:var(--measure); }
 
-  .dl { display:inline-flex; align-items:baseline; gap:.5rem; text-decoration:none;
-    padding:.65rem 1.1rem; border:1.5px solid var(--green); background:var(--green-soft);
-    color:var(--green); font-weight:750; font-size:.98rem; border-radius:2px;
-    transition:background .12s, color .12s; }
-  .dl:hover, .dl:focus-visible { background:var(--green); color:var(--paper); }
-  .dl small { font-family:var(--mono); font-weight:400; font-size:.78em; opacity:.8; }
 
   /* 비교 구조도 */
   .cmp { display:grid; grid-template-columns:repeat(auto-fit,minmax(17rem,1fr)); gap:var(--s2); }
@@ -258,7 +240,6 @@
   /* 메시지 카드 */
   .msg { border:1px solid var(--rule); background:var(--paper-2); padding:var(--s2) var(--s3);
     display:flex; flex-direction:column; gap:.4rem; min-width:0; }
-  .msg--lead { border-left:3px solid var(--ink-soft); }
   .msg--x { border-color:var(--clay); background:var(--clay-soft); }
   .msg__hd { font-family:var(--mono); font-size:.73rem; letter-spacing:.06em;
     color:var(--ink-faint); display:flex; flex-wrap:wrap; gap:.45rem; align-items:baseline; }
@@ -293,13 +274,13 @@
   <div class="cover__meta">
     <span>담당 둘 · 주제 하나</span>
     <span>새로 만드는 파일: 한 개</span>
-    <span>폴더는 지난 시간 것 그대로</span>
+    <span>담당 · 스킬 · 검사기는 지난 시간 것 그대로</span>
   </div>
 
 </header>
 
 <div class="modebar">
-  <span class="modebar__total">전체 약 20분 · 읽는 자료</span>
+  <span class="modebar__total">전체 약 19분 · 읽는 자료</span>
 </div>
 
 <!-- 배경 -->
@@ -339,7 +320,7 @@
 <b>P2</b>  정찰       <b>evidence-scout</b> — 논문 지형을 훑고 톤 판정
 <b>P3</b>  채굴       <b>abstract-miner</b> — 초록에서 숫자 5칸을 오려냄
 <b>P6</b>  검증       <b>verify_evidence.py</b> — 숫자가 원문에 있는지 대조
-<b>P6-1</b> 고시 대조  <b>kr-claims</b> — 국내 인정 문구와 맞춰봄
+<b>P6-1</b> 고시 대조  <b>kr-claims</b> — 국내 인정 문구와 맞춰봄  <i>← 스킬이 깔려 있을 때만</i>
       ↓
    <b>evidence-pack.json</b></div>
 
@@ -390,7 +371,7 @@
   <a class="toc__item" href="#s2"><span class="toc__n">02</span><span class="toc__t">사용법</span><span class="toc__d">띄우기 · 목록에서 고르기 · 직접 말 걸기</span><span class="toc__time">2분</span></a>
   <a class="toc__item" href="#s3"><span class="toc__n">03</span><span class="toc__t">담당 둘이 무엇을 하는가</span><span class="toc__d">지난 시간 것 · 04를 보기 위한 최소한</span><span class="toc__time">1분</span></a>
   <a class="toc__item" href="#s4"><span class="toc__n">04</span><span class="toc__t">명령 하나가 하는 일</span><span class="toc__d">오늘의 핵심 · 필요할 때 한 명씩 · 결과는 SendMessage로</span><span class="toc__time">7분 · 핵심</span></a>
-  <a class="toc__item" href="#s5"><span class="toc__n">05</span><span class="toc__t">손에 남는 것</span><span class="toc__d">evidence-pack.json · 폐기된 슬롯이 왜 성과인가</span><span class="toc__time">2분</span></a>
+  <a class="toc__item" href="#s5"><span class="toc__n">05</span><span class="toc__t">손에 남는 것</span><span class="toc__d">evidence-pack.json 구조</span><span class="toc__time">1분</span></a>
   <a class="toc__item" href="#s6"><span class="toc__n">06</span><span class="toc__t">한 줄로 굳히기</span><span class="toc__d">다음 주제부터는 /진행 한 줄</span><span class="toc__time">1분</span></a>
   <a class="toc__item" href="#s8"><span class="toc__n">07</span><span class="toc__t">팀이라야 되는 것</span><span class="toc__d">되묻기 · 이어서 묻기</span><span class="toc__time">1분</span></a>
   <a class="toc__item" href="#s7"><span class="toc__n">마지막</span><span class="toc__t">막혔을 때 · 마무리</span><span class="toc__d">증상별 대처</span><span class="toc__time">1분</span></a>
@@ -657,7 +638,7 @@ CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS 를 "1" 로 넣어줘.
         <code>evidence-scout</code> 은 <strong>역할이 적힌 파일</strong>이고,
         <code>scout</code> 은 <strong>이번에 띄운 그 담당을 부를 이름</strong>입니다.
         이름이 있어야 <strong>나중에 다시 부를 수</strong> 있습니다.
-        <strong>이름은 영문·숫자만</strong> 됩니다 — 한글은 안 붙습니다.
+        <strong>짧고 구분되는 이름</strong>을 주십시오 — 이름이 곧 주소입니다.
       </div>
 
       <p class="sec__sub">입력창 아래를 봅니다</p>
@@ -665,6 +646,12 @@ CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS 를 "1" 로 넣어줘.
       <div class="diagram">● <b>main</b>
 ○ <b>scout</b>   작업 중···
 <i>  (miner 는 아직 없습니다 — scout 이 끝나면 그때 띄웁니다)</i></div>
+
+      <div class="ok">
+        <b>목록에 하나뿐입니다.</b> <code>miner</code>는 <strong>scout이 끝난 뒤에</strong> 띄웁니다.
+        그때는 <strong>넘겨줄 PMID가 손에 있으니</strong> 바로 일할 수 있습니다.
+        미리 띄워두면 <strong>기다리게 할 방법을 찾아야 합니다.</strong> 그럴 이유가 없습니다.
+      </div>
 
       <div class="prose">
         <ul>
@@ -689,8 +676,8 @@ CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS 를 "1" 로 넣어줘.
   <rect class="bx bx-mate" x="35" y="34" width="250" height="30" rx="3" style="stroke:var(--ink-soft)"/>
   <text class="nm" x="50" y="53">&gt; 입력창</text>
   <rect class="bx bx-res" x="35" y="70" width="250" height="66" rx="3" style="stroke-dasharray:none;stroke:var(--rule)"/>
-  <text class="nm" x="50" y="92">○ scout   작업 중</text>
-  <text class="nm nm-res" x="50" y="114">○ miner   대기</text>
+  <text class="nm" x="50" y="92">○ scout   정찰 완료</text>
+  <text class="nm" x="50" y="114">○ miner   채굴 중</text>
   <text class="lb" x="160" y="160" text-anchor="middle">↑↓ 로 고르고 Enter 로 들어감</text>
   <text class="lb" x="160" y="176" text-anchor="middle">한 번에 한 담당만 봅니다</text>
 
@@ -701,7 +688,7 @@ CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS 를 "1" 로 넣어줘.
   <text class="nm" x="430" y="60">&gt; main</text>
   <rect class="bx bx-mate" x="543" y="34" width="122" height="48" rx="3"/>
   <text class="nm" x="604" y="54" text-anchor="middle">scout</text>
-  <text class="nm nm-res" x="604" y="70" text-anchor="middle">검색 중</text>
+  <text class="nm nm-res" x="604" y="70" text-anchor="middle">정찰 완료</text>
   <rect class="bx bx-mate" x="543" y="88" width="122" height="48" rx="3"/>
   <text class="nm" x="604" y="108" text-anchor="middle">miner</text>
   <text class="nm nm-res" x="604" y="124" text-anchor="middle">채굴 중</text>
@@ -713,22 +700,28 @@ CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS 를 "1" 로 넣어줘.
       <div class="tw">
         <table>
           <caption><code>~/.claude/settings.json</code> 에 넣는 값</caption>
-          <thead><tr><th>설정</th><th>언제 창이 갈리나</th><th>필요한 것</th></tr></thead>
+          <thead><tr><th><code>teammateMode</code></th><th>언제 창이 갈리나</th><th>필요한 것</th></tr></thead>
           <tbody>
             <tr>
-              <th>안 넣음 <span style="font-weight:400;color:var(--ink-faint)">(기본)</span></th>
-              <td>갈리지 않음 — <strong>한 화면</strong></td>
-              <td class="hard">없음</td>
+              <th><code>"in-process"</code> <span style="font-weight:400;color:var(--ink-faint)">(기본값)</span></th>
+              <td>갈리지 않음 — <strong>메인 터미널 한 화면</strong> 안에 전부</td>
+              <td class="hard">아무 터미널이나. 추가 설치 없음</td>
             </tr>
             <tr>
-              <th><code>"teammateMode": "auto"</code></th>
-              <td><strong>tmux 안에서 실행할 때만.</strong> 아니면 한 화면 그대로</td>
+              <th><code>"auto"</code></th>
+              <td><strong>tmux 세션 안이거나</strong> iTerm2를 쓸 때만 갈림.
+                아니면 <strong>한 화면으로 되돌아갑니다</strong></td>
               <td>tmux 또는 iTerm2</td>
             </tr>
             <tr>
-              <th><code>"teammateMode": "tmux"</code></th>
-              <td><strong>항상</strong> 갈림</td>
+              <th><code>"tmux"</code></th>
+              <td><strong>항상</strong> 갈림 — tmux와 iTerm2 중 무엇을 쓸지는 <strong>알아서 고릅니다</strong></td>
               <td>tmux 또는 iTerm2</td>
+            </tr>
+            <tr>
+              <th><code>"iterm2"</code></th>
+              <td>항상 갈림 — <strong>iTerm2 방식으로 못 박습니다</strong></td>
+              <td>iTerm2 (<code>it2</code> 명령 필요)</td>
             </tr>
           </tbody>
         </table>
@@ -736,16 +729,10 @@ CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS 를 "1" 로 넣어줘.
 
       <p class="stuck">
         <b>tmux 나 iTerm2 를 따로 깔아야 합니다.</b>
-        <strong>VS Code 내장 터미널·Windows Terminal 에서는 안 됩니다.</strong>
+        <strong>VS Code 내장 터미널·Windows Terminal·Ghostty 에서는 안 됩니다.</strong>
         다만 <strong>안 된다고 못 하게 되는 일은 없습니다</strong> —
         <strong>화면만 다르고 되는 일은 같습니다.</strong>
       </p>
-
-      <div class="ok">
-        <b>목록에 하나뿐입니다.</b> <code>miner</code>는 <strong>scout이 끝난 뒤에</strong> 띄웁니다.
-        그때는 <strong>넘겨줄 PMID가 손에 있으니</strong> 바로 일할 수 있습니다.
-        미리 띄워두면 <strong>기다리게 할 방법을 찾아야 합니다.</strong> 그럴 이유가 없습니다.
-      </div>
 
       <p class="sec__sub">한 명에게 직접 말을 걸어봅니다</p>
 
@@ -803,7 +790,7 @@ CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS 를 "1" 로 넣어줘.
         <div class="card card--flag">
           <div class="card__top"><span class="card__tag">증상</span><h3 class="card__h">담당 목록이 아예 안 보입니다</h3></div>
           <p>
-            <strong>실험 기능이 꺼져 있는 것입니다.</strong> 준비물 항목을 다시 하십시오.
+            <strong>실험 기능이 꺼져 있는 것입니다.</strong> 01의 「설정 ① — 기능 켜기」를 다시 하십시오.
             켜져 있는데도 안 뜨면 <strong>일이 너무 작아서</strong> Claude가 혼자 처리한 것입니다.
             「<strong>팀원으로 띄워줘</strong>」라고 명시하십시오.
           </p>
@@ -997,7 +984,7 @@ scout의 금지 사항이 <b>이 답에도 그대로</b> 걸립니다.</i></p>
 
 <!-- 05 -->
 <section class="sec" id="s5">
-  <p class="sec__n">05 · 결과물 · 2분</p>
+  <p class="sec__n">05 · 결과물 · 1분</p>
   <h2 class="sec__h">손에 남는 것</h2>
 
   <p class="sec__lead">
@@ -1009,70 +996,16 @@ scout의 금지 사항이 <b>이 답에도 그대로</b> 걸립니다.</i></p>
 ├── meta.json             ← 주제 · 톤 · 근거 지도
 └── <b>evidence-pack.json</b>   ← 검사기를 통과한 최종본
 
-  <b>verdict</b>: review          <i>← 통과 / 검토 / 폐기</i>
-  <b>tone</b>: T3                 <i>← 정정형</i>
-  <b>papers</b>: 4편
+  <b>verdict</b>   <i>← 통과 / 검토 / 폐기</i>
+  <b>tone</b>      <i>← T1 설명형 / T2 조건형 / T3 정정형</i>
+  <b>papers</b>    <i>← 채굴한 논문</i>
   각 논문마다 — PMID · 저널 · 연도 · <u>철회 여부</u> · <u>이해충돌 진술</u>
                 초록 해시 · 슬롯 5칸 · <u>슬롯마다 원문 인용</u></div>
 
-  <p class="sec__sub">이번 결과 — 마그네슘 × 수면</p>
-
-  <div class="num">
-    <div class="num__i"><span class="num__k">톤 판정</span><span class="num__v">T3</span><span class="num__was">정정형</span></div>
-    <div class="num__i"><span class="num__k">on-target 논문</span><span class="num__v">8편</span><span class="num__was">off_target 7편 제외</span></div>
-    <div class="num__i"><span class="num__k">채굴 대상</span><span class="num__v">4편</span></div>
-    <div class="num__i"><span class="num__k">검증 통과 슬롯</span><span class="num__v">11칸</span><span class="num__was">20칸 중</span></div>
-  </div>
-
-  <div class="need">
-    <p class="need__lab">이번 판정이 T3 — 「정정형」입니다</p>
-    <p>
-      마그네슘과 수면은 <strong>대중 인식이 강한 조합</strong>인데,
-      <strong>메타분석에서 부정·혼재 결론이 더 많았습니다.</strong>
-      그것을 <strong>그대로 보고하는 것</strong>이 이 도구의 값어치입니다.
-      <strong>근거가 있어 보이게 만들지 않습니다.</strong>
-    </p>
-  </div>
-
   <div class="ok">
-    <b>verdict 가 review 인 이유는 숫자 때문이 아닙니다.</b>
-    논문 한 편에 <strong>정오표가 붙어 있어서</strong>입니다.
-    <strong>숫자가 다 맞아도 논문 자체에 문제가 있으면 걸립니다</strong> —
-    철회·우려 표명·정오표를 <strong>따로 확인</strong>하기 때문입니다.
-  </div>
-
-  <div class="ok">
-    <b>검증이 두 번 붙습니다.</b> 스크립트가 <strong>숫자를 원문과 대조</strong>하고(P6),
-    그다음 <strong>식약처 고시와 맞춰봅니다</strong>(P6-1).
-    <strong>둘의 판정을 합쳐</strong> 최종 결론이 나옵니다.
-    「논문에 있다」와 「국내에서 그렇게 말해도 된다」는 <strong>다른 이야기</strong>라서요.
-  </div>
-
-  <div class="need">
-    <p class="need__lab">채워지지 않은 슬롯 9칸이 실패가 아닙니다</p>
-    <p>
-      이번 4편에서는 <strong>20칸 중 11칸만 값이 찼습니다.</strong>
-      나머지 9칸은 검사기가 걸러낸 것이 아니라, <code>miner</code>가 애초에
-      <strong>초록에 없어서 null로 보고한 것</strong>입니다 —
-      저자가 크기를 안 밝혔다는 뜻이지, 담당이 틀렸다는 뜻이 아닙니다.
-      <strong>검사기가 실제로 대조해 폐기한 슬롯은 이번에 0건</strong>이었습니다.
-      만약 있었다면 <strong>그 칸이 그냥 통과했을 때 틀린 숫자가 그대로 나갔을 것입니다.</strong>
-    </p>
-  </div>
-
-  <p class="quote quote--o">
-    <strong>「검증되지 않은 숫자는 출력하지 않는다」</strong>가 이 도구의 첫 번째 원칙입니다.
-    <strong>그럴듯한 숫자를 만들어내는 것이 유일한 치명적 실패</strong>이고,
-    <strong>빈칸으로 두는 것은 실패가 아닙니다.</strong>
-  </p>
-
-  <div class="need">
-    <p class="need__lab">마지막 판단은 넘어오지 않습니다</p>
-    <p>
-      팩에는 <strong>광고법 미검토 경고</strong>가 항상 붙습니다.
-      <strong>이 숫자를 실제로 써도 되는지는 사람이 판단합니다.</strong>
-      팀은 <strong>「원문에 이렇게 적혀 있다」까지</strong> 합니다.
-    </p>
+    <b>숫자가 빈칸이어도 실패가 아닙니다.</b>
+    <strong>초록에 없으면 그대로 비워 둡니다</strong> — 저자가 안 밝혔다는 뜻이니까요.
+    <strong>그럴듯한 숫자를 지어내는 것</strong>이 이 도구의 유일한 치명적 실패입니다.
   </div>
 </section>
 
@@ -1116,60 +1049,6 @@ scout의 금지 사항이 <b>이 답에도 그대로</b> 걸립니다.</i></p>
         </ul>
       </div>
 
-</section>
-
-
-<!-- 마지막 -->
-<section class="sec" id="s7">
-  <p class="sec__n">마지막 · 1분</p>
-  <h2 class="sec__h">막혔을 때</h2>
-
-  <div class="cards">
-    <div class="card card--flag">
-      <div class="card__top"><span class="card__tag">증상</span><h3 class="card__h">scout 이 PMID 를 안 줍니다</h3></div>
-      <p>
-        <strong>근거 지도를 먼저 보십시오.</strong> 검색 자체가 0건이면 <strong>정상입니다</strong> —
-        <strong>인체 연구가 없다는 신호(T3)</strong>입니다.
-        검색은 됐는데 <strong>전부 off_target</strong>이면 <strong>성분명이 너무 넓은 것</strong>입니다.
-      </p>
-    </div>
-    <div class="card card--flag">
-      <div class="card__top"><span class="card__tag">증상</span><h3 class="card__h">채굴 대상이 두세 편밖에 안 나옵니다</h3></div>
-      <p>
-        <strong>off_target 비율이 높은 성분</strong>입니다.
-        <code>evidence-scout.md</code> 의 <strong>스크리닝 상한(15편)을 20~25로 올리면</strong> 후보가 늡니다.
-      </p>
-    </div>
-    <div class="card card--flag">
-      <div class="card__top"><span class="card__tag">증상</span><h3 class="card__h">scout 이 10분 넘게 안 끝납니다</h3></div>
-      <p>
-        <strong>초록을 너무 많이 받고 있는 것</strong>입니다.
-        <strong>15편 상한</strong>과 <strong>요약 형식</strong>을 지키는지 보십시오 —
-        <strong>XML로 받으면 40편에 190k 토큰</strong>이 넘어갑니다.
-      </p>
-    </div>
-    <div class="card card--flag">
-      <div class="card__top"><span class="card__tag">증상</span><h3 class="card__h">담당이 멈춰 있습니다</h3></div>
-      <p>
-        <strong>권한 확인 창이 메인 화면에 떠 있을 수 있습니다.</strong>
-        담당 화면만 보고 있으면 <strong>영영 멈춰 있습니다.</strong>
-      </p>
-    </div>
-    <div class="card card--flag">
-      <div class="card__top"><span class="card__tag">증상</span><h3 class="card__h">이름을 불러도 안 닿습니다</h3></div>
-      <p>
-        <strong>「지금 살아 있는 담당 알려줘」</strong>로 실제 이름을 확인하십시오.
-        <strong>같은 이름이 둘이면 나중 것이 이깁니다.</strong>
-      </p>
-    </div>
-    <div class="card card--flag">
-      <div class="card__top"><span class="card__tag">증상</span><h3 class="card__h">429 오류가 납니다</h3></div>
-      <p>
-        <strong><code>NCBI_API_KEY</code> 가 비어 있습니다.</strong>
-        <code>.claude/settings.json</code> 에 키를 넣으십시오.
-      </p>
-    </div>
-  </div>
 </section>
 
 
@@ -1249,6 +1128,60 @@ scout의 금지 사항이 <b>이 답에도 그대로</b> 걸립니다.</i></p>
 </section>
 
 
+<!-- 마지막 -->
+<section class="sec" id="s7">
+  <p class="sec__n">마지막 · 1분</p>
+  <h2 class="sec__h">막혔을 때</h2>
+
+  <div class="cards">
+    <div class="card card--flag">
+      <div class="card__top"><span class="card__tag">증상</span><h3 class="card__h">scout 이 PMID 를 안 줍니다</h3></div>
+      <p>
+        <strong>근거 지도를 먼저 보십시오.</strong> 검색 자체가 0건이면 <strong>정상입니다</strong> —
+        <strong>인체 연구가 없다는 신호(T3)</strong>입니다.
+        검색은 됐는데 <strong>전부 off_target</strong>이면 <strong>성분명이 너무 넓은 것</strong>입니다.
+      </p>
+    </div>
+    <div class="card card--flag">
+      <div class="card__top"><span class="card__tag">증상</span><h3 class="card__h">채굴 대상이 두세 편밖에 안 나옵니다</h3></div>
+      <p>
+        <strong>off_target 비율이 높은 성분</strong>입니다.
+        <code>evidence-scout.md</code> 의 <strong>스크리닝 상한(15편)을 20~25로 올리면</strong> 후보가 늡니다.
+      </p>
+    </div>
+    <div class="card card--flag">
+      <div class="card__top"><span class="card__tag">증상</span><h3 class="card__h">scout 이 10분 넘게 안 끝납니다</h3></div>
+      <p>
+        <strong>초록을 너무 많이 받고 있는 것</strong>입니다.
+        <strong>15편 상한</strong>과 <strong>요약 형식</strong>을 지키는지 보십시오 —
+        <strong>XML로 받으면 40편에 190k 토큰</strong>이 넘어갑니다.
+      </p>
+    </div>
+    <div class="card card--flag">
+      <div class="card__top"><span class="card__tag">증상</span><h3 class="card__h">담당이 멈춰 있습니다</h3></div>
+      <p>
+        <strong>권한 확인 창이 메인 화면에 떠 있을 수 있습니다.</strong>
+        담당 화면만 보고 있으면 <strong>영영 멈춰 있습니다.</strong>
+      </p>
+    </div>
+    <div class="card card--flag">
+      <div class="card__top"><span class="card__tag">증상</span><h3 class="card__h">이름을 불러도 안 닿습니다</h3></div>
+      <p>
+        <strong>「지금 살아 있는 담당 알려줘」</strong>로 실제 이름을 확인하십시오.
+        <strong>같은 이름이 둘이면 나중 것이 이깁니다.</strong>
+      </p>
+    </div>
+    <div class="card card--flag">
+      <div class="card__top"><span class="card__tag">증상</span><h3 class="card__h">429 오류가 납니다</h3></div>
+      <p>
+        <strong><code>NCBI_API_KEY</code> 가 비어 있습니다.</strong>
+        <code>.claude/settings.json</code> 에 키를 넣으십시오.
+      </p>
+    </div>
+  </div>
+</section>
+
+
 <section class="prep">
   <p class="prep__lab">부록 · 직접 해보시려면</p>
   <h2 class="prep__h">지난 시간 것이 갖춰져 있어야 합니다</h2>
@@ -1259,8 +1192,8 @@ scout의 금지 사항이 <b>이 답에도 그대로</b> 걸립니다.</i></p>
   </p>
 
   <ul>
-    <li><strong>지난 시간 폴더</strong> — <code>pubmed-workshop</code>. 이미 갖고 계시면 그대로 쓰셔도 됩니다.
-      이번 주차용으로 정리한 같은 폴더는 <code>pubmed-workshop-agent-teams</code> 입니다.
+    <li><strong>지난 시간 폴더</strong> — <code>pubmed-workshop</code> 을 복사해
+      <code>pubmed-workshop-agent-teams</code> 로 이름만 바꾼 것입니다. 안의 내용은 같습니다.
       <strong>그 폴더에서 Claude Code를 열면</strong> <code>.claude/</code> 안의 담당·스킬이 잡힙니다</li>
     <li><strong>NCBI API 키</strong> — <code>.claude/settings.json</code> 의 <code>NCBI_API_KEY</code>.
       <strong>비어 있으면 초당 3회 제한</strong>이라 조회가 자주 막힙니다</li>
@@ -1268,8 +1201,8 @@ scout의 금지 사항이 <b>이 답에도 그대로</b> 걸립니다.</i></p>
   </ul>
 
   <p class="prep__no">
-    <strong>「폴더를 새로 만드나요?」</strong> — 아닙니다.
-    지난 시간 폴더에 <strong>파일 하나를 더할 뿐</strong>입니다.
+    <strong>「무엇을 새로 만드나요?」</strong> — <strong>파일 하나뿐</strong>입니다.
+    폴더는 지난 시간 것을 복사해 이름만 바꾼 것이고,
     <code>.claude/agents/</code> 의 담당 둘, <code>skills/</code> 의 절차,
     <code>scripts/</code> 의 검사기 — <strong>전부 그대로 씁니다.</strong>
     Mac에서 <code>.claude</code> 는 숨김 폴더라 안 보일 수 있는데 <strong>정상입니다.</strong>
