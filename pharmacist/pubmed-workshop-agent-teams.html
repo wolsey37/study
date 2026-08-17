@@ -1,0 +1,1382 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="에이전트 팀(Agent Teams) — 담당을 필요할 때 한 명씩 띄우고 결과를 반환값으로 받는 위임 구조. PubMed 근거 조사를 예제로. 약사 세미나 3주차 교육 자료.">
+<meta property="og:title" content="에이전트 팀(Agent Teams) — 약사 세미나 3주차">
+<title>에이전트 팀(Agent Teams) — 약사 세미나 3주차</title>
+<style>
+  :root {
+    --paper:#FBFAF7; --paper-2:#F3F1EB; --ink:#1B2420;
+    --ink-soft:#5A6560; --ink-faint:#8B948F;
+    --green:#1F6B4A; --green-soft:#E3EFE8;
+    --clay:#A8452F; --clay-soft:#F6E7E2;
+    --amber:#B5832A; --amber-soft:#F7EEDA;
+    --rule:#DFDBD2;
+    --sans:'Apple SD Gothic Neo',Pretendard,'Malgun Gothic','Noto Sans KR',system-ui,sans-serif;
+    --mono:ui-monospace,'SF Mono',SFMono-Regular,Menlo,'D2Coding',monospace;
+    --measure:64ch;
+    --s1:.5rem; --s2:.875rem; --s3:1.375rem; --s4:2.25rem; --s5:3.5rem; --s6:5.5rem; --s7:8rem;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --paper:#121714; --paper-2:#1B2320; --ink:#E8EDE9; --ink-soft:#A3AEA8; --ink-faint:#6E7A74;
+      --green:#57B489; --green-soft:#163024; --clay:#E08A72; --clay-soft:#331C16;
+      --amber:#D6A84E; --amber-soft:#302512; --rule:#2B3531; }
+  }
+  :root[data-theme="dark"] { --paper:#121714; --paper-2:#1B2320; --ink:#E8EDE9; --ink-soft:#A3AEA8; --ink-faint:#6E7A74;
+    --green:#57B489; --green-soft:#163024; --clay:#E08A72; --clay-soft:#331C16;
+    --amber:#D6A84E; --amber-soft:#302512; --rule:#2B3531; }
+  :root[data-theme="light"] { --paper:#FBFAF7; --paper-2:#F3F1EB; --ink:#1B2420; --ink-soft:#5A6560; --ink-faint:#8B948F;
+    --green:#1F6B4A; --green-soft:#E3EFE8; --clay:#A8452F; --clay-soft:#F6E7E2;
+    --amber:#B5832A; --amber-soft:#F7EEDA; --rule:#DFDBD2; }
+
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans);
+    font-size:17px; line-height:1.85; -webkit-font-smoothing:antialiased; word-break:keep-all; }
+  .deck { max-width:76rem; margin:0 auto; padding:0 var(--s3) var(--s7); }
+
+  .cover { min-height:60vh; display:flex; flex-direction:column; justify-content:center; gap:var(--s3); padding:var(--s6) 0 var(--s4); }
+  .cover__tag { font-family:var(--mono); font-size:.75rem; letter-spacing:.18em; text-transform:uppercase; color:var(--green); }
+  .cover__title { margin:0; font-size:clamp(2.3rem,6.5vw,4.2rem); line-height:1.1; letter-spacing:-.04em; font-weight:800; max-width:17ch; text-wrap:balance; }
+  .cover__sub { margin:0; max-width:var(--measure); font-size:clamp(1.05rem,2vw,1.25rem); color:var(--ink-soft); }
+  .cover__meta { margin-top:var(--s2); padding-top:var(--s2); border-top:1px solid var(--rule);
+    font-family:var(--mono); font-size:.78rem; color:var(--ink-faint); display:flex; flex-wrap:wrap; gap:var(--s1) var(--s3); }
+
+  .modebar { position:sticky; top:0; z-index:20; display:flex; flex-wrap:wrap; align-items:center; gap:var(--s2);
+    padding:.7rem 0; background:color-mix(in srgb, var(--paper) 92%, transparent);
+    backdrop-filter:blur(8px); border-bottom:1px solid var(--rule); margin-bottom:var(--s3); }
+  .modebar__total { font-family:var(--mono); font-size:.78rem; color:var(--ink-faint); }
+
+  .prep { border:1px solid var(--amber); background:var(--amber-soft); padding:var(--s3); display:flex; flex-direction:column; gap:var(--s2); }
+  .prep__lab { margin:0; font-family:var(--mono); font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:var(--amber); }
+  .prep__h { margin:0; font-size:1.1rem; font-weight:740; }
+  .prep ul { margin:0; padding-left:1.2rem; display:flex; flex-direction:column; gap:.4rem; font-size:.95rem; }
+  .prep__note { margin:0; font-size:.9rem; color:var(--ink-soft); }
+  .prep__no { margin:0; padding-top:var(--s2); border-top:1px solid color-mix(in srgb, var(--amber) 40%, transparent); font-size:.95rem; }
+
+  .toc { display:grid; grid-template-columns:repeat(auto-fit,minmax(15rem,1fr)); gap:var(--s2); }
+  .toc__item { border:1px solid var(--rule); padding:var(--s3); display:flex; flex-direction:column; gap:.3rem;
+    text-decoration:none; color:inherit; transition:background .12s, border-color .12s; }
+  .toc__item:hover, .toc__item:focus-visible { background:var(--green-soft); border-color:var(--green); }
+  .toc__n { font-family:var(--mono); font-size:.72rem; letter-spacing:.14em; color:var(--green); }
+  .toc__t { font-weight:700; font-size:1.02rem; }
+  .toc__d { font-size:.88rem; color:var(--ink-soft); }
+  .toc__time { font-family:var(--mono); font-size:.72rem; color:var(--ink-faint); margin-top:.2rem; }
+
+  .sec { padding-top:var(--s6); scroll-margin-top:4rem; display:flex; flex-direction:column; gap:var(--s3); }
+  .sec__n { font-family:var(--mono); font-size:.75rem; letter-spacing:.16em; text-transform:uppercase; color:var(--green); }
+  .sec__h { margin:0; font-size:clamp(1.7rem,3.8vw,2.5rem); line-height:1.2; letter-spacing:-.03em; font-weight:780; max-width:22ch; text-wrap:balance; }
+  .sec__lead { margin:0; max-width:var(--measure); font-size:1.08rem; color:var(--ink-soft); }
+  .sec__sub { margin:0; font-size:1.14rem; font-weight:740; letter-spacing:-.02em; }
+  .prose { display:flex; flex-direction:column; gap:var(--s2); max-width:var(--measure); }
+  .prose p, .prose ul, .prose ol { margin:0; }
+  .prose ul, .prose ol { padding-left:1.15rem; display:flex; flex-direction:column; gap:var(--s1); }
+  strong { font-weight:700; }
+
+  .claim { margin:0; padding:var(--s4) 0; border-top:2px solid var(--ink); border-bottom:2px solid var(--ink);
+    font-size:clamp(1.2rem,2.6vw,1.7rem); line-height:1.45; font-weight:700; letter-spacing:-.02em; max-width:30ch; }
+  .claim em { font-style:normal; color:var(--green); }
+
+  .easy { display:flex; flex-direction:column; gap:var(--s1); padding:var(--s3);
+    background:var(--paper-2); border:1px solid var(--rule); border-left:3px solid var(--ink-soft); }
+  .easy__lab { margin:0; font-family:var(--mono); font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-soft); }
+  .easy p { margin:0; font-size:1.02rem; max-width:var(--measure); }
+  .easy__pair { display:grid; grid-template-columns:repeat(auto-fit,minmax(15rem,1fr)); gap:var(--s2); margin-top:.2rem; }
+  .easy__side { padding:var(--s2) var(--s3); background:var(--paper); border-left:3px solid var(--clay); }
+  .easy__side--o { border-left-color:var(--green); }
+  .easy__side p { margin:0; font-size:.95rem; }
+  .easy__k { display:block; font-family:var(--mono); font-size:.7rem; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--clay); margin-bottom:.2rem; }
+  .easy__side--o .easy__k { color:var(--green); }
+
+  .lab { border:1px solid var(--rule); border-top:3px solid var(--green); display:flex; flex-direction:column; }
+  .lab__head { padding:var(--s3); display:flex; flex-direction:column; gap:.35rem; border-bottom:1px solid var(--rule); }
+  .lab__n { font-family:var(--mono); font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:var(--green);
+    display:flex; flex-wrap:wrap; gap:var(--s2); align-items:baseline; }
+  .lab__min { color:var(--ink-faint); }
+  .lab__do { margin:0; font-size:1.18rem; font-weight:740; letter-spacing:-.02em; }
+  .lab__why { margin:0; font-size:.94rem; color:var(--ink-soft); max-width:var(--measure); }
+  .lab__body { padding:var(--s3); display:flex; flex-direction:column; gap:var(--s3); min-width:0; }
+
+  .say { display:flex; flex-direction:column; gap:.4rem; min-width:0; }
+  .say__lab { margin:0; font-family:var(--mono); font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--green);
+    display:flex; align-items:center; justify-content:space-between; gap:var(--s2); }
+
+  .copybtn { flex:none; font-family:var(--sans); font-size:.72rem; font-weight:650;
+    letter-spacing:0; text-transform:none; cursor:pointer;
+    padding:.35rem .75rem; border:1px solid var(--rule); border-radius:2px;
+    background:transparent; color:var(--ink-soft);
+    transition:background .12s, border-color .12s, color .12s; }
+  .copybtn:hover { border-color:var(--green); color:var(--green); background:var(--green-soft); }
+  .copybtn:focus-visible { outline:2px solid var(--green); outline-offset:2px; }
+  .copybtn[data-state="done"] { border-color:var(--green); background:var(--green); color:var(--paper); }
+  .copybtn[data-state="fail"] { border-color:var(--clay); background:var(--clay-soft); color:var(--clay); }
+  @media (prefers-reduced-motion: reduce) { .copybtn { transition:none; } }
+  .say__box { margin:0; padding:var(--s2) var(--s3); background:var(--paper-2); border-left:3px solid var(--green);
+    font-family:var(--mono); font-size:.84rem; line-height:1.8; white-space:pre-wrap; overflow-x:auto; color:var(--ink); }
+  .say__box b { font-weight:700; color:var(--green); }
+  .say__box u { text-decoration:none; color:var(--clay); font-weight:650; }
+  .say__box i { font-style:normal; color:var(--ink-faint); }
+
+  .reply { display:flex; flex-direction:column; gap:.4rem; min-width:0; }
+  .reply__lab { margin:0; font-family:var(--mono); font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint); }
+  .reply__box { margin:0; padding:var(--s2) var(--s3); background:var(--paper); border:1px dashed var(--ink-faint);
+    font-family:var(--mono); font-size:.82rem; line-height:1.8; white-space:pre-wrap; overflow-x:auto; color:var(--ink); }
+  .reply__box b { font-weight:700; color:var(--green); }
+  .reply__box u { text-decoration:none; color:var(--clay); font-weight:650; }
+  .reply__box mark { background:color-mix(in srgb, var(--green) 20%, transparent); padding:0 .15em; }
+
+  .ok { margin:0; padding:var(--s2) var(--s3); background:var(--green-soft); border-left:3px solid var(--green); font-size:.94rem; }
+  .ok b { color:var(--green); }
+  .stuck { margin:0; padding:var(--s2) var(--s3); background:var(--amber-soft); border-left:3px solid var(--amber); font-size:.94rem; }
+  .stuck b { color:var(--amber); }
+  .step { margin:0; font-size:.98rem; font-weight:700; display:flex; gap:.5rem; align-items:baseline; }
+  .step span { font-family:var(--mono); font-size:.78rem; color:var(--green); }
+
+  .cards { display:flex; flex-direction:column; gap:var(--s2); }
+  .card { border:1px solid var(--rule); padding:var(--s3); display:flex; flex-direction:column; gap:var(--s2); }
+  .card--flag { border-left:3px solid var(--clay); }
+  .card__top { display:flex; flex-wrap:wrap; align-items:baseline; gap:var(--s2); }
+  .card__tag { font-family:var(--mono); font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; padding:.18rem .5rem; background:var(--green-soft); color:var(--green); }
+  .card--flag .card__tag { background:var(--clay-soft); color:var(--clay); }
+  .card__h { margin:0; font-size:1.06rem; font-weight:720; }
+  .card p { margin:0; font-size:.96rem; }
+
+  .quote { margin:0; padding:var(--s2) var(--s3); background:var(--paper-2); border:1px solid var(--rule); font-size:.96rem; line-height:1.75; }
+  .quote--o { border-color:var(--green); background:var(--green-soft); }
+  .quote--warn { border-color:var(--amber); background:var(--amber-soft); }
+  mark { background:color-mix(in srgb, var(--clay) 26%, transparent); color:inherit; padding:.05em .18em; border-radius:2px; }
+  code { font-family:var(--mono); font-size:.86em; padding:.1em .35em; background:var(--green-soft); border-radius:2px; }
+
+  .tw { overflow-x:auto; }
+  table { width:100%; min-width:30rem; border-collapse:collapse; font-size:.95rem; }
+  caption { text-align:left; padding-bottom:var(--s1); font-family:var(--mono); font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint); }
+  th,td { text-align:left; padding:.7rem .9rem; border-bottom:1px solid var(--rule); vertical-align:top; }
+  thead th { font-size:.78rem; letter-spacing:.04em; color:var(--ink-soft); font-weight:650; border-bottom-width:2px; }
+  tbody th { font-weight:650; white-space:nowrap; }
+  .no { color:var(--clay); font-weight:650; }
+  .hard { color:var(--green); font-weight:700; }
+
+  .diagram { font-family:var(--mono); font-size:.85rem; line-height:1.85; padding:var(--s3);
+    background:var(--paper-2); border:1px solid var(--rule); overflow-x:auto; white-space:pre; }
+  .diagram b { font-weight:700; color:var(--green); }
+  .diagram u { text-decoration:none; color:var(--clay); font-weight:650; }
+
+  .arc { display:grid; grid-template-columns:repeat(auto-fit,minmax(14rem,1fr)); gap:var(--s2); }
+  .arc__i { padding:var(--s3); border:1px solid var(--rule); display:flex; flex-direction:column; gap:.35rem; }
+  .arc__i--now { border-color:var(--green); border-width:2px; background:var(--green-soft); }
+  .arc__i--past { background:var(--paper-2); }
+  .arc__n { font-family:var(--mono); font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint); }
+  .arc__i--now .arc__n { color:var(--green); font-weight:700; }
+  .arc__t { margin:0; font-size:1.04rem; font-weight:730; letter-spacing:-.01em; }
+  .arc__d { margin:0; font-size:.92rem; color:var(--ink-soft); }
+
+  pre.code { margin:0; min-width:0; background:var(--paper-2); border:1px solid var(--rule);
+    padding:var(--s3); overflow-x:auto; font-family:var(--mono); font-size:.83rem; line-height:1.75; color:var(--ink); }
+  pre.code b { font-weight:700; color:var(--green); }
+  pre.code i { font-style:normal; color:var(--ink-faint); }
+  pre.code u { text-decoration:none; color:var(--clay); font-weight:650; }
+
+  .duo { display:grid; grid-template-columns:repeat(auto-fit,minmax(20rem,1fr)); gap:var(--s2); align-items:start; }
+
+  .end { margin-top:var(--s7); padding:var(--s5) var(--s4); background:var(--ink); color:var(--paper); display:flex; flex-direction:column; gap:var(--s2); }
+  .end h2 { margin:0; font-size:clamp(1.4rem,3vw,1.9rem); font-weight:760; letter-spacing:-.02em; }
+  .end p { margin:0; max-width:var(--measure); color:color-mix(in srgb,var(--paper) 76%, transparent); }
+  .end strong { color:var(--paper); }
+  .end ul { margin:0; padding-left:1.2rem; display:flex; flex-direction:column; gap:.45rem;
+    max-width:var(--measure); color:color-mix(in srgb,var(--paper) 76%, transparent); }
+  .end code { background:color-mix(in srgb,var(--paper) 16%, transparent); color:var(--paper); }
+  .end__final { margin-top:var(--s3); padding-top:var(--s3); border-top:1px solid color-mix(in srgb,var(--paper) 25%, transparent); font-size:1.05rem; }
+
+  hr.r { width:100%; height:1px; border:0; background:var(--rule); margin:0; }
+  a { color:var(--green); }
+  a:focus-visible, button:focus-visible { outline:2px solid var(--green); outline-offset:3px; }
+
+  .need { display:flex; flex-direction:column; gap:var(--s1); padding:var(--s3);
+    background:var(--clay-soft); border-left:3px solid var(--clay); }
+  .need__lab { margin:0; font-family:var(--mono); font-size:.72rem; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--clay); font-weight:700; }
+  .need p { margin:0; font-size:1rem; max-width:var(--measure); }
+
+  .dl { display:inline-flex; align-items:baseline; gap:.5rem; text-decoration:none;
+    padding:.65rem 1.1rem; border:1.5px solid var(--green); background:var(--green-soft);
+    color:var(--green); font-weight:750; font-size:.98rem; border-radius:2px;
+    transition:background .12s, color .12s; }
+  .dl:hover, .dl:focus-visible { background:var(--green); color:var(--paper); }
+  .dl small { font-family:var(--mono); font-weight:400; font-size:.78em; opacity:.8; }
+
+  /* 비교 구조도 */
+  .cmp { display:grid; grid-template-columns:repeat(auto-fit,minmax(17rem,1fr)); gap:var(--s2); }
+  .cmp__panel { border:1px solid var(--rule); background:var(--paper-2); padding:var(--s3) var(--s2) var(--s2);
+    display:flex; flex-direction:column; align-items:center; gap:.75rem; }
+  .cmp__panel--x { border-top:3px solid var(--clay); }
+  .cmp__panel--o { border-top:3px solid var(--green); }
+  .cmp__t { margin:0; font-family:var(--mono); font-size:.72rem; letter-spacing:.14em;
+    text-transform:uppercase; font-weight:700; color:var(--clay); }
+  .cmp__panel--o .cmp__t { color:var(--green); }
+
+  .dg { border:1px solid var(--rule); background:var(--paper-2); padding:var(--s2); overflow-x:auto; }
+  .dg svg { display:block; width:100%; min-width:34rem; height:auto; }
+  .dg .ttl { font-family:var(--sans); font-size:13px; font-weight:800; fill:var(--ink); }
+  .dg .bx { stroke-width:1.4; }
+  .dg .bx-main { fill:var(--clay-soft); stroke:var(--clay); }
+  .dg .bx-sub  { fill:var(--amber-soft); stroke:var(--amber); }
+  .dg .bx-task { fill:var(--green-soft); stroke:var(--green); stroke-width:2; stroke-dasharray:5 3; }
+  .dg .bx-mate { fill:var(--paper); stroke:var(--green); }
+  .dg .bx-res  { fill:none; stroke:var(--ink-faint); stroke-dasharray:3 3; }
+  .dg .nm { font-family:var(--mono); font-size:10.5px; font-weight:700; fill:var(--ink); }
+  .dg .nm-res { fill:var(--ink-faint); font-weight:400; }
+  .dg .lb { font-family:var(--sans); font-size:9px; fill:var(--ink-faint); }
+  .dg .lb-o { fill:var(--green); font-weight:700; }
+  .dg .ln { fill:none; stroke:var(--ink-faint); stroke-width:1.2; }
+  .dg .ln-o { fill:none; stroke:var(--green); stroke-width:1.6; }
+  .dg .ah { fill:var(--ink-faint); }
+  .dg .ah-o { fill:var(--green); }
+  .dg .sep { stroke:var(--rule); stroke-width:1; }
+  .cmp__pros { margin:0; width:100%; padding-top:.7rem; border-top:1px dashed var(--rule);
+    display:flex; flex-direction:column; gap:.45rem; }
+  .cmp__pros p { margin:0; display:flex; gap:.45rem; align-items:baseline;
+    font-size:.86rem; line-height:1.55; color:var(--ink-soft); text-align:left; }
+  .cmp__pros p b { flex:none; font-family:var(--mono); font-weight:700; font-size:.95em; }
+  .cmp__pros .p b { color:var(--green); }
+  .cmp__pros .m b { color:var(--clay); }
+  .cmp__pros strong { color:var(--ink); }
+
+  /* 팀원 명단 */
+  .roster { display:grid; grid-template-columns:repeat(auto-fit,minmax(16rem,1fr)); gap:var(--s2); }
+  .roster__i { border:1px solid var(--rule); border-top:3px solid var(--green); padding:var(--s3);
+    display:flex; flex-direction:column; gap:.4rem; }
+  .roster__nm { font-size:1.15rem; font-weight:780; color:var(--green); letter-spacing:-.01em; }
+  .roster__nm small { font-family:var(--mono); font-size:.68em; color:var(--ink-faint); font-weight:600; letter-spacing:0; }
+  .roster__r { margin:0; font-size:1.06rem; font-weight:730; letter-spacing:-.01em; }
+  .roster__d { margin:0; font-size:.93rem; color:var(--ink-soft); }
+  .roster__no { margin:0; margin-top:.2rem; padding-top:.55rem; border-top:1px dashed var(--rule);
+    font-size:.9rem; color:var(--clay); font-weight:650; }
+
+  /* 메시지 카드 */
+  .msg { border:1px solid var(--rule); background:var(--paper-2); padding:var(--s2) var(--s3);
+    display:flex; flex-direction:column; gap:.4rem; min-width:0; }
+  .msg--lead { border-left:3px solid var(--ink-soft); }
+  .msg--x { border-color:var(--clay); background:var(--clay-soft); }
+  .msg__hd { font-family:var(--mono); font-size:.73rem; letter-spacing:.06em;
+    color:var(--ink-faint); display:flex; flex-wrap:wrap; gap:.45rem; align-items:baseline; }
+  .msg__f { color:var(--green); font-weight:700; }
+  .msg__t { color:var(--clay); font-weight:700; }
+  .msg__b { margin:0; font-family:var(--mono); font-size:.82rem; line-height:1.75;
+    white-space:pre-wrap; overflow-x:auto; color:var(--ink); }
+  .msg__b b { font-weight:700; color:var(--green); }
+  .msg__b u { text-decoration:none; color:var(--clay); font-weight:650; }
+
+  @media (max-width:40rem) {
+    body { font-size:16px; }
+    .deck { padding:0 var(--s2) var(--s6); }
+    .sec { padding-top:var(--s5); }
+  }
+</style>
+</head>
+<body>
+
+<div class="deck">
+
+<header class="cover">
+  <p class="cover__tag">약사 세미나 3주차 · 교육 자료</p>
+  <h1 class="cover__title">에이전트 팀<br>(Agent Teams)</h1>
+  <p class="cover__sub">
+    일을 <strong>여러 담당에게 나눠 맡기는</strong> 기능입니다.
+    서브에이전트와 달리 <strong>담당마다 이름이 붙어</strong>, 서로 부를 수도 있고
+    <strong>끝난 뒤에 다시 불러</strong> 이어서 물을 수도 있습니다.
+    <strong>논문 근거를 모으는 일</strong>을 예로,
+    <strong>어떻게 나누고 언제 띄우는지</strong> 봅니다.
+  </p>
+  <div class="cover__meta">
+    <span>담당 둘 · 주제 하나</span>
+    <span>새로 만드는 파일: 한 개</span>
+    <span>폴더는 지난 시간 것 그대로</span>
+  </div>
+
+  <p style="margin:var(--s2) 0 0">
+    <a class="dl" href="https://github.com/wolsey37/study/raw/main/pharmacist/pubmed-workshop-agent-teams.zip">
+      ↓ 실습 폴더 내려받기 <small>zip · 67KB</small></a>
+  </p>
+</header>
+
+<div class="modebar">
+  <span class="modebar__total">전체 약 20분 · 읽는 자료</span>
+</div>
+
+<!-- 배경 -->
+<section class="sec" id="bg" style="padding-top:var(--s4)">
+  <p class="sec__n">배경 · 2분</p>
+  <h2 class="sec__h">담당을 나눠 시킬 때 정해야 하는 것</h2>
+
+  <div class="prose">
+    <p>
+      지난 시간에 만든 폴더가 <code>pubmed-workshop-agent-teams</code> 입니다.
+      그 안에 <strong>담당 둘</strong>과 <strong>절차를 적어둔 문서</strong>(<code>pubmed-evidence</code>),
+      <strong>검사기</strong>가 들어 있습니다.
+      「마그네슘 수면」 한 줄이면 <strong>이 순서</strong>가 돕니다.
+    </p>
+  </div>
+
+  <div class="diagram"><b>P1</b>  정규화     magnesium × sleep quality        <i>← 메인이 직접</i>
+<b>P2</b>  정찰       <b>evidence-scout</b> — 논문 지형을 훑고 톤 판정
+<b>P3</b>  채굴       <b>abstract-miner</b> — 초록에서 숫자 5칸을 오려냄
+<b>P6</b>  검증       <b>verify_evidence.py</b> — 숫자가 원문에 있는지 대조
+<b>P6-1</b> 고시 대조  <b>kr-claims</b> — 국내 인정 문구와 맞춰봄
+      ↓
+   <b>evidence-pack.json</b></div>
+
+  <div class="easy">
+    <p class="easy__lab">여기서 「메인」이란</p>
+    <p>
+      <strong>여러분이 말을 거는 그 Claude</strong>입니다. 담당들을 부르고 결과를 받아
+      정리하는 쪽이지요. 사람은 <strong>명령을 치고 마지막에 판단</strong>하고,
+      <strong>담당을 언제 부를지 정하는 건 메인</strong>입니다.
+    </p>
+  </div>
+
+  <p class="sec__sub">P2와 P3을 나눠 맡길 때 — 두 가지를 정해야 합니다</p>
+
+  <div class="prose">
+    <ol>
+      <li><strong>언제 띄울 것인가</strong> — 둘을 한 번에? 아니면 필요할 때 하나씩?</li>
+      <li><strong>결과를 어떻게 받을 것인가</strong> — 그냥 반환? 아니면 메시지로?</li>
+    </ol>
+    <p>
+      오늘 만드는 명령은 이렇게 답합니다 —
+      <strong>필요할 때 한 명씩 띄우고, 결과는 그냥 반환받습니다.</strong>
+      <code>miner</code>는 <code>scout</code>이 끝난 뒤에 태어나므로
+      <strong>PMID를 손에 쥔 채로 시작</strong>합니다.
+      그리고 채굴하는 동안 <strong>PMID마다 scout에게 되묻습니다</strong> —
+      <strong>이미 끝난 담당을 이름으로 다시 깨워서</strong>입니다.
+    </p>
+  </div>
+
+  <p class="quote quote--warn">
+    <strong>오늘 만드는 파일은 하나입니다.</strong>
+    담당도 스킬도 스크립트도 <strong>지난 시간 것 그대로</strong> 씁니다.
+    <strong>안을 열어보기는 하되, 고치지 않습니다.</strong>
+    더하는 것은 <code>.claude/commands/진행.md</code> <strong>한 개뿐</strong>입니다.
+  </p>
+</section>
+
+<nav class="toc">
+  <a class="toc__item" href="#s1"><span class="toc__n">01</span><span class="toc__t">에이전트 팀이 뭔가</span><span class="toc__d">서브에이전트와 무엇이 다른지 · 언제 쓰고 언제 쓰면 안 되는지</span><span class="toc__time">3분</span></a>
+  <a class="toc__item" href="#s2"><span class="toc__n">02</span><span class="toc__t">사용법</span><span class="toc__d">띄우기 · 목록에서 고르기 · 직접 말 걸기</span><span class="toc__time">2분</span></a>
+  <a class="toc__item" href="#s3"><span class="toc__n">03</span><span class="toc__t">담당 둘이 무엇을 하는가</span><span class="toc__d">지난 시간 것 · 04를 보기 위한 최소한</span><span class="toc__time">1분</span></a>
+  <a class="toc__item" href="#s4"><span class="toc__n">04</span><span class="toc__t">명령 하나가 하는 일</span><span class="toc__d">오늘의 핵심 · 필요할 때 한 명씩 · 결과는 반환값으로</span><span class="toc__time">7분 · 핵심</span></a>
+  <a class="toc__item" href="#s5"><span class="toc__n">05</span><span class="toc__t">손에 남는 것</span><span class="toc__d">evidence-pack.json · 폐기된 슬롯이 왜 성과인가</span><span class="toc__time">2분</span></a>
+  <a class="toc__item" href="#s6"><span class="toc__n">06</span><span class="toc__t">한 줄로 굳히기</span><span class="toc__d">다음 주제부터는 /진행 한 줄</span><span class="toc__time">1분</span></a>
+  <a class="toc__item" href="#s8"><span class="toc__n">07</span><span class="toc__t">팀이라야 되는 것</span><span class="toc__d">되묻기 · 이어서 묻기</span><span class="toc__time">1분</span></a>
+  <a class="toc__item" href="#s7"><span class="toc__n">마지막</span><span class="toc__t">막혔을 때 · 마무리</span><span class="toc__d">증상별 대처 · 과제</span><span class="toc__time">1분</span></a>
+</nav>
+
+
+<!-- 01 -->
+<section class="sec" id="s1">
+  <p class="sec__n">01 · 개념 · 3분</p>
+  <h2 class="sec__h">에이전트 팀이 뭔가</h2>
+
+  <p class="sec__lead">
+    한 문장으로: <strong>일 시킨 담당끼리 서로 말을 걸 수 있게 된 것</strong>입니다. 그게 전부입니다.
+  </p>
+
+  <p class="sec__sub">설정 ① — 기능 켜기 <span style="font-weight:400;color:var(--ink-faint)">(기본은 꺼져 있습니다)</span></p>
+
+  <div class="prose">
+    <p>
+      아직 <strong>실험 기능</strong>이라 직접 켜야 합니다.
+      <strong>이걸 안 켜면 담당에 이름이 붙지 않고</strong>,
+      이름이 없으면 <strong>서로 부를 수도 없습니다.</strong>
+      Claude Code에 이렇게 말하면 됩니다.
+    </p>
+  </div>
+
+  <div class="say">
+    <p class="say__lab">설정을 이렇게 시킵니다</p>
+    <p class="say__box">에이전트 팀 기능을 켜줘.
+~/.claude/settings.json 의 env 에
+CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS 를 "1" 로 넣어줘.
+기존 설정은 지우지 말고 그 항목만 추가해줘.</p>
+  </div>
+
+  <div class="prose">
+    <p>직접 넣으면 <code>~/.claude/settings.json</code> 이 이렇게 됩니다.</p>
+  </div>
+
+<pre class="code" style="font-size:.82rem">{
+  "env": {
+    <b>"CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"</b>
+  }
+}</pre>
+
+  <div class="ok">
+    <b>껐다 켤 필요 없습니다.</b> 저장하면 <strong>돌고 있는 세션에 바로 반영</strong>됩니다.
+  </div>
+
+  <div class="easy">
+    <p class="easy__lab">쉽게 말하면</p>
+    <p>둘 다 <strong>일을 맡기는 것</strong>인데, <strong>맡긴 뒤가 다릅니다.</strong></p>
+    <div class="easy__pair">
+      <div class="easy__side">
+        <p><span class="easy__k">서브에이전트 = 외주</span>
+        일을 맡기고 <strong>결과만 받습니다.</strong> 외주끼리는 서로 모릅니다.
+        scout의 결과를 miner에게 주려면 <strong>메인이 들고 갑니다.</strong></p>
+      </div>
+      <div class="easy__side easy__side--o">
+        <p><span class="easy__k">에이전트 팀 = 같이 일하는 직원</span>
+        <strong>옆자리에 앉아 있습니다.</strong> scout이 miner에게 바로 넘깁니다.
+        메인은 <strong>보고만</strong> 받고, <strong>한 명만 따로 부를 수도</strong> 있습니다.</p>
+      </div>
+    </div>
+  </div>
+
+  <p class="sec__sub">그림으로 보면</p>
+
+  <div class="dg">
+<svg viewBox="0 0 740 300" role="img" aria-label="서브에이전트와 에이전트 팀의 구조 비교">
+  <defs>
+    <marker id="a1" markerWidth="7" markerHeight="7" refX="6.2" refY="3.5" orient="auto">
+      <path d="M0,0.6 L6.5,3.5 L0,6.4 z" class="ah"/></marker>
+    <marker id="a2" markerWidth="7" markerHeight="7" refX="6.2" refY="3.5" orient="auto">
+      <path d="M0,0.6 L6.5,3.5 L0,6.4 z" class="ah-o"/></marker>
+    <marker id="a2s" markerWidth="7" markerHeight="7" refX="0.8" refY="3.5" orient="auto">
+      <path d="M6.5,0.6 L0,3.5 L6.5,6.4 z" class="ah-o"/></marker>
+  </defs>
+
+  <line class="sep" x1="370" y1="14" x2="370" y2="286"/>
+
+  <!-- 왼쪽 : 서브에이전트 -->
+  <text class="ttl" x="185" y="30" text-anchor="middle">서브에이전트</text>
+
+  <rect class="bx bx-main" x="48" y="44" width="274" height="30" rx="3"/>
+  <text class="nm" x="185" y="63" text-anchor="middle">메인 에이전트</text>
+
+  <path class="ln" d="M120,74 L92,102" marker-end="url(#a1)"/>
+  <path class="ln" d="M185,74 L185,102" marker-end="url(#a1)"/>
+  <path class="ln" d="M250,74 L278,102" marker-end="url(#a1)"/>
+  <text class="lb" x="196" y="92" text-anchor="start">띄움</text>
+
+  <rect class="bx bx-sub" x="55" y="104" width="74" height="28" rx="3"/>
+  <text class="nm" x="92" y="122" text-anchor="middle">sub A</text>
+  <rect class="bx bx-sub" x="148" y="104" width="74" height="28" rx="3"/>
+  <text class="nm" x="185" y="122" text-anchor="middle">sub B</text>
+  <rect class="bx bx-sub" x="241" y="104" width="74" height="28" rx="3"/>
+  <text class="nm" x="278" y="122" text-anchor="middle">sub C</text>
+
+  <path class="ln" d="M92,132 L92,155" marker-end="url(#a1)"/>
+  <path class="ln" d="M185,132 L185,155" marker-end="url(#a1)"/>
+  <path class="ln" d="M278,132 L278,155" marker-end="url(#a1)"/>
+
+  <ellipse class="bx bx-res" cx="92" cy="172" rx="30" ry="15"/>
+  <text class="nm nm-res" x="92" y="176" text-anchor="middle">결과</text>
+  <ellipse class="bx bx-res" cx="185" cy="172" rx="30" ry="15"/>
+  <text class="nm nm-res" x="185" y="176" text-anchor="middle">결과</text>
+  <ellipse class="bx bx-res" cx="278" cy="172" rx="30" ry="15"/>
+  <text class="nm nm-res" x="278" y="176" text-anchor="middle">결과</text>
+
+  <path class="ln" d="M185,187 L185,216"/>
+  <path class="ln" d="M278,187 L278,216 L92,216"/>
+  <path class="ln" d="M92,187 L92,216 L26,216 L26,59 L46,59" marker-end="url(#a1)"/>
+  <text class="lb" x="152" y="232" text-anchor="middle">보고 — 전부 메인으로만</text>
+
+  <text class="lb" x="185" y="264" text-anchor="middle" style="font-size:10px">담당끼리 오가는 화살표가</text>
+  <text class="lb" x="185" y="278" text-anchor="middle" style="font-size:10px">하나도 없습니다</text>
+
+  <!-- 오른쪽 : 에이전트 팀 -->
+  <text class="ttl" x="555" y="30" text-anchor="middle">에이전트 팀</text>
+
+  <rect class="bx bx-main" x="412" y="44" width="286" height="30" rx="3"/>
+  <text class="nm" x="555" y="63" text-anchor="middle">메인 세션 = 팀 리드</text>
+
+  <path class="ln ln-o" d="M555,74 L555,100" marker-end="url(#a2)"/>
+  <text class="lb lb-o" x="565" y="91" text-anchor="start">팀 소집 · 작업 배정</text>
+
+  <rect class="bx bx-task" x="412" y="102" width="286" height="30" rx="3"/>
+  <text class="nm" x="555" y="121" text-anchor="middle">Shared Task List · Mailbox</text>
+
+  <path class="ln ln-o" d="M462,133 L462,163" marker-end="url(#a2)" marker-start="url(#a2s)"/>
+  <path class="ln ln-o" d="M555,133 L555,163" marker-end="url(#a2)" marker-start="url(#a2s)"/>
+  <path class="ln ln-o" d="M648,133 L648,163" marker-end="url(#a2)" marker-start="url(#a2s)"/>
+  <text class="lb lb-o" x="565" y="149" text-anchor="start">작업을 집어 가고</text>
+  <text class="lb lb-o" x="565" y="161" text-anchor="start">서로 연락도 여기로</text>
+
+  <rect class="bx bx-mate" x="422" y="166" width="80" height="28" rx="3"/>
+  <text class="nm" x="462" y="184" text-anchor="middle">팀원 A</text>
+  <rect class="bx bx-mate" x="515" y="166" width="80" height="28" rx="3"/>
+  <text class="nm" x="555" y="184" text-anchor="middle">팀원 B</text>
+  <rect class="bx bx-mate" x="608" y="166" width="80" height="28" rx="3"/>
+  <text class="nm" x="648" y="184" text-anchor="middle">팀원 C</text>
+
+  <path class="ln ln-o" d="M504,180 L513,180" marker-end="url(#a2)" marker-start="url(#a2s)"/>
+  <path class="ln ln-o" d="M597,180 L606,180" marker-end="url(#a2)" marker-start="url(#a2s)"/>
+
+  <path class="ln ln-o" d="M462,194 L462,214" marker-end="url(#a2)"/>
+  <path class="ln ln-o" d="M555,194 L555,214" marker-end="url(#a2)"/>
+  <path class="ln ln-o" d="M648,194 L648,214" marker-end="url(#a2)"/>
+  <text class="lb" x="555" y="228" text-anchor="middle">각자 작업</text>
+
+  <text class="lb lb-o" x="555" y="264" text-anchor="middle" style="font-size:10px;font-weight:700">서로에게 닿되 메인을 지나지 않습니다</text>
+  <text class="lb" x="555" y="278" text-anchor="middle" style="font-size:10px">메인은 맨 끝에서 결과만 받습니다</text>
+</svg>
+  </div>
+
+  <div class="cmp">
+    <div class="cmp__panel cmp__panel--x">
+      <p class="cmp__t">서브에이전트</p>
+      <div class="cmp__pros">
+        <p class="p"><b>＋</b><span><strong>싸고 단순합니다.</strong> 일이 끝나면 결과가 <strong>알아서</strong> 메인에 옵니다</span></p>
+        <p class="m"><b>－</b><span>담당끼리 못 엮습니다. <strong>메인이 전부 나릅니다</strong></span></p>
+        <p class="m"><b>－</b><span>끝나면 <strong>사라집니다.</strong> 다시 물으려면 처음부터</span></p>
+      </div>
+    </div>
+
+    <div class="cmp__panel cmp__panel--o">
+      <p class="cmp__t">에이전트 팀</p>
+      <div class="cmp__pros">
+        <p class="p"><b>＋</b><span>담당끼리 <strong>직접</strong> 주고받습니다. <strong>메인을 안 거칩니다</strong></span></p>
+        <p class="p"><b>＋</b><span>끝나도 <strong>이름이 살아 있어</strong> 이어서 물을 수 있습니다</span></p>
+        <p class="m"><b>－</b><span>각자 별도 세션이라 <strong>토큰을 더 씁니다</strong></span></p>
+        <p class="m"><b>－</b><span>결과가 자동으로 안 옵니다 — <strong>직접 보내야</strong> 합니다</span></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p>
+      왼쪽은 <strong>화살표가 전부 메인으로 향합니다.</strong>
+      sub A가 찾은 것을 sub B에게 주려면 <strong>메인이 받아서 다시 넘기는 수밖에</strong> 없습니다.
+      오른쪽은 <strong>서로에게 닿습니다</strong> — 다만 <strong>직접 붙어 있는 것은 아닙니다.</strong>
+      <strong>가운데를 거쳐</strong> 가고, 그 가운데가 <strong>메인이 아닙니다.</strong>
+    </p>
+    <p>
+      그 가운데가 <strong>Shared Task List</strong>와 <strong>Mailbox</strong>입니다.
+      메시지를 보내면 <strong>상대의 Mailbox에 쌓이고</strong>, 상대가 <strong>그것을 읽습니다.</strong>
+      <strong>Mailbox가 곧 주소</strong>라서, <strong>이름이 없으면 보낼 데가 없습니다.</strong>
+    </p>
+  </div>
+
+  <div class="tw">
+    <table>
+      <caption>같은 담당 파일을 쓰더라도 이렇게 다릅니다</caption>
+      <thead>
+        <tr><th>　</th><th>서브에이전트 (지난 시간)</th><th>에이전트 팀 (오늘)</th></tr>
+      </thead>
+      <tbody>
+        <tr><th>서로 대화</th><td class="no">못 합니다</td><td class="hard">이름을 불러 직접 메시지</td></tr>
+        <tr><th>결과 전달</th><td>끝나면 <strong>자동으로</strong> 메인에게</td><td>같습니다 — 다만 <strong>이름으로 깨운 뒤</strong>에는 메시지로 보내야 함</td></tr>
+        <tr><th>일하는 중 말 걸기</th><td class="no">못 함. 끝날 때까지 기다림</td><td class="hard">일하는 중에 끼어들 수 있음</td></tr>
+        <tr><th>끝난 뒤</th><td class="no">사라짐 — 다시 물으려면 처음부터</td><td class="hard">끝나도 <strong>이름이 살아 있음</strong> — 부르면 그 대화 그대로 깨어남</td></tr>
+        <tr><th>비용</th><td class="hard">낮음</td><td class="no">높음 — 각자 별도 세션</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="need">
+    <p class="need__lab">그런데 「서로 대화」가 늘 이득은 아닙니다</p>
+    <p>
+      담당끼리 주고받게 하려면 <strong>먼저 띄운 쪽이 뒤를 기다려야</strong> 합니다.
+      그런데 <strong>이 판에는 「놀면서 떠 있는 상태」가 없습니다</strong> —
+      에이전트는 <strong>일하거나 끝나거나</strong> 둘 중 하나입니다.
+      <strong>기다리게 하지 말고, 필요할 때 띄우는 편이 낫습니다.</strong>
+    </p>
+  </div>
+
+  <div class="duo">
+    <div class="card">
+      <div class="card__top"><span class="card__tag">팀이 이득</span></div>
+      <p class="card__h">주고받아야 끝나는 일</p>
+      <p>
+        <strong>scout → miner</strong>처럼 <strong>앞사람 결과가 뒷사람 입력</strong>인 일.
+        그리고 <strong>중간을 사람이 안 봐야 하는</strong> 일.
+      </p>
+    </div>
+    <div class="card card--flag">
+      <div class="card__top"><span class="card__tag">팀이 손해</span></div>
+      <p class="card__h">한 번에 끝나는 일</p>
+      <p>
+        PMID 하나만 확인. 용어 하나만 정규화.
+        이런 건 <strong>그냥 시키는 게</strong> 빠르고 쌉니다.
+      </p>
+    </div>
+  </div>
+
+  <p class="quote quote--warn">
+    <strong>담당 둘이면 Claude가 셋 도는 셈입니다.</strong>
+    다만 <strong>일할 때만 씁니다.</strong> 끝난 담당은 부를 때까지 아무 비용도 쓰지 않습니다.
+    그러니 켜둔 것 자체는 문제가 아니고, <strong>같은 주제를 여러 번 돌린 것</strong>이 비용이 됩니다.
+  </p>
+
+  <p class="claim">팀은 <em>빨라지려고</em> 쓰는 게 아니라<br><em>메인이 안 끼려고</em> 씁니다.</p>
+</section>
+
+
+<!-- 02 -->
+<section class="sec" id="s2">
+  <p class="sec__n">02 · 사용법 · 2분</p>
+  <h2 class="sec__h">담당을 띄우고 말을 거는 법</h2>
+  <p class="sec__lead">
+        여기서는 <strong>담당 하나를 띄워 조작해 보는 것</strong>까지만 봅니다.
+        전체를 도는 것은 04입니다. <strong>버튼은 없습니다.</strong> 전부 말로 시킵니다.
+      </p>
+
+      <p class="sec__sub">그냥 말로 시킵니다</p>
+
+      <div class="say">
+        <p class="say__lab">이렇게 지시합니다</p>
+        <p class="say__box"><b>evidence-scout</b> 으로 담당 하나 띄워줘.
+이름은 <b>scout</b>, 화면표시는 <b>정찰</b>.
+
+마그네슘 × 수면으로 논문 지형을 훑어봐.</p>
+      </div>
+
+      <div class="ok">
+        <b>「무엇으로」와 「이름」은 다릅니다.</b>
+        <code>evidence-scout</code> 은 <strong>역할이 적힌 파일</strong>이고,
+        <code>scout</code> 은 <strong>이번에 띄운 그 담당을 부를 이름</strong>입니다.
+        이름이 있어야 <strong>나중에 다시 부를 수</strong> 있습니다.
+        <strong>이름은 영문·숫자만</strong> 됩니다 — 한글은 안 붙습니다.
+      </div>
+
+      <p class="sec__sub">입력창 아래를 봅니다</p>
+
+      <div class="diagram">● <b>main</b>
+○ <b>scout</b>   「<b>정찰</b>」   작업 중···
+<i>  (miner 는 아직 없습니다 — scout 이 끝나면 그때 띄웁니다)</i></div>
+
+      <div class="prose">
+        <ul>
+          <li><strong>↑ ↓</strong> — 담당을 고릅니다</li>
+          <li><strong>Enter</strong> — 그 담당 화면으로 들어갑니다. <strong>거기서 타자를 치면 그 담당에게 갑니다</strong></li>
+          <li><strong>Esc</strong> — 하던 일을 멈춥니다 / <strong>x</strong> — 정지시킵니다</li>
+        </ul>
+      </div>
+
+      <p class="sec__sub">설정 ② — 담당마다 창 나누기 <span style="font-weight:400;color:var(--ink-faint)">(선택)</span></p>
+
+      <div class="prose">
+        <p>
+          지금까지 본 것이 <strong>기본값</strong>입니다 — 한 화면 안에 목록으로 뜨는 방식.
+          <strong>담당마다 창을 갈라</strong> 동시에 보고 싶으면 설정을 하나 더 넣습니다.
+        </p>
+      </div>
+
+      <div class="dg" style="padding:var(--s3)">
+<svg viewBox="0 0 700 190" role="img" aria-label="한 화면 모드와 창 나누기 모드 비교">
+  <text class="ttl" x="160" y="20" text-anchor="middle">기본 — 한 화면</text>
+  <rect class="bx bx-mate" x="35" y="34" width="250" height="30" rx="3" style="stroke:var(--ink-soft)"/>
+  <text class="nm" x="50" y="53">&gt; 입력창</text>
+  <rect class="bx bx-res" x="35" y="70" width="250" height="66" rx="3" style="stroke-dasharray:none;stroke:var(--rule)"/>
+  <text class="nm" x="50" y="92">○ scout   작업 중</text>
+  <text class="nm nm-res" x="50" y="114">○ miner   대기</text>
+  <text class="lb" x="160" y="160" text-anchor="middle">↑↓ 로 고르고 Enter 로 들어감</text>
+  <text class="lb" x="160" y="176" text-anchor="middle">한 번에 한 담당만 봅니다</text>
+
+  <line class="sep" x1="350" y1="14" x2="350" y2="180"/>
+
+  <text class="ttl" x="540" y="20" text-anchor="middle">창 나누기 — tmux</text>
+  <rect class="bx bx-mate" x="415" y="34" width="118" height="102" rx="3" style="stroke:var(--ink-soft)"/>
+  <text class="nm" x="430" y="60">&gt; main</text>
+  <rect class="bx bx-mate" x="543" y="34" width="122" height="48" rx="3"/>
+  <text class="nm" x="604" y="54" text-anchor="middle">scout</text>
+  <text class="nm nm-res" x="604" y="70" text-anchor="middle">검색 중</text>
+  <rect class="bx bx-mate" x="543" y="88" width="122" height="48" rx="3"/>
+  <text class="nm" x="604" y="108" text-anchor="middle">miner</text>
+  <text class="nm nm-res" x="604" y="124" text-anchor="middle">채굴 중</text>
+  <text class="lb lb-o" x="540" y="160" text-anchor="middle">클릭해서 옮겨 다님</text>
+  <text class="lb" x="540" y="176" text-anchor="middle">셋이 동시에 보입니다</text>
+</svg>
+      </div>
+
+      <div class="tw">
+        <table>
+          <caption><code>~/.claude/settings.json</code> 에 넣는 값</caption>
+          <thead><tr><th>설정</th><th>언제 창이 갈리나</th><th>필요한 것</th></tr></thead>
+          <tbody>
+            <tr>
+              <th>안 넣음 <span style="font-weight:400;color:var(--ink-faint)">(기본)</span></th>
+              <td>갈리지 않음 — <strong>한 화면</strong></td>
+              <td class="hard">없음</td>
+            </tr>
+            <tr>
+              <th><code>"teammateMode": "auto"</code></th>
+              <td><strong>tmux 안에서 실행할 때만.</strong> 아니면 한 화면 그대로</td>
+              <td>tmux 또는 iTerm2</td>
+            </tr>
+            <tr>
+              <th><code>"teammateMode": "tmux"</code></th>
+              <td><strong>항상</strong> 갈림</td>
+              <td>tmux 또는 iTerm2</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="stuck">
+        <b>tmux 나 iTerm2 를 따로 깔아야 합니다.</b>
+        <strong>VS Code 내장 터미널·Windows Terminal 에서는 안 됩니다.</strong>
+        다만 <strong>안 된다고 못 하게 되는 일은 없습니다</strong> —
+        <strong>화면만 다르고 되는 일은 같습니다.</strong>
+      </p>
+
+      <div class="ok">
+        <b>목록에 하나뿐입니다.</b> <code>miner</code>는 <strong>scout이 끝난 뒤에</strong> 띄웁니다.
+        그때는 <strong>넘겨줄 PMID가 손에 있으니</strong> 바로 일할 수 있습니다.
+        미리 띄워두면 <strong>기다리게 할 방법을 찾아야 합니다.</strong> 그럴 이유가 없습니다.
+      </div>
+
+      <p class="sec__sub">한 명에게 직접 말을 걸어봅니다</p>
+
+      <div class="prose">
+        <p><strong>↑↓로 <code>scout</code>을 고르고 Enter</strong>를 누릅니다. 그 화면에 그대로 칩니다.</p>
+      </div>
+
+      <div class="say">
+        <p class="say__lab">그 담당 화면에서 이렇게</p>
+        <p class="say__box">지금 걸린 것 중에 <b>off_target 이 절반이 넘네.</b>
+성분명이 너무 넓은 것 같으니 <u>균주 단위로 좁혀서</u> 다시 봐줘.</p>
+      </div>
+
+      <div class="ok">
+        <b>이건 미리 시킬 수 없는 지시입니다.</b>
+        <strong>검색 결과를 봐야</strong> off_target이 많은 줄 알 수 있으니까요.
+        <strong>도는 중에 화면에 들어가 방향을 트는 것</strong> — 이게 팀원과 서브에이전트가 갈리는 곳입니다.
+      </div>
+
+      <p class="stuck">
+        <b>「그건 서브에이전트도 되지 않나」</b> — 안 됩니다.
+        서브에이전트는 <strong>일하는 중에 말을 걸 수 없습니다.</strong>
+        진행 상황을 <strong>보거나 멈추는 것</strong>까지고, <strong>끝나야</strong> 결과를 받습니다.
+        방향을 틀려면 <strong>끝날 때까지 기다렸다 처음부터 다시</strong> 시켜야 합니다.
+        <strong>반면 처음부터 알 수 있는 지시</strong>(「가이드라인도 검색해라」 같은)는
+        <strong>애초에 소집 프롬프트에 넣으면 됩니다.</strong> 굳이 끼어들 일이 아닙니다.
+      </p>
+
+      <p class="sec__sub">끝난 담당을 다시 불러봅니다</p>
+
+      <div class="say">
+        <p class="say__lab">이렇게 지시합니다</p>
+        <p class="say__box">scout 한테, 아까 훑은 것 중에
+<b>메타분석만</b> 다시 추려달라고 전해줘.</p>
+      </div>
+
+      <div class="ok">
+        <b>목록에서 사라졌던 <code>scout</code>이 다시 나타나 답합니다.</b>
+        <strong>아까 무엇을 찾았는지 기억한 채로</strong>입니다.
+        <strong>끝난 것은 죽은 것이 아닙니다</strong> — 이름이 곧 주소이고,
+        부르면 <strong>그 대화가 그대로 이어집니다.</strong>
+      </div>
+
+      <p class="stuck">
+        <b>그래서 「종료시키기」를 신경 쓰실 필요가 없습니다.</b>
+        <strong>끝나는 것이 기본이고 부르는 것이 예외</strong>입니다.
+        끝난 담당은 <strong>부를 때까지 아무 비용도 쓰지 않습니다.</strong>
+      </p>
+
+      <hr class="r">
+
+      <p class="sec__sub">막히면</p>
+
+      <div class="cards">
+        <div class="card card--flag">
+          <div class="card__top"><span class="card__tag">증상</span><h3 class="card__h">담당 목록이 아예 안 보입니다</h3></div>
+          <p>
+            <strong>실험 기능이 꺼져 있는 것입니다.</strong> 준비물 항목을 다시 하십시오.
+            켜져 있는데도 안 뜨면 <strong>일이 너무 작아서</strong> Claude가 혼자 처리한 것입니다.
+            「<strong>팀원으로 띄워줘</strong>」라고 명시하십시오.
+          </p>
+        </div>
+        <div class="card card--flag">
+          <div class="card__top"><span class="card__tag">증상</span><h3 class="card__h">담당이 멈춰 있는 것 같습니다</h3></div>
+          <p>
+            <strong>권한 확인 창이 메인 화면에 떠 있을 수 있습니다.</strong>
+            담당이 「명령 써도 되냐」고 물으면 그 창은 <strong>맨 아래 메인 화면에</strong> 뜹니다.
+            담당 화면만 보고 있으면 <strong>영영 멈춰 있습니다.</strong>
+          </p>
+        </div>
+      </div>
+
+</section>
+
+
+<!-- 03 -->
+<section class="sec" id="s3">
+  <p class="sec__n">03 · 1분</p>
+  <h2 class="sec__h">담당 둘이 무엇을 하는가</h2>
+
+  <p class="sec__lead">
+    <strong>04를 보려면 이 둘이 뭘 하는지는 알아야 합니다.</strong>
+    지난 시간에 만든 것이고 <strong>오늘 고치지 않습니다.</strong>
+  </p>
+
+  <div class="roster">
+    <div class="roster__i">
+      <span class="roster__nm">evidence-scout <small>· 부를 땐 scout</small></span>
+      <p class="roster__r">논문 지형을 정찰합니다</p>
+      <p class="roster__d">검색을 <strong>네 번</strong> 나눠 던지고, 톤을 <strong>T1/T2/T3</strong>로 판정합니다.
+        채굴할 PMID를 <strong>최대 4개</strong> 고릅니다.</p>
+      <p class="roster__no">숫자를 뽑지 못합니다</p>
+    </div>
+    <div class="roster__i">
+      <span class="roster__nm">abstract-miner <small>· 부를 땐 miner</small></span>
+      <p class="roster__r">초록에서 숫자를 오려냅니다</p>
+      <p class="roster__d">논문 한 편에서 <strong>다섯 칸</strong>만 뽑습니다 —
+        효과크기·용량기간·대상조건·형태세부·저자결론.</p>
+      <p class="roster__no">해석·요약·보완을 하지 못합니다</p>
+    </div>
+  </div>
+
+  <div class="need">
+    <p class="need__lab">담당을 나눌 때 정해야 하는 것</p>
+    <p>
+      <strong>「못 하는 일」 칸이 나눈 이유입니다.</strong>
+      둘 다 뭐든 할 수 있게 만들면 <strong>나눈 의미가 없습니다.</strong>
+      <code>scout</code>이 숫자까지 뽑으면 <strong>초록 원문이 메인으로 올라오고</strong>,
+      <code>miner</code>가 요약까지 하면 <strong>검증할 원문이 사라집니다.</strong>
+    </p>
+  </div>
+
+  <p class="quote quote--o">
+    <strong>여기까지가 지난 시간 것입니다.</strong>
+    오늘 더하는 것은 <strong>「이 둘을 어떻게 부를 것인가」</strong>뿐입니다.
+  </p>
+</section>
+
+
+<!-- 04 -->
+<section class="sec" id="s4">
+  <p class="sec__n">04 · 오늘의 핵심 · 7분</p>
+  <h2 class="sec__h">명령 하나가 하는 일</h2>
+
+  <p class="sec__lead">
+    <code>.claude/commands/진행.md</code> 파일 <strong>하나</strong>입니다.
+    이 파일이 정하는 것은 <strong>위임 구조 하나뿐</strong>이고,
+    판단 기준과 검증 규칙은 <strong>전부 기존 파일에 그대로</strong> 둡니다.
+  </p>
+
+  <p class="sec__sub">필요할 때 한 명씩</p>
+
+  <div class="diagram">P1  정규화 <i>(메인이 직접)</i>
+   ↓
+① <b>scout</b> 을 띄운다  →  검색·판정  →  <b>반환값으로 JSON</b>
+   ↓                      <u>그 JSON이 곧 채굴 요청서다</u>
+② <b>miner</b> 를 띄운다  →  <b>PMID를 손에 쥐고 태어나</b> 채굴
+   │
+   │   <b>PMID 한 편마다</b>
+   │     miner ──→ <b>scout</b>   "이 논문 intervention 뭐로 판정했나?"
+   │     miner ←── <b>scout</b>   "Mg+B6 복합제. 마그네슘 단독 아님"
+   │
+   ↓  반환값
+P6  검증 <i>(스크립트)</i>
+
+  <b>scout 은 끝났지만 사라지지 않았습니다.</b>
+  이름을 부르면 <u>그 대화 그대로 다시 깨어나</u> 답합니다.</div>
+
+  <div class="ok">
+    <b>미리 띄워두지 않는 이유는 간단합니다.</b>
+    미리 띄우든 나중에 띄우든 <strong>채굴이 시작되는 시점은 scout이 끝난 뒤로 같습니다.</strong>
+    먼저 띄우면 <strong>기다리게 할 방법을 찾아야 하고</strong>,
+    그동안 <strong>비용과 화면 소음만 붙습니다.</strong>
+  </div>
+
+  <p class="sec__sub">여기가 팀이 아니면 안 되는 곳입니다</p>
+
+  <div class="need">
+    <p class="need__lab">miner는 그 논문이 왜 걸렸는지 모릅니다</p>
+    <p>
+      <code>scout</code>은 스크리닝하면서 <strong>이 논문의 intervention이 실제로 무엇인지</strong>
+      판정해 두었습니다. 그런데 <code>miner</code>가 받은 것은 <strong>PMID 번호뿐</strong>입니다.
+      초록만 보고 <strong>「마그네슘 500mg」인지 「Mg+B6 복합제」인지</strong> 가리기는 쉽지 않습니다.
+      <strong>그 판정을 갖고 있는 쪽은 scout입니다.</strong>
+      그래서 <strong>PMID마다 한 번씩 반드시 묻습니다.</strong>
+    </p>
+  </div>
+
+  <div class="cards">
+    <div class="msg msg--x">
+      <p class="msg__hd"><span class="msg__f">miner</span> → <span class="msg__t">scout</span> <span>· 초록을 읽기 전에</span></p>
+      <p class="msg__b">PMID 34211088 — 이 논문의 intervention을 무엇으로 판정했나?
+복합제 / 염 형태 / 용량 형태가 있으면 알려달라.</p>
+    </div>
+    <div class="msg msg--x">
+      <p class="msg__hd"><span class="msg__f">scout</span> → <span class="msg__t">miner</span></p>
+      <p class="msg__b">34211088 — Mg+B6 복합제. 마그네슘 단독 아님. off_target 권고
+
+<i>판정값만 갑니다. <b>초록 원문도 효과 크기도 넣지 않습니다</b> —
+scout의 금지 사항이 <b>이 답에도 그대로</b> 걸립니다.</i></p>
+    </div>
+  </div>
+
+  <div class="ok">
+    <b>서브에이전트로는 이게 안 됩니다.</b>
+    <code>scout</code>은 <strong>이미 일을 마치고 끝난 상태</strong>입니다.
+    서브에이전트였다면 <strong>거기서 사라져</strong> 물어볼 상대가 없습니다.
+    <strong>이름이 붙어 있어서</strong> 다시 깨울 수 있고,
+    <strong>깨어난 뒤에도 자기가 뭘 판정했는지 기억</strong>하고 있습니다.
+  </div>
+
+  <p class="stuck">
+    <b>화면에서 이 교신을 알아보는 법.</b>
+    둘 다 <strong>보내기 직전과 받은 직후에 한 줄씩</strong> 남기게 되어 있습니다.
+    <strong>화살표와 대괄호가 표식</strong>입니다 — 다른 로그와 섞이지 않게.
+  </p>
+
+  <div class="reply">
+    <p class="reply__lab">화면에 이렇게 찍힙니다</p>
+    <p class="reply__box">→ [scout] PMID 34211088 판정 조회
+← [scout] PMID 34211088 = Mg+B6 복합제 / off_target 권고</p>
+  </div>
+
+  <p class="sec__sub">그래도 팀 기능을 쓰는 이유</p>
+
+  <div class="duo">
+    <div class="card">
+      <div class="card__top"><span class="card__tag">남는 것</span><h3 class="card__h">이름이 남습니다</h3></div>
+      <p>
+        방금 본 <strong>miner ↔ scout 교신이 그 이름 덕분</strong>입니다.
+        그리고 <strong>사람도 같은 방법으로</strong> 부를 수 있습니다 —
+        「그 PMID 다시 봐줘」에 <strong>커맨드를 처음부터 돌릴 필요가 없습니다.</strong>
+      </p>
+    </div>
+    <div class="card card--flag">
+      <div class="card__top"><span class="card__tag">주의</span><h3 class="card__h">이름이 겹치면 헷갈립니다</h3></div>
+      <p>
+        띄우기 전에 <strong>이전 실행의 잔존 담당이 있는지</strong> 봐야 합니다.
+        같은 이름이 둘이면 <strong>나중 것이 이기지만</strong>,
+        화면에서 <strong>어느 쪽인지 알 수 없게</strong> 됩니다.
+      </p>
+    </div>
+  </div>
+
+  <p class="sec__sub">안 멈추는 것을 막습니다</p>
+
+  <div class="prose">
+    <ul>
+      <li>조회 실패한 PMID는 <strong>1회만</strong> 다시. 두 번째도 실패하면 그대로 두고 넘어감</li>
+      <li><strong>폐기된 슬롯을 다시 뽑아오게 시키지 말 것</strong> — 이름을 부르면 되니 유혹이 큽니다</li>
+      <li>재검색은 <strong>사람이 요청할 때만.</strong> 빈약해 보인다고 검색어를 바꾸지 않음</li>
+    </ul>
+  </div>
+
+  <p class="stuck">
+    <b>「폐기된 걸 다시 뽑아줘」가 제일 위험합니다.</b>
+    폐기는 <strong>정상 동작</strong>입니다. 통과시키려 애쓰는 순간
+    <strong>검증이 무의미해집니다.</strong>
+  </p>
+
+  <p class="claim">팀으로 만들 수 있다고 해서<br><em>팀처럼 써야 하는 건</em> 아닙니다.</p>
+</section>
+
+
+<!-- 05 -->
+<section class="sec" id="s5">
+  <p class="sec__n">05 · 결과물 · 2분</p>
+  <h2 class="sec__h">손에 남는 것</h2>
+
+  <p class="sec__lead">
+    카피가 아닙니다. <strong>원문에 대조된 근거 레코드</strong>입니다.
+  </p>
+
+  <div class="diagram">pubmed-workshop-agent-teams/
+├── raw_slots.json        ← miner가 보낸 것 <u>그대로</u> (손대지 않음)
+├── meta.json             ← 주제 · 톤 · 근거 지도
+└── <b>evidence-pack.json</b>   ← 검사기를 통과한 최종본
+
+  <b>verdict</b>: review          <i>← 통과 / 검토 / 폐기</i>
+  <b>tone</b>: T3                 <i>← 정정형</i>
+  <b>papers</b>: 4편
+  각 논문마다 — PMID · 저널 · 연도 · <u>철회 여부</u> · <u>이해충돌 진술</u>
+                초록 해시 · 슬롯 5칸 · <u>슬롯마다 원문 인용</u></div>
+
+  <p class="sec__sub">이번 결과 — 마그네슘 × 수면</p>
+
+  <div class="num">
+    <div class="num__i"><span class="num__k">톤 판정</span><span class="num__v">T3</span><span class="num__was">정정형</span></div>
+    <div class="num__i"><span class="num__k">on-target 논문</span><span class="num__v">9편</span><span class="num__was">off_target 6편 제외</span></div>
+    <div class="num__i"><span class="num__k">채굴 대상</span><span class="num__v">4편</span></div>
+    <div class="num__i"><span class="num__k">폐기된 슬롯</span><span class="num__v">8칸</span><span class="num__was">20칸 중</span></div>
+  </div>
+
+  <div class="need">
+    <p class="need__lab">이번 판정이 T3 — 「정정형」입니다</p>
+    <p>
+      마그네슘과 수면은 <strong>대중 인식이 강한 조합</strong>인데,
+      <strong>메타분석에서 부정·혼재 결론이 더 많았습니다.</strong>
+      그것을 <strong>그대로 보고하는 것</strong>이 이 도구의 값어치입니다.
+      <strong>근거가 있어 보이게 만들지 않습니다.</strong>
+    </p>
+  </div>
+
+  <div class="ok">
+    <b>verdict 가 review 인 이유는 숫자 때문이 아닙니다.</b>
+    논문 한 편에 <strong>정오표가 붙어 있어서</strong>입니다.
+    <strong>숫자가 다 맞아도 논문 자체에 문제가 있으면 걸립니다</strong> —
+    철회·우려 표명·정오표를 <strong>따로 확인</strong>하기 때문입니다.
+  </div>
+
+  <div class="ok">
+    <b>검증이 두 번 붙습니다.</b> 스크립트가 <strong>숫자를 원문과 대조</strong>하고(P6),
+    그다음 <strong>식약처 고시와 맞춰봅니다</strong>(P6-1).
+    <strong>둘의 판정을 합쳐</strong> 최종 결론이 나옵니다.
+    「논문에 있다」와 「국내에서 그렇게 말해도 된다」는 <strong>다른 이야기</strong>라서요.
+  </div>
+
+  <div class="need">
+    <p class="need__lab">폐기된 슬롯 8칸이 실패가 아닙니다</p>
+    <p>
+      검사기가 <strong>초록을 다시 받아 대조했더니</strong> 그 문장에 없는 값이었습니다.
+      <strong>그 8칸이 그냥 통과했다면 틀린 숫자가 그대로 나갔을 것입니다.</strong>
+      <strong>빈 슬롯은 정보</strong>입니다 — 저자가 크기를 안 밝혔거나,
+      담당이 앞 논문 숫자를 흘렸다는 뜻입니다.
+    </p>
+  </div>
+
+  <p class="quote quote--o">
+    <strong>「검증되지 않은 숫자는 출력하지 않는다」</strong>가 이 도구의 첫 번째 원칙입니다.
+    <strong>그럴듯한 숫자를 만들어내는 것이 유일한 치명적 실패</strong>이고,
+    <strong>빈칸으로 두는 것은 실패가 아닙니다.</strong>
+  </p>
+
+  <div class="need">
+    <p class="need__lab">마지막 판단은 넘어오지 않습니다</p>
+    <p>
+      팩에는 <strong>광고법 미검토 경고</strong>가 항상 붙습니다.
+      <strong>이 숫자를 실제로 써도 되는지는 사람이 판단합니다.</strong>
+      팀은 <strong>「원문에 이렇게 적혀 있다」까지</strong> 합니다.
+    </p>
+  </div>
+</section>
+
+
+<!-- 06 -->
+<section class="sec" id="s6">
+  <p class="sec__n">06 · 1분</p>
+  <h2 class="sec__h">다음 주제부터는 한 줄입니다</h2>
+
+      <div class="diagram">pubmed-workshop-agent-teams/
+└── .claude/
+    ├── agents/          <i>지난 시간</i>
+    │   ├── evidence-scout.md
+    │   └── abstract-miner.md
+    ├── skills/          <i>지난 시간</i>
+    │   └── pubmed-evidence/SKILL.md
+    └── commands/
+        └── <b>진행.md</b>        ← <u>오늘 더한 것. 이거 하나입니다</u></div>
+
+      <div class="say">
+        <p class="say__lab">이 한 줄이면 됩니다</p>
+        <p class="say__box">/진행 오메가3 중성지방</p>
+      </div>
+
+      <div class="ok">
+        <b>오늘 한 설명을 다시 할 일이 없습니다.</b>
+        소집 순서·PMID를 추리는 규칙·왕복 제한이 <strong>전부 그 파일에 들어갔습니다.</strong>
+      </div>
+
+      <p class="sec__sub">이 파일은 프로그램이 아닙니다</p>
+
+      <div class="prose">
+        <p>
+          열어보시면 <strong>전부 한국어 문장</strong>입니다. 돌려보시다가 답답한 데가 생기면
+          <strong>그 파일을 열어 문장을 고치면 됩니다.</strong>
+        </p>
+        <ul>
+          <li><strong>진행 문구가 너무 잦을 때</strong> — 「진행 문구」 표에서 줄을 뺍니다</li>
+          <li><strong>채굴이 너무 오래 걸릴 때</strong> — miner를 <strong>PMID마다 병렬</strong>로 되돌립니다. 스킬 원본이 그 방식입니다</li>
+          <li><strong>담당 파일은 건드리지 마십시오</strong> — 검증 규칙이 거기 맞춰져 있습니다</li>
+        </ul>
+      </div>
+
+</section>
+
+
+<!-- 마지막 -->
+<section class="sec" id="s7">
+  <p class="sec__n">마지막 · 1분</p>
+  <h2 class="sec__h">막혔을 때</h2>
+
+  <div class="cards">
+    <div class="card card--flag">
+      <div class="card__top"><span class="card__tag">증상</span><h3 class="card__h">scout 이 PMID 를 안 줍니다</h3></div>
+      <p>
+        <strong>근거 지도를 먼저 보십시오.</strong> 검색 자체가 0건이면 <strong>정상입니다</strong> —
+        <strong>인체 연구가 없다는 신호(T3)</strong>입니다.
+        검색은 됐는데 <strong>전부 off_target</strong>이면 <strong>성분명이 너무 넓은 것</strong>입니다.
+      </p>
+    </div>
+    <div class="card card--flag">
+      <div class="card__top"><span class="card__tag">증상</span><h3 class="card__h">채굴 대상이 두세 편밖에 안 나옵니다</h3></div>
+      <p>
+        <strong>off_target 비율이 높은 성분</strong>입니다.
+        <code>evidence-scout.md</code> 의 <strong>스크리닝 상한(15편)을 20~25로 올리면</strong> 후보가 늡니다.
+      </p>
+    </div>
+    <div class="card card--flag">
+      <div class="card__top"><span class="card__tag">증상</span><h3 class="card__h">scout 이 10분 넘게 안 끝납니다</h3></div>
+      <p>
+        <strong>초록을 너무 많이 받고 있는 것</strong>입니다.
+        <strong>15편 상한</strong>과 <strong>요약 형식</strong>을 지키는지 보십시오 —
+        <strong>XML로 받으면 40편에 190k 토큰</strong>이 넘어갑니다.
+      </p>
+    </div>
+    <div class="card card--flag">
+      <div class="card__top"><span class="card__tag">증상</span><h3 class="card__h">담당이 멈춰 있습니다</h3></div>
+      <p>
+        <strong>권한 확인 창이 메인 화면에 떠 있을 수 있습니다.</strong>
+        담당 화면만 보고 있으면 <strong>영영 멈춰 있습니다.</strong>
+      </p>
+    </div>
+    <div class="card card--flag">
+      <div class="card__top"><span class="card__tag">증상</span><h3 class="card__h">이름을 불러도 안 닿습니다</h3></div>
+      <p>
+        <strong>「지금 살아 있는 담당 알려줘」</strong>로 실제 이름을 확인하십시오.
+        <strong>같은 이름이 둘이면 나중 것이 이깁니다.</strong>
+      </p>
+    </div>
+    <div class="card card--flag">
+      <div class="card__top"><span class="card__tag">증상</span><h3 class="card__h">429 오류가 납니다</h3></div>
+      <p>
+        <strong><code>NCBI_API_KEY</code> 가 비어 있습니다.</strong>
+        <code>.claude/settings.json</code> 에 키를 넣으십시오.
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- 07 -->
+<section class="sec" id="s8">
+  <p class="sec__n">07 · 활용 · 1분</p>
+  <h2 class="sec__h">팀이라야 되는 것</h2>
+
+  <p class="sec__lead">
+    담당을 <strong>순서대로 부르는 것</strong>은 팀이 아니어도 됩니다.
+    <strong>끝난 담당이 이름으로 남아 있다는 것</strong> — 그것만이 팀의 몫입니다.
+    그 이름으로 <strong>무엇을 할 수 있는지</strong> 둘을 놓았습니다.
+  </p>
+
+  <div class="cards">
+
+    <div class="card">
+      <div class="card__top"><span class="card__tag">하나</span><h3 class="card__h"><code>miner</code> → <code>scout</code> 되묻기</h3></div>
+      <p>
+        <strong>둘 다 떠 있을 때</strong> 눈으로 확인해 볼 수 있습니다.
+        <strong>↑↓로 <code>miner</code>를 고르고 Enter</strong>로 들어가서, <strong>그 화면에 직접</strong> 칩니다.
+      </p>
+      <div class="say">
+        <p class="say__lab">miner 화면에서</p>
+        <p class="say__box">scout 한테 <b>PMID 34211088</b> 을 뭐로 판정했는지 물어봐줘.</p>
+      </div>
+
+      <div class="duo">
+        <div class="reply">
+          <p class="reply__lab">miner 화면에 찍히는 것</p>
+          <p class="reply__box">→ [scout] PMID 34211088 판정 조회
+← [scout] PMID 34211088 = Mg+B6 복합제 / off_target 권고</p>
+        </div>
+        <div class="reply">
+          <p class="reply__lab">scout 화면으로 옮겨가면</p>
+          <p class="reply__box">← [miner] PMID 34211088 판정 조회 받음
+→ [miner] PMID 34211088 = Mg+B6 복합제 / off_target 권고</p>
+        </div>
+      </div>
+
+      <p>
+        <strong>같은 교신이 양쪽에 찍히고 화살표 방향만 반대</strong>입니다.
+        <strong>메인 화면에는 이 두 줄이 안 뜹니다</strong> — 둘 사이에서만 오간 것이라서요.
+      </p>
+      <p>
+        <strong>왜 팀이어야 하나</strong> — <code>scout</code>은 <strong>이미 끝났습니다.</strong>
+        서브에이전트였다면 <strong>그 판정과 함께 사라져</strong> 물어볼 데가 없습니다.
+      </p>
+    </div>
+
+    <div class="card">
+      <div class="card__top"><span class="card__tag">둘</span><h3 class="card__h">메인 → 끝난 <code>miner</code> 다시 부르기</h3></div>
+      <p>
+        결과를 받아 보다가 <strong>미심쩍은 대목</strong>이 나왔을 때.
+        <strong>커맨드를 처음부터 다시 돌릴 필요가 없습니다.</strong>
+      </p>
+      <div class="say">
+        <p class="say__lab">이렇게 지시합니다</p>
+        <p class="say__box">miner 한테, <u>34211088 이거 하나만</u> 다시 봐달라고 해줘.</p>
+      </div>
+      <p>
+        <strong>왜 팀이어야 하나</strong> — 이름을 부르면 <strong>그 대화 그대로 깨어납니다.</strong>
+        <strong>자기가 뭘 뽑았는지 기억한 채로</strong> 답하니, 다시 설명할 필요가 없습니다.
+      </p>
+    </div>
+
+  </div>
+
+  <p class="quote quote--warn">
+    <strong>반대로, 이런 일에는 팀이 필요 없습니다.</strong>
+    앞사람 결과를 뒷사람에게 <strong>넘기기만 하면 되는 일</strong>,
+    <strong>한 번 시키고 끝나는 일</strong>.
+    <strong>되묻거나 다시 부를 일이 없다면</strong> 그냥 시키는 게 빠르고 쌉니다.
+  </p>
+
+  <p class="claim">팀을 쓰는 기준은 하나입니다.<br><em>끝난 담당을 다시 부를 일이</em> 있는가.</p>
+</section>
+
+
+<section class="prep">
+  <p class="prep__lab">부록 · 직접 해보시려면</p>
+  <h2 class="prep__h">지난 시간 것이 갖춰져 있어야 합니다</h2>
+
+  <p class="prep__note">
+    <strong>설정 두 가지</strong>는 앞에 있습니다 — <strong>기능 켜기는 01</strong>, <strong>창 나누기는 02</strong>.
+    여기 적는 것은 <strong>그 밖에 필요한 것들</strong>입니다.
+  </p>
+
+  <p class="prep__note" style="margin-bottom:.15rem">
+    <strong>실습 폴더는 여기서 받으시면 됩니다.</strong>
+    담당 둘 · 절차 문서 · 검사기가 <strong>그대로 들어 있습니다.</strong>
+  </p>
+
+  <p style="margin:0 0 var(--s1)">
+    <a class="dl" href="https://github.com/wolsey37/study/raw/main/pharmacist/pubmed-workshop-agent-teams.zip">
+      ↓ 실습 폴더 내려받기 <small>zip · 67KB</small></a>
+  </p>
+
+  <ul>
+    <li><strong>지난 시간 폴더</strong> — <code>pubmed-workshop-agent-teams</code>. 받은 zip 을 풀고 <strong>그 폴더에서 Claude Code를 열면</strong> <code>.claude/</code> 안의 담당·스킬이 잡힙니다</li>
+    <li><strong>NCBI API 키</strong> — <code>.claude/settings.json</code> 의 <code>NCBI_API_KEY</code>.
+      <strong>비어 있으면 초당 3회 제한</strong>이라 조회가 자주 막힙니다</li>
+    <li><strong>주제 하나</strong> — 성분과 증상. 「마그네슘 수면」처럼 <strong>두 단어</strong>면 됩니다</li>
+  </ul>
+
+  <p class="prep__no">
+    <strong>「폴더를 새로 만드나요?」</strong> — 아닙니다.
+    지난 시간 폴더에 <strong>파일 하나를 더할 뿐</strong>입니다.
+    <code>.claude/agents/</code> 의 담당 둘, <code>skills/</code> 의 절차,
+    <code>scripts/</code> 의 검사기 — <strong>전부 그대로 씁니다.</strong>
+    Mac에서 <code>.claude</code> 는 숨김 폴더라 안 보일 수 있는데 <strong>정상입니다.</strong>
+  </p>
+</section>
+
+<footer class="end">
+  <h2>오늘 만든 것</h2>
+
+  <p>
+    <strong>파일 하나</strong>입니다. <code>.claude/commands/진행.md</code>.
+    담당도 스킬도 검사기도 <strong>지난 시간 것 그대로</strong>입니다.
+  </p>
+
+  <p>
+    정한 것은 <strong>위임 구조 하나</strong>입니다 —
+    <strong>언제 띄우고, 결과를 어떻게 받는가.</strong>
+    담당을 <strong>필요할 때 한 명씩</strong> 띄우고, <strong>결과는 그냥 반환</strong>받습니다.
+  </p>
+
+  <p>
+    <strong>미리 띄워 기다리게 하지 않습니다.</strong>
+    채굴이 시작되는 시점은 <strong>어차피 scout이 끝난 뒤</strong>라,
+    먼저 띄워봐야 <strong>비용과 소음만 붙습니다.</strong>
+  </p>
+
+  <p>
+    <strong>그런데도 팀으로 띄우는 이유가 있습니다.</strong>
+    채굴하는 동안 <code>miner</code>가 <strong>PMID마다 <code>scout</code>에게 되묻습니다</strong> —
+    「이 논문 intervention을 뭐로 판정했나」.
+    <strong>서브에이전트였다면 scout은 이미 사라져</strong> 물어볼 상대가 없습니다.
+  </p>
+
+  <p>
+    <strong>이름이 곧 그 통로입니다.</strong> 끝났어도 이름을 부르면
+    <strong>그 대화 그대로 깨어나</strong> 자기가 뭘 판정했는지 기억한 채 답합니다.
+    <strong>사람도 같은 방법으로</strong> 이어서 물을 수 있습니다.
+  </p>
+
+  <p class="end__final"><strong>과제 — 두 개만</strong></p>
+  <ul>
+    <li>
+      <strong>본인 주제 하나</strong>로 <code>/진행</code> 을 끝까지 돌려 보시는 것.
+      <strong>verdict 와 폐기 슬롯 수</strong>만 적어 오시면 됩니다
+    </li>
+    <li>
+      돌리면서 <strong>「이건 왜 폐기됐지?」 싶은 슬롯 하나</strong>를 골라 오십시오.
+      <strong>인용문과 원문을 같이 놓고</strong> 왜 걸렸는지 보겠습니다
+    </li>
+  </ul>
+
+  <p class="end__final"><strong>여유가 되면 — 병렬로 되돌려보기</strong></p>
+  <p>
+    오늘은 miner <strong>1명이 순차로</strong> 돌았습니다.
+    스킬 원본은 <strong>PMID마다 한 명씩</strong> 띄우는 병렬 구조입니다.
+    <strong>폐기 슬롯이 줄어드는지</strong> 비교해 보시면
+    <strong>왜 그 원칙이 있었는지</strong>가 숫자로 보입니다.
+  </p>
+</footer>
+
+</div>
+
+
+<script>
+(function () {
+  // 프롬프트 상자마다 복사 버튼을 답니다.
+  // <i>로 감싼 설명(← 주석)은 복사에서 제외합니다.
+  function textOf(box) {
+    var clone = box.cloneNode(true);
+    clone.querySelectorAll('i').forEach(function (n) { n.remove(); });
+    return clone.textContent.replace(/[ \t]+$/gm, '').trim();
+  }
+
+  function legacyCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed';
+    ta.style.top = '-1000px';
+    document.body.appendChild(ta);
+    ta.select();
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+    ta.remove();
+    return ok;
+  }
+
+  document.querySelectorAll('.say').forEach(function (wrap) {
+    var lab = wrap.querySelector('.say__lab');
+    var box = wrap.querySelector('.say__box');
+    if (!lab || !box) return;
+
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'copybtn';
+    btn.textContent = '복사';
+    btn.setAttribute('aria-label', '이 명령을 클립보드에 복사');
+
+    var timer;
+    btn.addEventListener('click', function () {
+      var text = textOf(box);
+      clearTimeout(timer);
+
+      var settle = function (ok) {
+        btn.textContent = ok ? '복사됨' : '복사 실패';
+        btn.setAttribute('data-state', ok ? 'done' : 'fail');
+        timer = setTimeout(function () {
+          btn.textContent = '복사';
+          btn.removeAttribute('data-state');
+        }, 1600);
+      };
+
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(
+          function () { settle(true); },
+          function () { settle(legacyCopy(text)); }
+        );
+      } else {
+        settle(legacyCopy(text));
+      }
+    });
+
+    lab.appendChild(btn);
+  });
+})();
+</script>
+
+</body>
+</html>
