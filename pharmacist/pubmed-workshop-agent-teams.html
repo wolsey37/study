@@ -284,9 +284,10 @@
 <nav class="toc">
   <a class="toc__item" href="#bg"><span class="toc__n">배경</span><span class="toc__t">폴더와 절차</span><span class="toc__d">폴더에 무엇이 있나</span><span class="toc__time">1분</span></a>
   <a class="toc__item" href="#s1"><span class="toc__n">01</span><span class="toc__t">개념과 차이</span><span class="toc__d">서브에이전트와 무엇이 다른지 · 두 방식 비교 예제</span><span class="toc__time">4분</span></a>
-  <a class="toc__item" href="#s2"><span class="toc__n">02</span><span class="toc__t">사용법</span><span class="toc__d">띄우기 · 목록에서 고르기 · 직접 말 걸기</span><span class="toc__time">6분</span></a>
-  <a class="toc__item" href="#s4"><span class="toc__n">03</span><span class="toc__t">위임 구조</span><span class="toc__d">필요할 때 한 명씩 · 결과는 SendMessage로</span><span class="toc__time">5분 · 핵심</span></a>
+  <a class="toc__item" href="#s2"><span class="toc__n">02</span><span class="toc__t">사용법</span><span class="toc__d">띄우기 · 목록에서 고르기 · 직접 말 걸기</span><span class="toc__time">5분</span></a>
+  <a class="toc__item" href="#s4"><span class="toc__n">03</span><span class="toc__t">위임 구조</span><span class="toc__d">필요할 때 한 명씩 · 결과는 SendMessage로</span><span class="toc__time">4분 · 핵심</span></a>
   <a class="toc__item" href="#s4b"><span class="toc__n">04</span><span class="toc__t">활용</span><span class="toc__d">되묻기 · 이어서 묻기</span><span class="toc__time">3분</span></a>
+  <a class="toc__item" href="#s5"><span class="toc__n">05</span><span class="toc__t">고르는 법</span><span class="toc__d">어떤 일에 어느 쪽을 쓰나</span><span class="toc__time">2분</span></a>
   <a class="toc__item" href="#s7"><span class="toc__n">마지막</span><span class="toc__t">문제 해결</span><span class="toc__d">증상별 대처</span><span class="toc__time">1분</span></a>
 </nav>
 
@@ -550,7 +551,7 @@
 
 <!-- 02 -->
 <section class="sec" id="s2">
-  <p class="sec__n">02 · 6분</p>
+  <p class="sec__n">02 · 5분</p>
   <h2 class="sec__h">사용법</h2>
   <p class="sec__lead">
         여기서는 <strong>담당 하나를 띄워 조작해 보는 것</strong>까지만 봅니다.
@@ -763,7 +764,7 @@ CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS 를 "1" 로 넣어줘.
 
 <!-- 03 -->
 <section class="sec" id="s4">
-  <p class="sec__n">03 · 핵심 · 5분</p>
+  <p class="sec__n">03 · 핵심 · 4분</p>
   <h2 class="sec__h">위임 구조</h2>
 
   <p class="sec__lead">
@@ -971,6 +972,66 @@ scout의 금지 사항이 <b>이 답에도 그대로</b> 걸립니다.</i></p>
   </p>
 
   <p class="claim">팀을 쓰는 기준은 하나입니다.<br><em>끝난 담당을 다시 부를 일이</em> 있는가.</p>
+</section>
+
+
+<!-- 05 -->
+<section class="sec" id="s5">
+  <p class="sec__n">05 · 2분</p>
+  <h2 class="sec__h">고르는 법</h2>
+
+  <p class="sec__lead">
+    지금까지는 논문 예제였지만 <strong>기준은 주제와 상관없습니다.</strong>
+    자주 하는 일에 대보면 이렇게 갈립니다.
+  </p>
+
+  <div class="tw">
+    <table>
+      <caption>하려는 일에 대보면</caption>
+      <thead>
+        <tr><th>하려는 일</th><th>어느 쪽</th><th>왜</th></tr>
+      </thead>
+      <tbody>
+        <tr><th>자료 10개를 각각 요약</th><td>서브에이전트</td>
+          <td>서로 몰라도 되고, <strong>끝나면 다시 볼 일이 없습니다</strong></td></tr>
+        <tr><th>긴 문서 하나 번역</th><td>서브에이전트</td>
+          <td><strong>한 번 시키고 끝납니다</strong></td></tr>
+        <tr><th>용어 하나만 확인</th><td>서브에이전트</td>
+          <td>담당을 띄우는 것 자체가 <strong>더 번거롭습니다</strong></td></tr>
+        <tr><th>모으기 → 그걸로 판단</th><td><strong>에이전트 팀</strong></td>
+          <td>판단하다 <strong>「원문이 뭐였나」 되물어야</strong> 합니다</td></tr>
+        <tr><th>초안 → 검토 → 수정</th><td><strong>에이전트 팀</strong></td>
+          <td>검토하는 쪽이 <strong>「왜 이렇게 썼나」 물어야</strong> 합니다</td></tr>
+        <tr><th>결과 받고 「그 부분만 다시」</th><td><strong>에이전트 팀</strong></td>
+          <td>이름이 없으면 <strong>처음부터 다시 돌려야</strong> 합니다</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="sec__sub">말로는 이렇게 갈립니다</p>
+
+  <div class="duo">
+    <div class="say">
+      <p class="say__lab">서브에이전트 — 한 번 시키고 끝</p>
+      <p class="say__box">이 폴더 문서 10개를 각각 세 줄로 요약해줘.</p>
+    </div>
+
+    <div class="say">
+      <p class="say__lab">에이전트 팀 — 되물을 일이 있을 때</p>
+      <p class="say__box">이걸 <b>에이전트 팀</b>으로 실행해줘.
+자료 모으는 담당은 <b>collector</b>,
+판단하는 담당은 <b>judge</b> 로 띄워줘.
+
+판단하다 근거가 애매하면
+<b>judge</b> 가 <b>collector</b> 한테 원문을 물어보게 해줘.</p>
+    </div>
+  </div>
+
+  <div class="ok">
+    <b>헷갈리면 이 한 가지만 물어보십시오.</b>
+    <strong>「일이 끝난 뒤에도 그 담당에게 물어볼 일이 있나?」</strong>
+    없으면 <strong>서브에이전트</strong>, 있으면 <strong>팀</strong>입니다.
+  </div>
 </section>
 
 
