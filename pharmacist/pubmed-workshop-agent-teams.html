@@ -364,9 +364,9 @@
 </section>
 
 <nav class="toc">
-  <a class="toc__item" href="#s1"><span class="toc__n">01</span><span class="toc__t">에이전트 팀이 뭔가</span><span class="toc__d">서브에이전트와 무엇이 다른지 · 언제 쓰고 언제 쓰면 안 되는지</span><span class="toc__time">3분</span></a>
+  <a class="toc__item" href="#s1"><span class="toc__n">01</span><span class="toc__t">에이전트 팀이 뭔가</span><span class="toc__d">서브에이전트와 무엇이 다른지 · 두 방식 비교 예제</span><span class="toc__time">4분</span></a>
   <a class="toc__item" href="#s2"><span class="toc__n">02</span><span class="toc__t">사용법</span><span class="toc__d">띄우기 · 목록에서 고르기 · 직접 말 걸기</span><span class="toc__time">3분</span></a>
-  <a class="toc__item" href="#s4"><span class="toc__n">03</span><span class="toc__t">명령 하나가 하는 일</span><span class="toc__d">오늘의 핵심 · 필요할 때 한 명씩 · 결과는 SendMessage로</span><span class="toc__time">7분 · 핵심</span></a>
+  <a class="toc__item" href="#s4"><span class="toc__n">03</span><span class="toc__t">명령 하나가 하는 일</span><span class="toc__d">오늘의 핵심 · 필요할 때 한 명씩 · 결과는 SendMessage로</span><span class="toc__time">6분 · 핵심</span></a>
   <a class="toc__item" href="#s5"><span class="toc__n">04</span><span class="toc__t">한 줄로 굳히기</span><span class="toc__d">다음 주제부터는 /진행 한 줄</span><span class="toc__time">1분</span></a>
   <a class="toc__item" href="#s6"><span class="toc__n">05</span><span class="toc__t">팀이라야 되는 것</span><span class="toc__d">되묻기 · 이어서 묻기</span><span class="toc__time">2분</span></a>
   <a class="toc__item" href="#s7"><span class="toc__n">마지막</span><span class="toc__t">막혔을 때 · 마무리</span><span class="toc__d">증상별 대처</span><span class="toc__time">1분</span></a>
@@ -375,7 +375,7 @@
 
 <!-- 01 -->
 <section class="sec" id="s1">
-  <p class="sec__n">01 · 개념 · 3분</p>
+  <p class="sec__n">01 · 개념 · 4분</p>
   <h2 class="sec__h">에이전트 팀이 뭔가</h2>
 
   <p class="sec__lead">
@@ -567,6 +567,52 @@ CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS 를 "1" 로 넣어줘.
       </tbody>
     </table>
   </div>
+
+  <p class="sec__sub">같은 일을 두 방식으로 시켜보면</p>
+
+  <div class="duo">
+    <div class="card card--flag">
+      <div class="card__top"><span class="card__tag">A · 서브에이전트</span></div>
+      <p class="card__h">메인이 나릅니다</p>
+      <div class="diagram">① <b>evidence-scout</b> 서브에이전트로
+   마그네슘 수면 논문 지형을 훑어줘.
+
+<i>   → 끝나면 결과가 <b>자동으로</b> 옵니다
+     PMID 4개 · 톤 T3 · 논문별 intervention 판정</i>
+
+② 그 PMID 4개로 <b>abstract-miner</b> 를 돌려서
+   숫자를 뽑아줘.
+
+<i>   → PMID를 <u>메인이 직접 들고</u> 넘깁니다
+   → miner 가 「34211088이 마그네슘 단독인가
+     복합제인가」 궁금해도 <u>scout 은 이미 사라졌습니다</u>
+   → 초록만 보고 추측하게 됩니다</i></div>
+    </div>
+
+    <div class="card">
+      <div class="card__top"><span class="card__tag">B · 에이전트 팀</span></div>
+      <p class="card__h">담당끼리 주고받습니다</p>
+      <div class="diagram">① <b>에이전트 팀</b>으로 실행해줘. evidence-scout 으로
+   <b>scout</b> 을 띄우고, 결과 JSON은
+   <b>SendMessage</b> 로 나한테 보내라고 해줘.
+
+<i>   → <u>finished 알림만</u> 옵니다
+     「보내라」고 시켜야 내용이 도착합니다</i>
+
+② <b>abstract-miner</b> 로 <b>miner</b> 를 띄워줘.
+   PMID 마다 <b>scout</b> 한테 판정을 물어보라고 해줘.
+
+<i>   → miner ──→ scout  「34211088 뭐로 판정했나?」
+     miner ←── scout  「Mg+B6 복합제. 단독 아님」
+   → scout 은 ①에서 끝났지만, <u>이름을 부르면
+     그 대화 그대로 깨어납니다</u></i></div>
+    </div>
+  </div>
+
+  <p class="quote quote--o">
+    서브에이전트는 <strong>메인이 나르고</strong>, 팀은 <strong>담당끼리 주고받습니다.</strong>
+    대신 팀은 결과가 저절로 오지 않아 <strong>보내라고 시켜야</strong> 합니다.
+  </p>
 
   <div class="duo">
     <div class="card">
@@ -769,7 +815,7 @@ CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS 를 "1" 로 넣어줘.
 
 <!-- 03 -->
 <section class="sec" id="s4">
-  <p class="sec__n">03 · 오늘의 핵심 · 7분</p>
+  <p class="sec__n">03 · 오늘의 핵심 · 6분</p>
   <h2 class="sec__h">명령 하나가 하는 일</h2>
 
   <p class="sec__lead">
