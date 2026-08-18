@@ -182,11 +182,6 @@
   a { color:var(--green); }
   a:focus-visible, button:focus-visible { outline:2px solid var(--green); outline-offset:3px; }
 
-  .need { display:flex; flex-direction:column; gap:var(--s1); padding:var(--s3);
-    background:var(--clay-soft); border-left:3px solid var(--clay); }
-  .need__lab { margin:0; font-family:var(--mono); font-size:.72rem; letter-spacing:.14em;
-    text-transform:uppercase; color:var(--clay); font-weight:700; }
-  .need p { margin:0; font-size:1rem; max-width:var(--measure); }
 
 
   .dl { display:inline-flex; align-items:baseline; gap:.5rem; text-decoration:none;
@@ -235,18 +230,6 @@
   .cmp__pros strong { color:var(--ink); }
 
 
-  /* 메시지 카드 */
-  .msg { border:1px solid var(--rule); background:var(--paper-2); padding:var(--s2) var(--s3);
-    display:flex; flex-direction:column; gap:.4rem; min-width:0; }
-  .msg--x { border-color:var(--clay); background:var(--clay-soft); }
-  .msg__hd { font-family:var(--mono); font-size:.73rem; letter-spacing:.06em;
-    color:var(--ink-faint); display:flex; flex-wrap:wrap; gap:.45rem; align-items:baseline; }
-  .msg__f { color:var(--green); font-weight:700; }
-  .msg__t { color:var(--clay); font-weight:700; }
-  .msg__b { margin:0; font-family:var(--mono); font-size:.82rem; line-height:1.75;
-    white-space:pre-wrap; overflow-x:auto; color:var(--ink); }
-  .msg__b b { font-weight:700; color:var(--green); }
-  .msg__b u { text-decoration:none; color:var(--clay); font-weight:650; }
 
   @media (max-width:40rem) {
     body { font-size:16px; }
@@ -282,18 +265,18 @@
 </div>
 
 <nav class="toc">
-  <a class="toc__item" href="#bg"><span class="toc__n">배경</span><span class="toc__t">폴더와 절차</span><span class="toc__d">폴더에 무엇이 있나</span><span class="toc__time">1분</span></a>
+  <a class="toc__item" href="#bg"><span class="toc__n">배경</span><span class="toc__t">폴더와 절차</span><span class="toc__d">폴더에 무엇이 있나</span><span class="toc__time">2분</span></a>
   <a class="toc__item" href="#s1"><span class="toc__n">01</span><span class="toc__t">개념과 차이</span><span class="toc__d">서브에이전트와 무엇이 다른지 · 두 방식 비교 예제</span><span class="toc__time">4분</span></a>
   <a class="toc__item" href="#s2"><span class="toc__n">02</span><span class="toc__t">사용법</span><span class="toc__d">띄우기 · 목록에서 고르기 · 직접 말 걸기</span><span class="toc__time">5분</span></a>
-  <a class="toc__item" href="#s4"><span class="toc__n">03</span><span class="toc__t">위임 구조</span><span class="toc__d">필요할 때 한 명씩 · 결과는 SendMessage로</span><span class="toc__time">4분 · 핵심</span></a>
-  <a class="toc__item" href="#s4b"><span class="toc__n">04</span><span class="toc__t">활용</span><span class="toc__d">되묻기 · 이어서 묻기</span><span class="toc__time">2분</span></a>
+  <a class="toc__item" href="#s4"><span class="toc__n">03</span><span class="toc__t">위임 구조</span><span class="toc__d">필요할 때 한 명씩 · 결과는 SendMessage로</span><span class="toc__time">2분 · 핵심</span></a>
+  <a class="toc__item" href="#s4b"><span class="toc__n">04</span><span class="toc__t">활용</span><span class="toc__d">되묻기 · 이어서 묻기</span><span class="toc__time">3분</span></a>
   <a class="toc__item" href="#s5"><span class="toc__n">05</span><span class="toc__t">고르는 법</span><span class="toc__d">어떤 일에 어느 쪽을 쓰나</span><span class="toc__time">2분</span></a>
   <a class="toc__item" href="#s7"><span class="toc__n">마지막</span><span class="toc__t">문제 해결</span><span class="toc__d">증상별 대처</span><span class="toc__time">2분</span></a>
 </nav>
 
 <!-- 배경 -->
 <section class="sec" id="bg">
-  <p class="sec__n">배경 · 1분</p>
+  <p class="sec__n">배경 · 2분</p>
   <h2 class="sec__h">폴더와 절차</h2>
 
   <div class="prose">
@@ -744,7 +727,7 @@ CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS 를 "1" 로 넣어줘.
 
 <!-- 03 -->
 <section class="sec" id="s4">
-  <p class="sec__n">03 · 핵심 · 4분</p>
+  <p class="sec__n">03 · 핵심 · 2분</p>
   <h2 class="sec__h">위임 구조</h2>
 
   <p class="sec__lead">
@@ -783,34 +766,6 @@ P6  검증 <i>(스크립트)</i>  →  <b>evidence-pack.json</b>  <i>← 지난 
     그동안 <strong>비용과 화면 소음만 붙습니다.</strong>
   </div>
 
-  <p class="sec__sub">여기가 팀이 아니면 안 되는 곳입니다</p>
-
-  <div class="need">
-    <p class="need__lab">miner는 그 논문이 왜 걸렸는지 모릅니다</p>
-    <p>
-      <code>scout</code>은 스크리닝하면서 <strong>이 논문의 intervention이 실제로 무엇인지</strong>
-      판정해 두었습니다. 그런데 <code>miner</code>가 받은 것은 <strong>PMID 번호뿐</strong>입니다.
-      초록만 보고 <strong>「마그네슘 500mg」인지 「Mg+B6 복합제」인지</strong> 가리기는 쉽지 않습니다.
-      <strong>그 판정을 갖고 있는 쪽은 scout입니다.</strong>
-      그래서 <strong>PMID마다 한 번씩 반드시 묻습니다.</strong>
-    </p>
-  </div>
-
-  <div class="cards">
-    <div class="msg msg--x">
-      <p class="msg__hd"><span class="msg__f">miner</span> → <span class="msg__t">scout</span> <span>· 초록을 읽기 전에</span></p>
-      <p class="msg__b">PMID 34211088 — 이 논문의 intervention을 무엇으로 판정했나?
-복합제 / 염 형태 / 용량 형태가 있으면 알려달라.</p>
-    </div>
-    <div class="msg msg--x">
-      <p class="msg__hd"><span class="msg__f">scout</span> → <span class="msg__t">miner</span></p>
-      <p class="msg__b">34211088 — Mg+B6 복합제. 마그네슘 단독 아님. off_target 권고
-
-<i>판정값만 갑니다. <b>초록 원문도 효과 크기도 넣지 않습니다</b> —
-scout의 금지 사항이 <b>이 답에도 그대로</b> 걸립니다.</i></p>
-    </div>
-  </div>
-
   <p class="sec__sub">안 멈추는 것을 막습니다</p>
 
   <div class="prose">
@@ -833,7 +788,7 @@ scout의 금지 사항이 <b>이 답에도 그대로</b> 걸립니다.</i></p>
 
 <!-- 04 -->
 <section class="sec" id="s4b">
-  <p class="sec__n">04 · 2분</p>
+  <p class="sec__n">04 · 3분</p>
   <h2 class="sec__h">활용</h2>
 
   <p class="sec__lead">
