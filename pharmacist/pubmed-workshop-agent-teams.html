@@ -192,15 +192,6 @@
   .dl small { font-family:var(--mono); font-weight:400; font-size:.78em; opacity:.8; }
 
 
-  /* 비교 구조도 */
-  .cmp { display:grid; grid-template-columns:repeat(auto-fit,minmax(17rem,1fr)); gap:var(--s2); }
-  .cmp__panel { border:1px solid var(--rule); background:var(--paper-2); padding:var(--s3) var(--s2) var(--s2);
-    display:flex; flex-direction:column; align-items:center; gap:.75rem; }
-  .cmp__panel--x { border-top:3px solid var(--clay); }
-  .cmp__panel--o { border-top:3px solid var(--green); }
-  .cmp__t { margin:0; font-family:var(--mono); font-size:.72rem; letter-spacing:.14em;
-    text-transform:uppercase; font-weight:700; color:var(--clay); }
-  .cmp__panel--o .cmp__t { color:var(--green); }
 
   .dg { border:1px solid var(--rule); background:var(--paper-2); padding:var(--s2); overflow-x:auto; }
   .dg svg { display:block; width:100%; min-width:34rem; height:auto; }
@@ -220,14 +211,6 @@
   .dg .ah { fill:var(--ink-faint); }
   .dg .ah-o { fill:var(--green); }
   .dg .sep { stroke:var(--rule); stroke-width:1; }
-  .cmp__pros { margin:0; width:100%; padding-top:.7rem; border-top:1px dashed var(--rule);
-    display:flex; flex-direction:column; gap:.45rem; }
-  .cmp__pros p { margin:0; display:flex; gap:.45rem; align-items:baseline;
-    font-size:.86rem; line-height:1.55; color:var(--ink-soft); text-align:left; }
-  .cmp__pros p b { flex:none; font-family:var(--mono); font-weight:700; font-size:.95em; }
-  .cmp__pros .p b { color:var(--green); }
-  .cmp__pros .m b { color:var(--clay); }
-  .cmp__pros strong { color:var(--ink); }
 
 
 
@@ -266,9 +249,9 @@
 
 <nav class="toc">
   <a class="toc__item" href="#bg"><span class="toc__n">배경</span><span class="toc__t">폴더 구성</span><span class="toc__d">진행.md 하나만 더합니다</span><span class="toc__time">2분</span></a>
-  <a class="toc__item" href="#s1"><span class="toc__n">01</span><span class="toc__t">개념과 차이</span><span class="toc__d">서브에이전트와 무엇이 다른지 · 두 방식 비교 예제</span><span class="toc__time">5분</span></a>
-  <a class="toc__item" href="#s2"><span class="toc__n">02</span><span class="toc__t">사용법</span><span class="toc__d">띄우기 · 목록에서 고르기 · 직접 말 걸기</span><span class="toc__time">5분</span></a>
-  <a class="toc__item" href="#s4"><span class="toc__n">03</span><span class="toc__t">위임 구조</span><span class="toc__d">필요할 때 한 명씩 · 결과는 SendMessage로</span><span class="toc__time">2분 · 핵심</span></a>
+  <a class="toc__item" href="#s1"><span class="toc__n">01</span><span class="toc__t">개념과 차이</span><span class="toc__d">서브에이전트와 무엇이 다른지 · 두 방식 비교 예제</span><span class="toc__time">4분</span></a>
+  <a class="toc__item" href="#s2"><span class="toc__n">02</span><span class="toc__t">사용법</span><span class="toc__d">띄우기 · 목록에서 고르기 · 직접 말 걸기</span><span class="toc__time">6분</span></a>
+  <a class="toc__item" href="#s4"><span class="toc__n">03</span><span class="toc__t">위임 구조</span><span class="toc__d">필요할 때 한 명씩 · 결과는 SendMessage로</span><span class="toc__time">2분</span></a>
   <a class="toc__item" href="#s4b"><span class="toc__n">04</span><span class="toc__t">활용</span><span class="toc__d">되묻기 · 이어서 묻기</span><span class="toc__time">3분</span></a>
   <a class="toc__item" href="#s5"><span class="toc__n">05</span><span class="toc__t">고르는 법</span><span class="toc__d">어떤 일에 어느 쪽을 쓰나</span><span class="toc__time">2분</span></a>
   <a class="toc__item" href="#s7"><span class="toc__n">마지막</span><span class="toc__t">문제 해결</span><span class="toc__d">증상별 대처</span><span class="toc__time">1분</span></a>
@@ -283,8 +266,6 @@
     <p>
       지난 시간에 만든 <code>pubmed-workshop</code> 폴더를 복사해
       <code>pubmed-workshop-agent-teams</code>로 씁니다.
-      <strong>담당 둘</strong>과 <strong>절차 문서</strong>(<code>pubmed-evidence</code>),
-      <strong>검사기</strong>가 그대로 들어 있습니다.
     </p>
   </div>
 
@@ -316,7 +297,7 @@
 
 <!-- 01 -->
 <section class="sec" id="s1">
-  <p class="sec__n">01 · 5분</p>
+  <p class="sec__n">01 · 4분</p>
   <h2 class="sec__h">개념과 차이</h2>
 
   <p class="sec__lead">
@@ -427,26 +408,6 @@
 </svg>
   </div>
 
-  <div class="cmp">
-    <div class="cmp__panel cmp__panel--x">
-      <p class="cmp__t">서브에이전트</p>
-      <div class="cmp__pros">
-        <p class="p"><b>＋</b><span><strong>싸고 단순합니다.</strong> 일이 끝나면 결과가 <strong>알아서</strong> 메인에 옵니다</span></p>
-        <p class="m"><b>－</b><span>담당끼리 못 엮습니다. <strong>메인이 전부 나릅니다</strong></span></p>
-        <p class="m"><b>－</b><span>끝나면 <strong>사라집니다.</strong> 다시 물으려면 처음부터</span></p>
-      </div>
-    </div>
-
-    <div class="cmp__panel cmp__panel--o">
-      <p class="cmp__t">에이전트 팀</p>
-      <div class="cmp__pros">
-        <p class="p"><b>＋</b><span>담당끼리 <strong>직접</strong> 주고받습니다. <strong>메인을 안 거칩니다</strong></span></p>
-        <p class="p"><b>＋</b><span>끝나도 <strong>이름이 살아 있어</strong> 이어서 물을 수 있습니다 <em>(메인 세션이 떠 있는 동안만 — 세션이 끝나면 이름도 함께 사라집니다)</em></span></p>
-        <p class="m"><b>－</b><span>각자 별도 세션이라 <strong>토큰을 더 씁니다</strong></span></p>
-        <p class="m"><b>－</b><span>결과가 자동으로 안 옵니다 — <strong>직접 보내야</strong> 합니다</span></p>
-      </div>
-    </div>
-  </div>
 
   <div class="prose">
     <p>
@@ -533,11 +494,11 @@
 
 <!-- 02 -->
 <section class="sec" id="s2">
-  <p class="sec__n">02 · 5분</p>
+  <p class="sec__n">02 · 6분</p>
   <h2 class="sec__h">사용법</h2>
   <p class="sec__lead">
         여기서는 <strong>담당 하나를 띄워 조작해 보는 것</strong>까지만 봅니다.
-        전체를 도는 것은 03입니다. <strong>버튼은 없습니다.</strong> 전부 말로 시킵니다.
+        여럿을 엮어 돌리는 것은 03입니다. <strong>버튼은 없습니다.</strong> 전부 말로 시킵니다.
       </p>
 
       <p class="sec__sub">설정 ① — 기능 켜기 <span style="font-weight:400;color:var(--ink-faint)">(기본은 꺼져 있습니다)</span></p>
@@ -702,13 +663,13 @@ CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS 를 "1" 로 넣어줘.
 
       <div class="say">
         <p class="say__lab">그 담당 화면에서 이렇게</p>
-        <p class="say__box">지금 걸린 것 중에 <b>off_target 이 절반이 넘네.</b>
+        <p class="say__box">지금 걸린 것 중에 <b>딴 성분 논문이 절반이 넘네.</b>
 성분명이 너무 넓은 것 같으니 <u>균주 단위로 좁혀서</u> 다시 봐줘.</p>
       </div>
 
       <div class="ok">
         <b>이건 미리 시킬 수 없는 지시입니다.</b>
-        <strong>검색 결과를 봐야</strong> off_target이 많은 줄 알 수 있으니까요.
+        <strong>검색 결과를 봐야</strong> 딴 성분이 섞인 줄 알 수 있으니까요.
         <strong>도는 중에 화면에 들어가 방향을 트는 것</strong> — 이게 팀원과 서브에이전트가 갈리는 곳입니다.
       </div>
 
@@ -726,7 +687,7 @@ CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS 를 "1" 로 넣어줘.
 
 <!-- 03 -->
 <section class="sec" id="s4">
-  <p class="sec__n">03 · 핵심 · 2분</p>
+  <p class="sec__n">03 · 2분</p>
   <h2 class="sec__h">위임 구조</h2>
 
   <p class="sec__lead">
@@ -970,26 +931,20 @@ P6  검증 <i>(스크립트)</i>  →  <b>evidence-pack.json</b>  <i>← 지난 
       ↓ 실습 폴더 내려받기 <small>zip · 68KB</small></a>
   </p>
   <p class="prep__note" style="margin-top:-.4rem">
-    풀면 <code>pubmed-workshop-agent-teams</code> 폴더가 나옵니다.
-    담당 둘 · 절차 문서 · 검사기가 <strong>그대로 들어 있습니다.</strong>
+    풀면 <code>pubmed-workshop-agent-teams</code> 폴더가 나옵니다 —
+    지난 시간 <code>pubmed-workshop</code> 을 복사해 <strong>이름만 바꾼 것</strong>이라
+    안의 내용은 같습니다.
   </p>
 
   <ul>
-    <li><strong>지난 시간 폴더</strong> — <code>pubmed-workshop</code> 을 복사해
-      <code>pubmed-workshop-agent-teams</code> 로 이름만 바꾼 것입니다. 안의 내용은 같습니다.
-      <strong>그 폴더에서 Claude Code를 열면</strong> <code>.claude/</code> 안의 담당·스킬이 잡힙니다</li>
+    <li><strong>폴더</strong> — <strong>그 폴더에서 Claude Code를 열면</strong>
+      <code>.claude/</code> 안의 담당·스킬이 잡힙니다.
+      Mac에서 <code>.claude</code> 는 숨김 폴더라 안 보일 수 있는데 <strong>정상입니다</strong></li>
     <li><strong>NCBI API 키</strong> — <code>.claude/settings.json</code> 의 <code>NCBI_API_KEY</code>.
       <strong>비어 있으면 초당 3회 제한</strong>이라 조회가 자주 막힙니다</li>
     <li><strong>주제 하나</strong> — 성분과 증상. 「마그네슘 수면」처럼 <strong>두 단어</strong>면 됩니다</li>
   </ul>
 
-  <p class="prep__no">
-    <strong>「무엇을 새로 만드나요?」</strong> — <strong>파일 하나뿐</strong>입니다.
-    폴더는 지난 시간 것을 복사해 이름만 바꾼 것이고,
-    <code>.claude/agents/</code> 의 담당 둘, <code>skills/</code> 의 절차,
-    <code>scripts/</code> 의 검사기 — <strong>전부 그대로 씁니다.</strong>
-    Mac에서 <code>.claude</code> 는 숨김 폴더라 안 보일 수 있는데 <strong>정상입니다.</strong>
-  </p>
 </section>
 
 <footer class="end">
@@ -1003,22 +958,11 @@ P6  검증 <i>(스크립트)</i>  →  <b>evidence-pack.json</b>  <i>← 지난 
   </p>
 
   <p>
-    정한 것은 <strong>위임 구조 하나</strong>입니다 —
+    그 파일이 정한 것은 <strong>위임 구조 하나</strong>입니다 —
     <strong>언제 띄우고, 결과를 어떻게 받는가.</strong>
-    담당을 <strong>필요할 때 한 명씩</strong> 띄우고, <strong>결과는 SendMessage로 직접</strong> 받습니다.
-  </p>
-
-  <p>
-    <strong>미리 띄워 기다리게 하지 않습니다.</strong>
-    채굴이 시작되는 시점은 <strong>어차피 scout이 끝난 뒤</strong>라,
-    먼저 띄워봐야 <strong>비용과 소음만 붙습니다.</strong>
-  </p>
-
-  <p>
-    <strong>그런데도 팀으로 띄우는 이유는 이름입니다.</strong>
-    끝난 담당도 이름을 부르면 <strong>그 대화 그대로 깨어나</strong>
-    자기가 뭘 판정했는지 기억한 채 답합니다 — <code>miner</code>가 되묻는 것도,
-    <strong>사람이 이어서 묻는 것도</strong> 그 통로를 씁니다.
+    그리고 <strong>팀으로 띄우는 이유는 이름</strong>입니다.
+    끝난 담당도 이름을 부르면 <strong>그 대화 그대로 깨어나</strong>,
+    <code>miner</code>가 되묻는 것도 <strong>사람이 이어서 묻는 것도</strong> 그 통로를 씁니다.
   </p>
 
 </footer>
