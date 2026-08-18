@@ -196,26 +196,6 @@
   .dl:hover, .dl:focus-visible { background:var(--green); color:var(--paper); }
   .dl small { font-family:var(--mono); font-weight:400; font-size:.78em; opacity:.8; }
 
-  /* 절차 흐름 */
-  .flow { display:flex; flex-direction:column; gap:.35rem; }
-  .flow__step { display:grid; grid-template-columns:3.4rem 1fr auto; gap:var(--s2);
-    align-items:center; padding:.7rem var(--s3);
-    border:1px solid var(--rule); border-left:3px solid var(--green); background:var(--paper-2); }
-  .flow__step--main { border-left-color:var(--clay); }
-  .flow__step--script { border-left-color:var(--ink-soft); }
-  .flow__step--opt { border-left-style:dashed; }
-  .flow__n { font-family:var(--mono); font-size:.78rem; font-weight:700; letter-spacing:.04em; color:var(--green); }
-  .flow__step--main .flow__n { color:var(--clay); }
-  .flow__step--script .flow__n { color:var(--ink-soft); }
-  .flow__t { margin:0; font-size:1.02rem; font-weight:730; letter-spacing:-.01em; }
-  .flow__t small { font-weight:400; font-size:.72em; color:var(--ink-faint); letter-spacing:0; }
-  .flow__d { margin:.1rem 0 0; font-size:.9rem; color:var(--ink-soft); }
-  .flow__who { font-family:var(--mono); font-size:.76rem; color:var(--ink-faint); white-space:nowrap; }
-  .flow__arrow { font-family:var(--mono); font-size:.9rem; color:var(--ink-faint); text-align:center; margin:0; }
-  .flow__out { display:flex; align-items:baseline; justify-content:center; gap:.55rem;
-    padding:.85rem var(--s3); border:1.5px solid var(--green); background:var(--green-soft); }
-  .flow__out b { font-family:var(--mono); font-size:1rem; font-weight:700; color:var(--green); }
-  .flow__out span { font-size:.85rem; color:var(--ink-soft); }
 
   /* 비교 구조도 */
   .cmp { display:grid; grid-template-columns:repeat(auto-fit,minmax(17rem,1fr)); gap:var(--s2); }
@@ -270,8 +250,6 @@
 
   @media (max-width:40rem) {
     body { font-size:16px; }
-    .flow__step { grid-template-columns:3rem 1fr; }
-    .flow__who { grid-column:2; }
     .deck { padding:0 var(--s2) var(--s6); }
     .sec { padding-top:var(--s5); }
   }
@@ -304,9 +282,9 @@
 </div>
 
 <nav class="toc">
-  <a class="toc__item" href="#bg"><span class="toc__n">배경</span><span class="toc__t">폴더와 절차</span><span class="toc__d">폴더에 무엇이 있나 · 명령 한 줄이 도는 순서</span><span class="toc__time">2분</span></a>
+  <a class="toc__item" href="#bg"><span class="toc__n">배경</span><span class="toc__t">폴더와 절차</span><span class="toc__d">폴더에 무엇이 있나</span><span class="toc__time">1분</span></a>
   <a class="toc__item" href="#s1"><span class="toc__n">01</span><span class="toc__t">개념과 차이</span><span class="toc__d">서브에이전트와 무엇이 다른지 · 두 방식 비교 예제</span><span class="toc__time">5분</span></a>
-  <a class="toc__item" href="#s2"><span class="toc__n">02</span><span class="toc__t">사용법</span><span class="toc__d">띄우기 · 목록에서 고르기 · 직접 말 걸기</span><span class="toc__time">3분</span></a>
+  <a class="toc__item" href="#s2"><span class="toc__n">02</span><span class="toc__t">사용법</span><span class="toc__d">띄우기 · 목록에서 고르기 · 직접 말 걸기</span><span class="toc__time">4분</span></a>
   <a class="toc__item" href="#s4"><span class="toc__n">03</span><span class="toc__t">위임 구조</span><span class="toc__d">필요할 때 한 명씩 · 결과는 SendMessage로</span><span class="toc__time">6분 · 핵심</span></a>
   <a class="toc__item" href="#s5"><span class="toc__n">04</span><span class="toc__t">재사용</span><span class="toc__d">다음 주제부터는 /진행 한 줄</span><span class="toc__time">1분</span></a>
   <a class="toc__item" href="#s6"><span class="toc__n">05</span><span class="toc__t">활용</span><span class="toc__d">되묻기 · 이어서 묻기</span><span class="toc__time">2분</span></a>
@@ -315,7 +293,7 @@
 
 <!-- 배경 -->
 <section class="sec" id="bg">
-  <p class="sec__n">배경 · 2분</p>
+  <p class="sec__n">배경 · 1분</p>
   <h2 class="sec__h">담당을 나눠 시킬 때 정해야 하는 것</h2>
 
   <div class="prose">
@@ -349,56 +327,6 @@
 
 <i>진행.md 를 뺀 나머지는 전부 </i><i>지난 시간 것 그대로</i><i>입니다.</i></div>
 
-  <p class="sec__sub">「마그네슘 수면」 한 줄이면 이 순서가 돕니다</p>
-
-  <div class="flow">
-    <div class="flow__step flow__step--main">
-      <span class="flow__n">P1</span>
-      <div>
-        <p class="flow__t">정규화</p>
-        <p class="flow__d">magnesium × sleep quality</p>
-      </div>
-      <span class="flow__who">메인이 직접</span>
-    </div>
-    <p class="flow__arrow">↓</p>
-    <div class="flow__step">
-      <span class="flow__n">P2</span>
-      <div>
-        <p class="flow__t">정찰</p>
-        <p class="flow__d">논문 지형을 훑고 톤 판정</p>
-      </div>
-      <span class="flow__who">evidence-scout</span>
-    </div>
-    <p class="flow__arrow">↓</p>
-    <div class="flow__step">
-      <span class="flow__n">P3</span>
-      <div>
-        <p class="flow__t">채굴</p>
-        <p class="flow__d">초록에서 숫자 5칸을 오려냄</p>
-      </div>
-      <span class="flow__who">abstract-miner</span>
-    </div>
-    <p class="flow__arrow">↓</p>
-    <div class="flow__step flow__step--script">
-      <span class="flow__n">P6</span>
-      <div>
-        <p class="flow__t">검증</p>
-        <p class="flow__d">숫자가 원문에 있는지 대조</p>
-      </div>
-      <span class="flow__who">verify_evidence.py</span>
-    </div>
-    <p class="flow__arrow">↓</p>
-    <div class="flow__step flow__step--script flow__step--opt">
-      <span class="flow__n">P6-1</span>
-      <div>
-        <p class="flow__t">고시 대조 <small>스킬이 깔려 있을 때만</small></p>
-        <p class="flow__d">국내 인정 문구와 맞춰봄</p>
-      </div>
-      <span class="flow__who">kr-claims</span>
-    </div>
-    <p class="flow__arrow">↓</p>
-    <div class="flow__out"><b>evidence-pack.json</b> <span>원문에 대조된 근거 레코드</span></div>
-  </div>
 </section>
 
 
@@ -675,7 +603,7 @@ CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS 를 "1" 로 넣어줘.
 
 <!-- 02 -->
 <section class="sec" id="s2">
-  <p class="sec__n">02 · 사용법 · 3분</p>
+  <p class="sec__n">02 · 사용법 · 4분</p>
   <h2 class="sec__h">담당을 띄우고 말을 거는 법</h2>
   <p class="sec__lead">
         여기서는 <strong>담당 하나를 띄워 조작해 보는 것</strong>까지만 봅니다.
