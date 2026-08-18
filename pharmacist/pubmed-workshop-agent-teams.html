@@ -266,12 +266,12 @@
 
 <nav class="toc">
   <a class="toc__item" href="#bg"><span class="toc__n">배경</span><span class="toc__t">폴더와 절차</span><span class="toc__d">폴더에 무엇이 있나</span><span class="toc__time">2분</span></a>
-  <a class="toc__item" href="#s1"><span class="toc__n">01</span><span class="toc__t">개념과 차이</span><span class="toc__d">서브에이전트와 무엇이 다른지 · 두 방식 비교 예제</span><span class="toc__time">4분</span></a>
+  <a class="toc__item" href="#s1"><span class="toc__n">01</span><span class="toc__t">개념과 차이</span><span class="toc__d">서브에이전트와 무엇이 다른지 · 두 방식 비교 예제</span><span class="toc__time">5분</span></a>
   <a class="toc__item" href="#s2"><span class="toc__n">02</span><span class="toc__t">사용법</span><span class="toc__d">띄우기 · 목록에서 고르기 · 직접 말 걸기</span><span class="toc__time">5분</span></a>
   <a class="toc__item" href="#s4"><span class="toc__n">03</span><span class="toc__t">위임 구조</span><span class="toc__d">필요할 때 한 명씩 · 결과는 SendMessage로</span><span class="toc__time">2분 · 핵심</span></a>
   <a class="toc__item" href="#s4b"><span class="toc__n">04</span><span class="toc__t">활용</span><span class="toc__d">되묻기 · 이어서 묻기</span><span class="toc__time">3분</span></a>
   <a class="toc__item" href="#s5"><span class="toc__n">05</span><span class="toc__t">고르는 법</span><span class="toc__d">어떤 일에 어느 쪽을 쓰나</span><span class="toc__time">2분</span></a>
-  <a class="toc__item" href="#s7"><span class="toc__n">마지막</span><span class="toc__t">문제 해결</span><span class="toc__d">증상별 대처</span><span class="toc__time">2분</span></a>
+  <a class="toc__item" href="#s7"><span class="toc__n">마지막</span><span class="toc__t">문제 해결</span><span class="toc__d">증상별 대처</span><span class="toc__time">1분</span></a>
 </nav>
 
 <!-- 배경 -->
@@ -317,7 +317,7 @@
 
 <!-- 01 -->
 <section class="sec" id="s1">
-  <p class="sec__n">01 · 4분</p>
+  <p class="sec__n">01 · 5분</p>
   <h2 class="sec__h">개념과 차이</h2>
 
   <p class="sec__lead">
@@ -926,7 +926,7 @@ P6  검증 <i>(스크립트)</i>  →  <b>evidence-pack.json</b>  <i>← 지난 
 
 <!-- 마지막 -->
 <section class="sec" id="s7">
-  <p class="sec__n">마지막 · 2분</p>
+  <p class="sec__n">마지막 · 1분</p>
   <h2 class="sec__h">문제 해결</h2>
 
   <div class="cards">
@@ -936,29 +936,6 @@ P6  검증 <i>(스크립트)</i>  →  <b>evidence-pack.json</b>  <i>← 지난 
         <strong>실험 기능이 꺼져 있는 것입니다.</strong> 02의 「설정 ① — 기능 켜기」를 다시 하십시오.
         켜져 있는데도 안 뜨면 <strong>일이 너무 작아서</strong> Claude가 혼자 처리한 것입니다.
         「<strong>팀원으로 띄워줘</strong>」라고 명시하십시오.
-      </p>
-    </div>
-    <div class="card card--flag">
-      <div class="card__top"><span class="card__tag">증상</span><h3 class="card__h">scout 이 PMID 를 안 줍니다</h3></div>
-      <p>
-        <strong>근거 지도를 먼저 보십시오.</strong> 검색 자체가 0건이면 <strong>정상입니다</strong> —
-        <strong>인체 연구가 없다는 신호(T3)</strong>입니다.
-        검색은 됐는데 <strong>전부 off_target</strong>이면 <strong>성분명이 너무 넓은 것</strong>입니다.
-      </p>
-    </div>
-    <div class="card card--flag">
-      <div class="card__top"><span class="card__tag">증상</span><h3 class="card__h">채굴 대상이 두세 편밖에 안 나옵니다</h3></div>
-      <p>
-        <strong>off_target 비율이 높은 성분</strong>입니다.
-        <code>evidence-scout.md</code> 의 <strong>스크리닝 상한(15편)을 20~25로 올리면</strong> 후보가 늡니다.
-      </p>
-    </div>
-    <div class="card card--flag">
-      <div class="card__top"><span class="card__tag">증상</span><h3 class="card__h">scout 이 10분 넘게 안 끝납니다</h3></div>
-      <p>
-        <strong>초록을 너무 많이 받고 있는 것</strong>입니다.
-        <strong>15편 상한</strong>과 <strong>요약 형식</strong>을 지키는지 보십시오 —
-        <strong>XML로 받으면 40편에 190k 토큰</strong>이 넘어갑니다.
       </p>
     </div>
     <div class="card card--flag">
@@ -974,13 +951,6 @@ P6  검증 <i>(스크립트)</i>  →  <b>evidence-pack.json</b>  <i>← 지난 
         <strong>「지금 살아 있는 담당 알려줘」</strong>로 실제 이름을 확인하십시오.
         <strong>같은 이름이 둘이면 나중 것이 이기지만</strong>, 화면에서 어느 쪽인지
         알 수 없게 됩니다 — 띄우기 전에 <strong>이전 실행의 잔존 담당</strong>이 있는지 보십시오.
-      </p>
-    </div>
-    <div class="card card--flag">
-      <div class="card__top"><span class="card__tag">증상</span><h3 class="card__h">429 오류가 납니다</h3></div>
-      <p>
-        <strong><code>NCBI_API_KEY</code> 가 비어 있습니다.</strong>
-        <code>.claude/settings.json</code> 에 키를 넣으십시오.
       </p>
     </div>
   </div>
