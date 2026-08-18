@@ -282,7 +282,7 @@
 
 <!-- 배경 -->
 <section class="sec" id="bg" style="padding-top:var(--s4)">
-  <p class="sec__n">배경 · 3분</p>
+  <p class="sec__n">배경 · 2분</p>
   <h2 class="sec__h">담당을 나눠 시킬 때 정해야 하는 것</h2>
 
   <div class="prose">
@@ -320,51 +320,10 @@
 <b>P6-1</b> 고시 대조  <b>kr-claims</b> — 국내 인정 문구와 맞춰봄  <i>← 스킬이 깔려 있을 때만</i>
       ↓
    <b>evidence-pack.json</b></div>
-
-  <div class="easy">
-    <p class="easy__lab">여기서 「메인」이란</p>
-    <p>
-      <strong>여러분이 말을 거는 그 Claude</strong>입니다. 담당들을 부르고 결과를 받아
-      정리하는 쪽이지요. 사람은 <strong>명령을 치고 마지막에 판단</strong>하고,
-      <strong>담당을 언제 부를지 정하는 건 메인</strong>입니다.
-    </p>
-  </div>
-
-  <p class="sec__sub">P2와 P3을 나눠 맡길 때 — 두 가지를 정해야 합니다</p>
-
-  <div class="prose">
-    <ol>
-      <li><strong>언제 띄울 것인가</strong> — 둘을 한 번에? 아니면 필요할 때 하나씩?</li>
-      <li><strong>결과를 어떻게 받을 것인가</strong> — 그냥 반환? 아니면 메시지로?</li>
-    </ol>
-    <p>
-      오늘 만드는 명령은 이렇게 답합니다 —
-      <strong>필요할 때 한 명씩 띄우고, 결과는 SendMessage로 직접 받습니다.</strong>
-      <code>miner</code>는 <code>scout</code>이 끝난 뒤에 태어나므로
-      <strong>PMID를 손에 쥔 채로 시작</strong>합니다.
-      그리고 채굴하는 동안 <strong>PMID마다 scout에게 되묻습니다</strong> —
-      <strong>이미 끝난 담당을 이름으로 다시 깨워서</strong>입니다.
-    </p>
-  </div>
-
-  <p class="quote quote--warn">
-    <strong>「반환값」에 기대면 결과가 사라집니다.</strong>
-    팀원이 끝나면 메인에는 <code>Teammate @scout finished</code> 같은
-    <strong>알림만 오고 내용은 실리지 않습니다.</strong>
-    그래서 소집 프롬프트마다 <strong>「결과를 SendMessage로 보내라」는 지시를 반드시 넣습니다</strong> —
-    빠뜨리면 담당이 일을 다 해놓고 조용히 사라집니다.
-  </p>
-
-  <p class="quote quote--warn">
-    <strong>오늘 만드는 파일은 하나입니다.</strong>
-    담당도 스킬도 스크립트도 <strong>지난 시간 것 그대로</strong> 씁니다.
-    <strong>안을 열어보기는 하되, 고치지 않습니다.</strong>
-    더하는 것은 <code>.claude/commands/진행.md</code> <strong>한 개뿐</strong>입니다.
-  </p>
 </section>
 
 <nav class="toc">
-  <a class="toc__item" href="#s1"><span class="toc__n">01</span><span class="toc__t">에이전트 팀이 뭔가</span><span class="toc__d">서브에이전트와 무엇이 다른지 · 두 방식 비교 예제</span><span class="toc__time">4분</span></a>
+  <a class="toc__item" href="#s1"><span class="toc__n">01</span><span class="toc__t">에이전트 팀이 뭔가</span><span class="toc__d">서브에이전트와 무엇이 다른지 · 두 방식 비교 예제</span><span class="toc__time">5분</span></a>
   <a class="toc__item" href="#s2"><span class="toc__n">02</span><span class="toc__t">사용법</span><span class="toc__d">띄우기 · 목록에서 고르기 · 직접 말 걸기</span><span class="toc__time">3분</span></a>
   <a class="toc__item" href="#s4"><span class="toc__n">03</span><span class="toc__t">명령 하나가 하는 일</span><span class="toc__d">오늘의 핵심 · 필요할 때 한 명씩 · 결과는 SendMessage로</span><span class="toc__time">6분 · 핵심</span></a>
   <a class="toc__item" href="#s5"><span class="toc__n">04</span><span class="toc__t">한 줄로 굳히기</span><span class="toc__d">다음 주제부터는 /진행 한 줄</span><span class="toc__time">1분</span></a>
@@ -375,7 +334,7 @@
 
 <!-- 01 -->
 <section class="sec" id="s1">
-  <p class="sec__n">01 · 개념 · 4분</p>
+  <p class="sec__n">01 · 개념 · 5분</p>
   <h2 class="sec__h">에이전트 팀이 뭔가</h2>
 
   <p class="sec__lead">
