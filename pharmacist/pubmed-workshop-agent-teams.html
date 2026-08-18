@@ -193,21 +193,6 @@
 
 
 
-  /* 대본 — ?대본 으로만 보입니다 */
-  .note { display:none; }
-  body.note-on .note { display:flex; flex-direction:column; gap:.45rem;
-    padding:var(--s2) var(--s3); background:var(--amber-soft);
-    border:1px dashed var(--amber); border-left:3px solid var(--amber); }
-  .note__lab { margin:0; font-family:var(--mono); font-size:.7rem; letter-spacing:.14em;
-    text-transform:uppercase; color:var(--amber); font-weight:700; }
-  .note ul { margin:0; padding-left:1.1rem; display:flex; flex-direction:column; gap:.3rem;
-    font-size:.92rem; line-height:1.7; }
-  .note ul li::marker { color:var(--amber); }
-  .note em { font-style:normal; color:var(--clay); font-weight:650; }
-  .notebar { display:none; }
-  body.note-on .notebar { display:inline-flex; align-items:baseline; gap:.4rem;
-    font-family:var(--mono); font-size:.72rem; color:var(--amber); }
-
   .dg { border:1px solid var(--rule); background:var(--paper-2); padding:var(--s2); overflow-x:auto; }
   .dg svg { display:block; width:100%; min-width:34rem; height:auto; }
   .dg .ttl { font-family:var(--sans); font-size:13px; font-weight:800; fill:var(--ink); }
@@ -260,7 +245,6 @@
 
 <div class="modebar">
   <span class="modebar__total">전체 약 20분 · 읽는 자료</span>
-  <span class="notebar">● 대본 표시 중</span>
 </div>
 
 <nav class="toc">
@@ -277,17 +261,6 @@
 <section class="sec" id="bg">
   <p class="sec__n">배경 · 2분</p>
   <h2 class="sec__h">폴더 구성</h2>
-
-  <div class="note">
-    <p class="note__lab">대본</p>
-    <ul>
-      <li><em>30초 안에 넘기세요.</em> 여기서 설명할 게 별로 없습니다.</li>
-      <li>「지난 시간 폴더 그대로입니다. 이름만 바꿨어요」</li>
-      <li>트리에서 <em>진행.md 한 줄만</em> 짚습니다 — 「오늘 더하는 건 이거 하나뿐입니다」</li>
-      <li>나머지 파일은 읽지 마세요. 지난 시간에 다 본 것들입니다.</li>
-    </ul>
-  </div>
-
 
   <div class="prose">
     <p>
@@ -330,19 +303,6 @@
   <p class="sec__lead">
     한 문장으로: <strong>일 시킨 담당끼리 서로 말을 걸 수 있게 된 것</strong>입니다. 그게 전부입니다.
   </p>
-
-  <div class="note">
-    <p class="note__lab">대본</p>
-    <ul>
-      <li>「한 문장으로 하면 — 일 시킨 담당끼리 서로 말을 걸 수 있게 된 겁니다」</li>
-      <li><em>비유부터.</em> 서브에이전트는 외주, 팀은 옆자리 직원. 여기서 고개 끄덕이는지 봅니다.</li>
-      <li>그림 — 왼쪽은 <em>화살표가 전부 메인으로</em> 갑니다. 오른쪽은 서로 닿되 메인을 안 지납니다.</li>
-      <li>표는 세 줄만 읽습니다. 「결과 전달」 줄에서 한 번 멈추세요 — <em>팀은 결과가 저절로 안 옵니다.</em></li>
-      <li>A/B 예제 ②가 핵심입니다. 「miner가 궁금해도 scout은 이미 사라졌습니다」</li>
-      <li>비용은 가볍게 — 「셋이 도는 셈이지만 일할 때만 씁니다」</li>
-    </ul>
-  </div>
-
 
   <div class="easy">
     <p class="easy__lab">쉽게 말하면</p>
@@ -541,19 +501,6 @@
         여럿을 엮어 돌리는 것은 03입니다. <strong>버튼은 없습니다.</strong> 전부 말로 시킵니다.
       </p>
 
-  <div class="note">
-    <p class="note__lab">대본</p>
-    <ul>
-      <li><em>여기가 제일 깁니다(6분).</em> 설정 → 띄우기 → 말 걸기 순서로 갑니다.</li>
-      <li>설정 ①은 <em>필수</em>, ②는 <em>선택</em>입니다. 「②는 안 돼도 되는 일은 똑같습니다」로 부담을 덜어주세요.</li>
-      <li>매뉴얼과 이름표 — <em>여기서 한 번 확인하고 넘어갑니다.</em> 「매뉴얼은 하나여도 이름표는 여럿」이 이해되면 통과.</li>
-      <li>목록 도해에서 ↑↓ · Enter · Esc · x 를 손으로 짚어 보입니다.</li>
-      <li>「도는 중에 끼어들기」가 이 절의 산입니다 — <em>서브에이전트와 갈리는 지점.</em></li>
-      <li>「미리 시킬 수 없는 지시」라는 점을 강조하세요. 결과를 봐야 알 수 있는 것.</li>
-    </ul>
-  </div>
-
-
       <p class="sec__sub">설정 ① — 기능 켜기 <span style="font-weight:400;color:var(--ink-faint)">(기본은 꺼져 있습니다)</span></p>
 
       <div class="prose">
@@ -749,18 +696,6 @@ CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS 를 "1" 로 넣어줘.
     판단 기준과 검증 규칙은 <strong>전부 기존 파일에 그대로</strong> 둡니다.
   </p>
 
-  <div class="note">
-    <p class="note__lab">대본</p>
-    <ul>
-      <li>「오늘 만드는 파일은 이거 하나입니다」 — 한 줄 명령을 먼저 보입니다.</li>
-      <li>도해를 <em>손으로 따라가며</em> 읽습니다. ① scout 끝남 → ② miner가 <em>PMID를 쥐고</em> 태어남.</li>
-      <li>가운데 되묻기 두 줄이 오늘의 핵심입니다. 「끝난 scout에게 다시 묻고 있습니다」</li>
-      <li>미리 안 띄우는 이유는 한 문장으로 — 「어차피 시작 시점은 같으니까요」</li>
-      <li>왕복 제한은 빠르게. <em>「폐기는 정상 동작」만 남기세요.</em></li>
-    </ul>
-  </div>
-
-
   <div class="say">
     <p class="say__lab">이 한 줄로 아래 전부가 돕니다</p>
     <p class="say__box">/진행 마그네슘 수면</p>
@@ -821,17 +756,6 @@ P6  검증 <i>(스크립트)</i>  →  <b>evidence-pack.json</b>  <i>← 지난 
     <strong>끝난 담당이 이름으로 남아 있다는 것</strong> — 그것만이 팀의 몫입니다.
     그 이름으로 <strong>무엇을 할 수 있는지</strong> 둘을 놓았습니다.
   </p>
-
-  <div class="note">
-    <p class="note__lab">대본</p>
-    <ul>
-      <li>「순서대로 부르는 건 팀이 아니어도 됩니다. <em>이름이 남는다는 것</em>만이 팀의 몫입니다」</li>
-      <li>카드 하나 — 양쪽 화면에 <em>같은 교신이 반대 방향으로</em> 찍히는 것을 보입니다.</li>
-      <li>카드 둘 — 「커맨드를 처음부터 다시 돌릴 필요가 없습니다」가 실무에서 제일 와닿는 대목입니다.</li>
-      <li>마무리 한 줄로 닫습니다 — <em>「끝난 담당을 다시 부를 일이 있는가」</em></li>
-    </ul>
-  </div>
-
 
   <div class="cards">
 
@@ -909,17 +833,6 @@ P6  검증 <i>(스크립트)</i>  →  <b>evidence-pack.json</b>  <i>← 지난 
     자주 하는 일에 대보면 이렇게 갈립니다.
   </p>
 
-  <div class="note">
-    <p class="note__lab">대본</p>
-    <ul>
-      <li>표를 <em>위 셋 / 아래 셋</em>으로 갈라 읽습니다. 위는 서브에이전트, 아래는 팀.</li>
-      <li>「자료 10개 각각 요약」과 「모으고 판단」의 차이만 확실히 짚으면 됩니다.</li>
-      <li>지시문 두 개는 <em>첫 줄만</em> 비교하세요 — 방식을 밝히는 자리가 같습니다.</li>
-      <li>마지막 질문을 <em>천천히</em> 남기고 넘어갑니다. 「끝난 뒤에도 물어볼 일이 있나?」</li>
-    </ul>
-  </div>
-
-
   <div class="tw">
     <table>
       <caption>하려는 일에 대보면</caption>
@@ -975,17 +888,6 @@ P6  검증 <i>(스크립트)</i>  →  <b>evidence-pack.json</b>  <i>← 지난 
 <section class="sec" id="s7">
   <p class="sec__n">마지막 · 1분</p>
   <h2 class="sec__h">문제 해결</h2>
-
-  <div class="note">
-    <p class="note__lab">대본</p>
-    <ul>
-      <li><em>세 개만 읽고 끝냅니다(1분).</em> 외우게 하지 마세요.</li>
-      <li>「목록이 안 보이면 기능이 꺼진 겁니다」 — 제일 흔한 경우.</li>
-      <li>「멈춰 보이면 메인 화면에 권한 창이 떠 있습니다」 — 실습에서 반드시 나옵니다.</li>
-      <li>「이름이 안 닿으면 살아 있는 담당부터 확인」</li>
-    </ul>
-  </div>
-
 
   <div class="cards">
     <div class="card card--flag">
@@ -1069,13 +971,6 @@ P6  검증 <i>(스크립트)</i>  →  <b>evidence-pack.json</b>  <i>← 지난 
 
 
 <script>
-(function () {
-  // ?대본 (또는 ?script) 이 붙어 있으면 대본을 펼칩니다.
-  var q = location.search;
-  if (/[?&](대본|%EB%8C%80%EB%B3%B8|script|note)(=|&|$)/i.test(q)) {
-    document.body.classList.add('note-on');
-  }
-})();
 (function () {
   // 프롬프트 상자마다 복사 버튼을 답니다.
   // <i>로 감싼 설명(← 주석)은 복사에서 제외합니다.
