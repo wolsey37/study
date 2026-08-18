@@ -283,11 +283,11 @@
 
 <nav class="toc">
   <a class="toc__item" href="#bg"><span class="toc__n">배경</span><span class="toc__t">폴더와 절차</span><span class="toc__d">폴더에 무엇이 있나</span><span class="toc__time">1분</span></a>
-  <a class="toc__item" href="#s1"><span class="toc__n">01</span><span class="toc__t">개념과 차이</span><span class="toc__d">서브에이전트와 무엇이 다른지 · 두 방식 비교 예제</span><span class="toc__time">5분</span></a>
-  <a class="toc__item" href="#s2"><span class="toc__n">02</span><span class="toc__t">사용법</span><span class="toc__d">띄우기 · 목록에서 고르기 · 직접 말 걸기</span><span class="toc__time">4분</span></a>
-  <a class="toc__item" href="#s4"><span class="toc__n">03</span><span class="toc__t">위임 구조</span><span class="toc__d">필요할 때 한 명씩 · 결과는 SendMessage로</span><span class="toc__time">6분 · 핵심</span></a>
+  <a class="toc__item" href="#s1"><span class="toc__n">01</span><span class="toc__t">개념과 차이</span><span class="toc__d">서브에이전트와 무엇이 다른지 · 두 방식 비교 예제</span><span class="toc__time">4분</span></a>
+  <a class="toc__item" href="#s2"><span class="toc__n">02</span><span class="toc__t">사용법</span><span class="toc__d">띄우기 · 목록에서 고르기 · 직접 말 걸기</span><span class="toc__time">5분</span></a>
+  <a class="toc__item" href="#s4"><span class="toc__n">03</span><span class="toc__t">위임 구조</span><span class="toc__d">필요할 때 한 명씩 · 결과는 SendMessage로</span><span class="toc__time">5분 · 핵심</span></a>
   <a class="toc__item" href="#s5"><span class="toc__n">04</span><span class="toc__t">재사용</span><span class="toc__d">다음 주제부터는 /진행 한 줄</span><span class="toc__time">1분</span></a>
-  <a class="toc__item" href="#s6"><span class="toc__n">05</span><span class="toc__t">활용</span><span class="toc__d">되묻기 · 이어서 묻기</span><span class="toc__time">2분</span></a>
+  <a class="toc__item" href="#s6"><span class="toc__n">05</span><span class="toc__t">활용</span><span class="toc__d">되묻기 · 이어서 묻기</span><span class="toc__time">3분</span></a>
   <a class="toc__item" href="#s7"><span class="toc__n">마지막</span><span class="toc__t">문제 해결</span><span class="toc__d">증상별 대처</span><span class="toc__time">1분</span></a>
 </nav>
 
@@ -334,45 +334,12 @@
 
 <!-- 01 -->
 <section class="sec" id="s1">
-  <p class="sec__n">01 · 5분</p>
+  <p class="sec__n">01 · 4분</p>
   <h2 class="sec__h">개념과 차이</h2>
 
   <p class="sec__lead">
     한 문장으로: <strong>일 시킨 담당끼리 서로 말을 걸 수 있게 된 것</strong>입니다. 그게 전부입니다.
   </p>
-
-  <p class="sec__sub">설정 ① — 기능 켜기 <span style="font-weight:400;color:var(--ink-faint)">(기본은 꺼져 있습니다)</span></p>
-
-  <div class="prose">
-    <p>
-      아직 <strong>실험 기능</strong>이라 직접 켜야 합니다.
-      <strong>이걸 안 켜면 담당에 이름이 붙지 않고</strong>,
-      이름이 없으면 <strong>서로 부를 수도 없습니다.</strong>
-      Claude Code에 이렇게 말하면 됩니다.
-    </p>
-  </div>
-
-  <div class="say">
-    <p class="say__lab">설정을 이렇게 시킵니다</p>
-    <p class="say__box">에이전트 팀 기능을 켜줘.
-~/.claude/settings.json 의 env 에
-CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS 를 "1" 로 넣어줘.
-기존 설정은 지우지 말고 그 항목만 추가해줘.</p>
-  </div>
-
-  <div class="prose">
-    <p>직접 넣으면 <code>~/.claude/settings.json</code> 이 이렇게 됩니다.</p>
-  </div>
-
-<pre class="code" style="font-size:.82rem">{
-  "env": {
-    <b>"CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"</b>
-  }
-}</pre>
-
-  <div class="ok">
-    <b>껐다 켤 필요 없습니다.</b> 저장하면 <strong>돌고 있는 세션에 바로 반영</strong>됩니다.
-  </div>
 
   <div class="easy">
     <p class="easy__lab">쉽게 말하면</p>
@@ -584,12 +551,45 @@ CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS 를 "1" 로 넣어줘.
 
 <!-- 02 -->
 <section class="sec" id="s2">
-  <p class="sec__n">02 · 4분</p>
+  <p class="sec__n">02 · 5분</p>
   <h2 class="sec__h">사용법</h2>
   <p class="sec__lead">
         여기서는 <strong>담당 하나를 띄워 조작해 보는 것</strong>까지만 봅니다.
         전체를 도는 것은 03입니다. <strong>버튼은 없습니다.</strong> 전부 말로 시킵니다.
       </p>
+
+      <p class="sec__sub">설정 ① — 기능 켜기 <span style="font-weight:400;color:var(--ink-faint)">(기본은 꺼져 있습니다)</span></p>
+
+      <div class="prose">
+      <p>
+      아직 <strong>실험 기능</strong>이라 직접 켜야 합니다.
+      <strong>이걸 안 켜면 담당에 이름이 붙지 않고</strong>,
+      이름이 없으면 <strong>서로 부를 수도 없습니다.</strong>
+      Claude Code에 이렇게 말하면 됩니다.
+      </p>
+      </div>
+
+      <div class="say">
+      <p class="say__lab">설정을 이렇게 시킵니다</p>
+      <p class="say__box">에이전트 팀 기능을 켜줘.
+      ~/.claude/settings.json 의 env 에
+      CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS 를 "1" 로 넣어줘.
+      기존 설정은 지우지 말고 그 항목만 추가해줘.</p>
+      </div>
+
+      <div class="prose">
+      <p>직접 넣으면 <code>~/.claude/settings.json</code> 이 이렇게 됩니다.</p>
+      </div>
+
+      <pre class="code" style="font-size:.82rem">{
+      "env": {
+      <b>"CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"</b>
+      }
+      }</pre>
+
+      <div class="ok">
+      <b>껐다 켤 필요 없습니다.</b> 저장하면 <strong>돌고 있는 세션에 바로 반영</strong>됩니다.
+      </div>
 
       <p class="sec__sub">그냥 말로 시킵니다</p>
 
@@ -754,7 +754,7 @@ CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS 를 "1" 로 넣어줘.
 
 <!-- 03 -->
 <section class="sec" id="s4">
-  <p class="sec__n">03 · 핵심 · 6분</p>
+  <p class="sec__n">03 · 핵심 · 5분</p>
   <h2 class="sec__h">위임 구조</h2>
 
   <p class="sec__lead">
@@ -916,7 +916,7 @@ scout의 금지 사항이 <b>이 답에도 그대로</b> 걸립니다.</i></p>
 
 <!-- 05 -->
 <section class="sec" id="s6">
-  <p class="sec__n">05 · 2분</p>
+  <p class="sec__n">05 · 3분</p>
   <h2 class="sec__h">활용</h2>
 
   <p class="sec__lead">
@@ -979,6 +979,34 @@ scout의 금지 사항이 <b>이 답에도 그대로</b> 걸립니다.</i></p>
 
   </div>
 
+  <p class="sec__sub">이 구조를 다른 일에 옮기면</p>
+
+  <div class="prose">
+    <p>
+      <strong>논문에만 쓰는 구조가 아닙니다.</strong>
+      제품을 모아 성분을 따지는 일도 <strong>같은 모양</strong>입니다 —
+      <strong>앞사람이 모은 원문을 뒷사람이 판정</strong>하고,
+      판정하다 <strong>애매하면 앞사람에게 되물어야</strong> 하니까요.
+    </p>
+  </div>
+
+  <div class="diagram">① <b>collector</b> 를 띄운다  —  올리브영 베스트 수집
+   제품명 · 가격 · <u>전성분 원문</u>
+<i>   → SendMessage 로 목록이 온다</i>
+
+② <b>analyzer</b> 를 띄운다  —  1%선 · 핵심 성분 판정
+
+   <b>판정이 애매한 제품마다</b>
+     analyzer ──→ <b>collector</b>  「이 제품 전성분 원문 그대로 줘」
+     analyzer ←── <b>collector</b>  「(수집 당시 원문 그대로)」
+
+<i>   collector 는 ①에서 끝났지만, 이름을 부르면 깨어납니다</i></div>
+
+  <div class="ok">
+    <b>서브에이전트였다면</b> 원문을 다시 보려고 <strong>수집부터 새로 돌려야</strong> 합니다.
+    <strong>되물을 일이 있으니 팀</strong>입니다 — 판단은 주제가 아니라 <strong>이 한 가지</strong>로 합니다.
+  </div>
+
   <p class="quote quote--warn">
     <strong>반대로, 이런 일에는 팀이 필요 없습니다.</strong>
     앞사람 결과를 뒷사람에게 <strong>넘기기만 하면 되는 일</strong>,
@@ -999,7 +1027,7 @@ scout의 금지 사항이 <b>이 답에도 그대로</b> 걸립니다.</i></p>
     <div class="card card--flag">
       <div class="card__top"><span class="card__tag">증상</span><h3 class="card__h">담당 목록이 아예 안 보입니다</h3></div>
       <p>
-        <strong>실험 기능이 꺼져 있는 것입니다.</strong> 01의 「설정 ① — 기능 켜기」를 다시 하십시오.
+        <strong>실험 기능이 꺼져 있는 것입니다.</strong> 02의 「설정 ① — 기능 켜기」를 다시 하십시오.
         켜져 있는데도 안 뜨면 <strong>일이 너무 작아서</strong> Claude가 혼자 처리한 것입니다.
         「<strong>팀원으로 띄워줘</strong>」라고 명시하십시오.
       </p>
@@ -1056,7 +1084,7 @@ scout의 금지 사항이 <b>이 답에도 그대로</b> 걸립니다.</i></p>
   <h2 class="prep__h">지난 시간 것이 갖춰져 있어야 합니다</h2>
 
   <p class="prep__note">
-    <strong>설정 두 가지</strong>는 앞에 있습니다 — <strong>기능 켜기는 01</strong>, <strong>창 나누기는 02</strong>.
+    <strong>설정 두 가지</strong>는 앞에 있습니다 — <strong>기능 켜기와 창 나누기</strong>, 둘 다 <strong>02</strong>에 있습니다.
     여기 적는 것은 <strong>그 밖에 필요한 것들</strong>입니다.
   </p>
 
