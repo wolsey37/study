@@ -561,34 +561,35 @@
       <p class="sec__sub">설정 ① — 기능 켜기 <span style="font-weight:400;color:var(--ink-faint)">(기본은 꺼져 있습니다)</span></p>
 
       <div class="prose">
-      <p>
-      아직 <strong>실험 기능</strong>이라 직접 켜야 합니다.
-      <strong>이걸 안 켜면 담당에 이름이 붙지 않고</strong>,
-      이름이 없으면 <strong>서로 부를 수도 없습니다.</strong>
-      Claude Code에 이렇게 말하면 됩니다.
-      </p>
+        <p>
+          아직 <strong>실험 기능</strong>이라 직접 켜야 합니다.
+          <strong>이걸 안 켜면 담당에 이름이 붙지 않고</strong>,
+          이름이 없으면 <strong>서로 부를 수도 없습니다.</strong>
+          <strong>둘 중 아무 쪽이나</strong> 하시면 됩니다.
+        </p>
       </div>
 
-      <div class="say">
-      <p class="say__lab">설정을 이렇게 시킵니다</p>
-      <p class="say__box">에이전트 팀 기능을 켜줘.
-      ~/.claude/settings.json 의 env 에
-      CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS 를 "1" 로 넣어줘.
-      기존 설정은 지우지 말고 그 항목만 추가해줘.</p>
-      </div>
+      <div class="duo">
+        <div class="say">
+          <p class="say__lab">말로 시키기</p>
+          <p class="say__box">에이전트 팀 기능을 켜줘.
+~/.claude/settings.json 의 env 에
+CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS 를 "1" 로 넣어줘.
+기존 설정은 지우지 말고 그 항목만 추가해줘.</p>
+        </div>
 
-      <div class="prose">
-      <p>직접 넣으면 <code>~/.claude/settings.json</code> 이 이렇게 됩니다.</p>
+        <div class="say">
+          <p class="say__lab">직접 넣기 — ~/.claude/settings.json</p>
+<pre class="code" style="font-size:.82rem">{
+  "env": {
+    <b>"CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"</b>
+  }
+}</pre>
+        </div>
       </div>
-
-      <pre class="code" style="font-size:.82rem">{
-      "env": {
-      <b>"CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"</b>
-      }
-      }</pre>
 
       <div class="ok">
-      <b>껐다 켤 필요 없습니다.</b> 저장하면 <strong>돌고 있는 세션에 바로 반영</strong>됩니다.
+        <b>껐다 켤 필요 없습니다.</b> 저장하면 <strong>돌고 있는 세션에 바로 반영</strong>됩니다.
       </div>
 
       <p class="sec__sub">그냥 말로 시킵니다</p>
