@@ -146,7 +146,7 @@
   .quote--o { border-color:var(--green); background:var(--green-soft); }
   .quote--warn { border-color:var(--amber); background:var(--amber-soft); }
   mark { background:color-mix(in srgb, var(--clay) 26%, transparent); color:inherit; padding:.05em .18em; border-radius:2px; }
-  code { font-family:var(--mono); font-size:.86em; padding:.1em .35em; background:var(--green-soft); border-radius:2px; }
+  code { font-family:var(--mono); font-size:.86em; padding:.1em .35em; background:var(--green-soft); border-radius:2px; overflow-wrap:anywhere; }
 
   .tw { overflow-x:auto; }
   table { width:100%; min-width:30rem; border-collapse:collapse; font-size:.95rem; }
@@ -320,11 +320,10 @@
 
   <div class="prose">
     <p>
-      지난 시간에 만든 폴더가 <code>pubmed-workshop</code> 입니다.
-      이번 주차 자료는 그것을 복사해 <code>pubmed-workshop-agent-teams</code> 로 씁니다.
-      그 안에 <strong>담당 둘</strong>과 <strong>절차를 적어둔 문서</strong>(<code>pubmed-evidence</code>),
-      <strong>검사기</strong>가 들어 있습니다.
-      「마그네슘 수면」 한 줄이면 <strong>이 순서</strong>가 돕니다.
+      지난 시간에 만든 <code>pubmed-workshop</code> 폴더를 복사해
+      <code>pubmed-workshop-agent-teams</code>로 씁니다.
+      <strong>담당 둘</strong>과 <strong>절차 문서</strong>(<code>pubmed-evidence</code>),
+      <strong>검사기</strong>가 그대로 들어 있습니다.
     </p>
   </div>
 
@@ -839,7 +838,6 @@ CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS 를 "1" 로 넣어줘.
       <p class="stuck">
         <b>그래서 「종료시키기」를 신경 쓰실 필요가 없습니다.</b>
         <strong>끝나는 것이 기본이고 부르는 것이 예외</strong>입니다.
-        끝난 담당은 <strong>부를 때까지 아무 비용도 쓰지 않습니다.</strong>
       </p>
 
 </section>
@@ -979,16 +977,6 @@ scout의 금지 사항이 <b>이 답에도 그대로</b> 걸립니다.</i></p>
 <section class="sec" id="s5">
   <p class="sec__n">04 · 1분</p>
   <h2 class="sec__h">다음 주제부터는 한 줄입니다</h2>
-
-      <div class="diagram">pubmed-workshop-agent-teams/
-└── .claude/
-    ├── agents/          <i>지난 시간</i>
-    │   ├── evidence-scout.md
-    │   └── abstract-miner.md
-    ├── skills/          <i>지난 시간</i>
-    │   └── pubmed-evidence/SKILL.md
-    └── commands/
-        └── <b>진행.md</b>        ← <u>오늘 더한 것. 이거 하나입니다</u></div>
 
       <div class="say">
         <p class="say__lab">이 한 줄이면 됩니다</p>
@@ -1211,16 +1199,10 @@ scout의 금지 사항이 <b>이 답에도 그대로</b> 걸립니다.</i></p>
   </p>
 
   <p>
-    <strong>그런데도 팀으로 띄우는 이유가 있습니다.</strong>
-    채굴하는 동안 <code>miner</code>가 <strong>PMID마다 <code>scout</code>에게 되묻습니다</strong> —
-    「이 논문 intervention을 뭐로 판정했나」.
-    <strong>서브에이전트였다면 scout은 이미 사라져</strong> 물어볼 상대가 없습니다.
-  </p>
-
-  <p>
-    <strong>이름이 곧 그 통로입니다.</strong> 끝났어도 이름을 부르면
-    <strong>그 대화 그대로 깨어나</strong> 자기가 뭘 판정했는지 기억한 채 답합니다.
-    <strong>사람도 같은 방법으로</strong> 이어서 물을 수 있습니다.
+    <strong>그런데도 팀으로 띄우는 이유는 이름입니다.</strong>
+    끝난 담당도 이름을 부르면 <strong>그 대화 그대로 깨어나</strong>
+    자기가 뭘 판정했는지 기억한 채 답합니다 — <code>miner</code>가 되묻는 것도,
+    <strong>사람이 이어서 묻는 것도</strong> 그 통로를 씁니다.
   </p>
 
 </footer>
