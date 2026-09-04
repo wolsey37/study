@@ -6,159 +6,225 @@
 <title>상담카드 한 장, 어디까지 AI에게 맡길 수 있을까? (v2)</title>
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600,700&display=swap">
 <style>
 :root{
-  --bg:#050508;--surface:rgba(255,255,255,.04);--ink:#fff;--soft:#B4B4C0;--muted:#6E6E7C;--line:rgba(255,255,255,.11);
-  --pink:#FF7BA8;--pink-soft:#FFB3CC;--blue:#7CA0FF;--blue-soft:#A9D4FF;--green:#7EE8B0;--green-soft:#C8F5DC;
-  --iri:linear-gradient(100deg,#22D3EE 0%,#4D7CFF 34%,#A855F7 66%,#FF4D9D 100%);
+  --bg:#000;--ink:#fff;--soft:#C9C9CF;--muted:#8A8A93;--dim:#5A5A63;--line:rgba(255,255,255,.14);
+  --pink:#FF7BA8;--pink-soft:#FFB3CC;--blue:#7CA0FF;--blue-soft:#A9D4FF;--green:#7EE8B0;--green-soft:#C8F5DC;--accent:#4D7CFF;
+  --chip-dark:#2A2A2E;--chip-light:#D8D8DC;
+  --display:"Clash Display","Pretendard","Apple SD Gothic Neo",system-ui,sans-serif;
   --font:"Pretendard","Apple SD Gothic Neo",system-ui,sans-serif;
+  --r:.9cqw;
 }
 *{box-sizing:border-box}
-html,body{margin:0;background:#000;color:var(--ink);font-family:var(--font);-webkit-font-smoothing:antialiased}
+html,body{margin:0;background:#0a0a0a;color:var(--ink);font-family:var(--font);-webkit-font-smoothing:antialiased}
 .deck{max-width:1920px;margin:0 auto;padding:2vw 1vw;display:flex;flex-direction:column;gap:2vw;container-type:inline-size}
-.slide{position:relative;width:100%;aspect-ratio:16/9;background:var(--bg);border-radius:2.4cqw;padding:5.4cqw 7cqw 4.4cqw;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 0 0 1px rgba(255,255,255,.06),0 3cqw 6cqw rgba(0,0,0,.6)}
-.slide::before{content:"";position:absolute;inset:0 0 auto 0;height:.35cqw;background:var(--iri);opacity:.9}
-.glow{position:absolute;width:60cqw;height:60cqw;border-radius:50%;filter:blur(9cqw);opacity:.22;pointer-events:none}
-.glow.pk{background:#FF4D9D;right:-25cqw;top:-25cqw} .glow.bl{background:#4D7CFF;left:-28cqw;bottom:-30cqw} .glow.gr{background:#3FCF8E;right:-28cqw;bottom:-30cqw}
-.eyebrow{display:flex;align-items:center;gap:1.2cqw;font-size:1.05cqw;letter-spacing:.14em;color:var(--muted);position:relative}
-.eyebrow .part{background:var(--iri);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:700}
-.eyebrow .rule{flex:1;height:1px;background:var(--line)}
-h2{font-size:4.1cqw;font-weight:800;letter-spacing:-.03em;line-height:1.15;margin:.9cqw 0 1.5cqw;word-break:keep-all;position:relative}
-.pageno{position:absolute;right:3.2cqw;bottom:2.6cqw;font-size:1.1cqw;color:var(--muted);letter-spacing:.1em}
-.pull{margin-top:auto;padding-top:1.4cqw;text-align:center;font-size:2.4cqw;font-weight:800;letter-spacing:-.02em;word-break:keep-all;position:relative}
-.pull em{font-style:normal;background:var(--iri);-webkit-background-clip:text;background-clip:text;color:transparent}
-.pull em.dim{background:none;color:rgba(255,255,255,.45)}
-.body{flex:1;min-height:0;display:flex;flex-direction:column;position:relative}
-/* 공용 조각 */
-.shot{border:1px solid var(--line);border-radius:1.2cqw;overflow:hidden;background:#1e1e1e;display:flex;flex-direction:column;min-height:0}
-.shot .cap{font-size:1cqw;color:var(--muted);padding:.65cqw 1.1cqw;border-bottom:1px solid var(--line);letter-spacing:.02em;flex:0 0 auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.shot img{display:block;width:100%;height:100%;flex:1;min-height:0;object-fit:contain;object-position:top;background:#1e1e1e}
-.shot.light img{background:#fff}
-.num{display:flex;flex-direction:column;gap:.2cqw}
-.num b{font-size:5.6cqw;font-weight:800;letter-spacing:-.04em;line-height:1;background:var(--iri);-webkit-background-clip:text;background-clip:text;color:transparent}
-.num b.plain{background:none;color:#fff}
-.num span{font-size:1.5cqw;color:var(--soft);word-break:keep-all}
-.bubble{position:relative;border-radius:1.6cqw;padding:1.8cqw 2.2cqw;font-size:2.3cqw;font-weight:700;line-height:1.4;letter-spacing:-.02em;word-break:keep-all}
-.bubble::after{content:"";position:absolute;bottom:-1.1cqw;left:3cqw;border:1.2cqw solid transparent;border-bottom:0}
-.bubble.pk{background:rgba(255,77,157,.16);border:1px solid rgba(255,123,168,.45)} .bubble.pk::after{border-top-color:rgba(255,123,168,.45)}
-.bubble.bl{background:rgba(77,124,255,.16);border:1px solid rgba(140,190,255,.5)} .bubble.bl::after{border-top-color:rgba(140,190,255,.5)}
-.bubble.wh{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.18)} .bubble.wh::after{border-top-color:rgba(255,255,255,.18)}
-.bubble .who{display:block;font-size:1.05cqw;font-weight:600;letter-spacing:.12em;color:var(--muted);margin-bottom:.8cqw}
+.slide{position:relative;width:100%;aspect-ratio:16/9;background:var(--bg);padding:4.8cqw 9cqw 8cqw;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 0 0 1px rgba(255,255,255,.08)}
+.slide > *{position:relative}
+.glow{position:absolute;width:56cqw;height:56cqw;border-radius:50%;filter:blur(9cqw);opacity:.16;pointer-events:none}
+.glow.bl{background:#3D5BFF;right:-26cqw;top:-28cqw} .glow.pk{background:#FF4D9D;right:-26cqw;top:-28cqw} .glow.gr{background:#3FCF8E;right:-26cqw;bottom:-30cqw}
+/* 타이포 */
+.kicker{font-family:var(--display);font-weight:600;font-size:1.2cqw;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:1.3cqw}
+.kicker .n{font-size:2.3cqw;font-weight:700;color:var(--dim);letter-spacing:0;margin-right:.6cqw;vertical-align:-.15cqw}
+h2{font-family:var(--font);font-size:4.3cqw;font-weight:800;letter-spacing:-.035em;line-height:1.1;margin:0 0 2cqw;word-break:keep-all}
+.sub{font-size:1.75cqw;font-weight:700;color:#fff;margin:0 0 .45cqw;letter-spacing:-.01em}
+.desc{font-size:1.42cqw;line-height:1.5;color:var(--soft);word-break:keep-all}
+.desc strong{color:#fff;font-weight:600}
+.meta{font-size:1.12cqw;color:var(--muted);margin-top:.7cqw}
+.num{font-family:var(--display);font-weight:700;font-size:5.8cqw;letter-spacing:-.03em;line-height:1;color:#fff}
+.num.gray{color:var(--dim)} .num.acc{color:var(--blue-soft)}
+.num .sp{display:inline-block;width:.22em}
+.numl{font-size:1.4cqw;color:var(--soft);margin-top:.6cqw;word-break:keep-all}
+.big{font-size:2.6cqw;font-weight:400;line-height:1.35;letter-spacing:-.02em;color:#fff;word-break:keep-all}
+.big strong{font-weight:700}
+.pull{margin-top:auto;padding-top:1.2cqw;font-size:2.2cqw;font-weight:700;letter-spacing:-.02em;word-break:keep-all;color:var(--soft)}
+.pull em{font-style:normal;color:#fff}
+.pull em.acc{color:var(--blue-soft)}
+/* 칩 · 페이지 */
+.chips{position:absolute;left:9cqw;bottom:3.4cqw;display:flex;gap:.6cqw;align-items:center}
+.chip{font-size:1.12cqw;font-weight:500;padding:.55cqw 1cqw;line-height:1;border-radius:.3cqw;background:var(--chip-dark);color:#fff}
+.chip.light{border-radius:99px;background:var(--chip-light);color:#111;padding:.55cqw 1.1cqw}
+.pageno{position:absolute;right:4cqw;bottom:3.7cqw;font-family:var(--display);font-size:1.15cqw;color:var(--dim);letter-spacing:.08em}
+/* 이미지 */
+.fig{display:flex;flex-direction:column;min-height:0;min-width:0}
+.fig .img{flex:1;min-height:0;overflow:hidden;background:#111;display:flex;align-items:flex-start;justify-content:center}
+.fig .img img{display:block;width:100%;height:100%;object-fit:cover;object-position:top}
+.fig .img.contain img{object-fit:contain;object-position:top left;background:#111}
+.fig .img.paper{background:#fff}
+.fig .cap{margin-top:1cqw}
+.hero02{position:absolute;right:4cqw;top:6.5cqw;bottom:5.2cqw;display:flex;flex-direction:column;align-items:flex-start;gap:.7cqw;z-index:1}
+.hero02 img{display:block;height:calc(100% - 2.3cqw);width:auto;background:#fff}
+.hero02 .desc{font-size:1.1cqw;line-height:1.45;white-space:nowrap}
+/* 레이아웃 */
+.cols{display:grid;gap:2.4cqw;flex:1;min-height:0;align-items:stretch}
+.cols.c2{grid-template-columns:1fr 1fr} .cols.c3{grid-template-columns:1fr 1fr 1fr}
+.cols.side{grid-template-columns:1.25fr 1fr}
+.col{min-width:0;display:flex;flex-direction:column}
+.stack{display:flex;flex-direction:column;justify-content:space-between;padding:.5cqw 0}
+/* 말풍선 */
+.bubble{position:relative;border-radius:var(--r);padding:1.6cqw 2cqw;font-size:2.2cqw;font-weight:700;line-height:1.4;letter-spacing:-.02em;word-break:keep-all;border:1px solid var(--line);background:rgba(255,255,255,.05)}
+.bubble::after{content:"";position:absolute;bottom:-1cqw;left:2.6cqw;border:1cqw solid transparent;border-bottom:0;border-top-color:rgba(255,255,255,.16)}
+.bubble.pk{background:rgba(255,77,157,.10);border-color:rgba(255,123,168,.42)} .bubble.pk::after{border-top-color:rgba(255,123,168,.42)}
+.bubble.bl{background:rgba(77,124,255,.12);border-color:rgba(140,190,255,.45)} .bubble.bl::after{border-top-color:rgba(140,190,255,.45)}
+.bubble .who{display:block;font-size:1.05cqw;font-weight:500;letter-spacing:.08em;color:var(--muted);margin-bottom:.7cqw}
 .bubble strong{color:var(--pink-soft)} .bubble.bl strong{color:var(--blue-soft)}
-.ico{font-size:5cqw;line-height:1}
-.chip{display:inline-block;border:1px solid rgba(255,255,255,.22);border-radius:99px;padding:.5cqw 1.3cqw;font-size:1.15cqw;color:#fff;background:rgba(0,0,0,.35);letter-spacing:.02em}
+.ico{font-size:4.6cqw;line-height:1}
+.bubble .vd{display:block;color:var(--muted);line-height:1;padding:.12cqw 0 .12cqw .35cqw;letter-spacing:.1em}
 /* 막대 */
-.bar{display:flex;width:100%;height:2.6cqw;border-radius:.8cqw;overflow:hidden;gap:.15cqw}
-.bar i{display:flex;align-items:center;justify-content:center;font-style:normal;font-size:1.2cqw;font-weight:700;color:#0b0b0d}
+.bar{display:flex;width:100%;height:2.2cqw;gap:.2cqw;border-radius:.4cqw;overflow:hidden}
+.bar i{display:flex;align-items:center;justify-content:center;font-style:normal;font-family:var(--display);font-size:1.15cqw;font-weight:700;color:#0b0b0d}
 .bar .ok{background:#7EE8B0} .bar .chk{background:#7CA0FF} .bar .cut{background:#FF7BA8}
-.legend{display:flex;gap:1.6cqw;font-size:1.2cqw;color:var(--soft);margin-top:.7cqw;flex-wrap:wrap}
-.legend i{display:inline-block;width:.9cqw;height:.9cqw;border-radius:.2cqw;margin-right:.4cqw;vertical-align:-.05cqw}
+.legend{display:flex;gap:1.6cqw;font-size:1.15cqw;color:var(--soft);margin-top:.7cqw;flex-wrap:wrap}
+.legend i{display:inline-block;width:.85cqw;height:.85cqw;border-radius:.15cqw;margin-right:.4cqw;vertical-align:-.05cqw}
 /* 표지 */
-.cover{justify-content:flex-end}
-.cover .kicker{font-size:3.2cqw;font-weight:700;color:rgba(255,255,255,.38);margin-bottom:.6cqw;position:relative}
-.cover h1{font-size:5.9cqw;font-weight:800;letter-spacing:-.035em;line-height:1.08;margin:0 0 1.6cqw;word-break:keep-all;position:relative}
-.cover .sub{border-left:.3cqw solid transparent;border-image:var(--iri) 1;padding-left:1.4cqw;font-size:2.1cqw;color:var(--soft);margin-bottom:5cqw;position:relative}
-.cover .card-bg{position:absolute;right:-6cqw;top:-4cqw;width:44cqw;transform:rotate(-8deg);opacity:.16;border-radius:1cqw;filter:saturate(.4)}
-.pills{display:flex;gap:.8cqw;position:absolute;left:7cqw;bottom:4.4cqw}
-.pill{border:1px solid var(--line);border-radius:99px;padding:.45cqw 1.2cqw;font-size:1.05cqw;color:var(--soft);letter-spacing:.04em}
-/* 02 */
-.g2{display:grid;grid-template-columns:20.5cqw 1fr;gap:3.4cqw;flex:1;min-height:0;align-items:stretch}
-.g2 .shot{align-self:start;max-height:100%}
-.g2 .shot img{flex:0 0 auto;height:auto;width:107%;margin-left:-3.5%;object-fit:unset}
-.g2 .side{display:flex;flex-direction:column;justify-content:center;gap:2.2cqw;min-width:0}
-/* 03 */
-.boxes{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.4cqw;margin-top:1.4cqw}
-.mbox{border-radius:1.2cqw;padding:1.5cqw 1.4cqw;border:1px solid var(--line);background:linear-gradient(160deg,rgba(255,255,255,.09),rgba(255,255,255,.02));display:flex;flex-direction:column;gap:.5cqw;position:relative;overflow:hidden}
-.mbox::before{content:"";position:absolute;left:0;top:0;bottom:0;width:.6cqw;background:var(--c,#7CA0FF)}
-.mbox b{font-size:2cqw;letter-spacing:-.02em}
+.cover{padding-top:6cqw}
+.cover .year{font-family:var(--display);font-weight:700;font-size:6cqw;color:var(--dim);letter-spacing:-.02em;line-height:1;margin-bottom:.6cqw}
+.cover h1{font-weight:800;font-size:6.2cqw;letter-spacing:-.04em;line-height:1.05;margin:0 0 2cqw;word-break:keep-all;max-width:60%}
+.cover .lead{font-size:1.9cqw;color:var(--soft);max-width:50%;line-height:1.5;word-break:keep-all}
+.cover .art{position:absolute;right:0;top:0;height:100%;width:34%;object-fit:cover;object-position:left center}
+.tex{position:absolute;inset:-4cqw;background:url(assets/ax-section-dark.png) center/cover no-repeat;opacity:.9;pointer-events:none;filter:blur(1.2cqw)}
+.tex::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#000 0%,rgba(0,0,0,.85) 45%,rgba(0,0,0,.35) 100%)}
+/* 03 약 상자 */
+.boxes{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.4cqw;margin-top:1.6cqw}
+.mbox{border-radius:var(--r);padding:1.4cqw 1.4cqw 1.4cqw 2cqw;border:1px solid var(--line);background:rgba(255,255,255,.04);display:flex;flex-direction:column;gap:.4cqw;position:relative;overflow:hidden}
+.mbox::before{content:"";position:absolute;left:0;top:0;bottom:0;width:.5cqw;background:var(--c,#7CA0FF)}
+.mbox b{font-size:1.75cqw;letter-spacing:-.03em;line-height:1.2;min-height:2.4em}
 .mbox span{font-size:1.25cqw;color:var(--soft)}
 .mbox .same{font-size:1.05cqw;color:var(--muted)}
-.g31{display:grid;grid-template-columns:1.6fr 1fr;gap:3cqw;align-items:center;flex:1;min-height:0}
+.boxes .mbox b{min-height:0;white-space:nowrap}
+.boxes .mbox{padding-top:1.7cqw;padding-bottom:1.7cqw}
 /* 04 */
-.vs{display:grid;grid-template-columns:1fr auto 1fr;gap:2cqw;align-items:center;margin-top:1cqw}
-.vs .neq{font-size:7cqw;font-weight:800;color:rgba(255,255,255,.35);line-height:1}
-.strike{text-decoration:line-through;text-decoration-color:rgba(255,123,168,.95);text-decoration-thickness:.14em}
-.stat{display:flex;gap:3cqw;margin-top:2.4cqw;align-items:flex-end}
+.vs{display:grid;grid-template-columns:1fr auto 1fr;gap:2cqw;align-items:center}
+.vs .neq{font-family:var(--display);font-size:6.5cqw;font-weight:700;color:var(--dim);line-height:1}
 /* 05 흐름 */
-.flow{display:grid;grid-template-columns:1fr 3cqw 1fr 3cqw 1fr 3cqw 1fr;align-items:stretch;flex:1;min-height:0;margin-top:.4cqw}
-.fc{border:1px solid var(--line);border-radius:1.6cqw;background:var(--surface);padding:2.2cqw 1.6cqw 1.6cqw;display:flex;flex-direction:column;align-items:center;text-align:center;gap:1cqw;min-width:0;justify-content:center}
-.fc.man{background:linear-gradient(170deg,rgba(80,220,150,.13),rgba(80,220,150,.02));border-color:rgba(120,230,170,.42)}
-.fc.sci{background:linear-gradient(170deg,rgba(255,77,157,.17),rgba(255,120,90,.04));border-color:rgba(255,123,168,.45)}
-.fc.cow{background:linear-gradient(170deg,rgba(34,211,238,.14),rgba(77,124,255,.10));border-color:rgba(140,190,255,.45)}
-.fc .ico{font-size:6.4cqw}
-.fc .st{font-size:1.1cqw;letter-spacing:.14em;color:var(--muted)}
-.fc .say{font-size:2.3cqw;font-weight:800;letter-spacing:-.025em;line-height:1.22;word-break:keep-all;min-height:2.44em;display:flex;align-items:center}
+.flow{display:grid;grid-template-columns:1fr 2.8cqw 1fr 2.8cqw 1fr 2.8cqw 1fr;align-items:stretch;flex:1;min-height:0}
+.fc{border:1px solid var(--line);border-radius:var(--r);background:rgba(255,255,255,.035);padding:2cqw 1.5cqw 1.5cqw;display:flex;flex-direction:column;align-items:center;text-align:center;gap:.9cqw;min-width:0;justify-content:flex-start}
+.fc.man{border-color:rgba(120,230,170,.4);background:rgba(80,220,150,.07)}
+.fc.sci{border-color:rgba(255,123,168,.42);background:rgba(255,77,157,.08)}
+.fc.cow{border-color:rgba(140,190,255,.42);background:rgba(77,124,255,.09)}
+.fc .ico{font-size:5.6cqw}
+.fc .st{font-family:var(--display);font-size:1.1cqw;letter-spacing:.14em;color:var(--muted)}
+.fc .say{font-size:2.15cqw;font-weight:800;letter-spacing:-.025em;line-height:1.22;word-break:keep-all;min-height:2.44em;display:flex;align-items:center}
 .fc.man .say{color:var(--green-soft)} .fc.sci .say{color:var(--pink-soft)} .fc.cow .say{color:var(--blue-soft)}
-.fc .more{font-size:1.5cqw;line-height:1.5;color:var(--soft);word-break:keep-all}
+.fc .more{font-size:1.42cqw;line-height:1.5;color:var(--soft);word-break:keep-all;min-height:3em;margin-top:auto}
 .fc .more strong{color:#fff}
-.fc .ex{border:1px solid var(--line);border-radius:.9cqw;background:rgba(0,0,0,.35);padding:.8cqw 1cqw;font-size:1.5cqw;font-weight:700}
-.fc .tag{padding-top:.4cqw;font-size:1.15cqw;color:var(--muted)}
+.fc .ex{border:1px solid var(--line);border-radius:.6cqw;background:rgba(0,0,0,.4);padding:.55cqw .9cqw;font-size:1.05cqw;font-weight:600;color:var(--soft);white-space:nowrap;max-width:100%}
+.fc .tag{padding-top:.3cqw;font-size:1.1cqw;color:var(--muted)}
 .fc.sci .tag{color:var(--pink-soft)} .fc.cow .tag{color:var(--blue-soft)} .fc.man .tag{color:#9FEBC3}
-.farrow{display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.4);font-size:2.6cqw}
-/* 06 */
+.farrow{display:flex;align-items:center;justify-content:center;color:var(--dim);font-size:2.4cqw}
+/* 06 도구 */
 .tools{display:grid;grid-template-columns:1fr 1fr;gap:2.4cqw;flex:1;min-height:0}
-.tool{border-radius:1.8cqw;border:1px solid var(--line);padding:2.4cqw 2.6cqw;display:flex;flex-direction:column;gap:1.2cqw;min-width:0}
-.tool.pk{background:linear-gradient(160deg,rgba(255,77,157,.16),rgba(255,120,90,.04));border-color:rgba(255,123,168,.42)}
-.tool.bl{background:linear-gradient(160deg,rgba(34,211,238,.13),rgba(77,124,255,.10));border-color:rgba(140,190,255,.45)}
-.tool .head{display:flex;align-items:center;gap:1.6cqw}
-.tool .head .ico{font-size:5.6cqw}
-.tool .name{font-size:3cqw;font-weight:800;letter-spacing:-.03em;line-height:1.1}
-.tool .role{font-size:1.5cqw;margin-top:.3cqw}
+.tool{border-radius:var(--r);border:1px solid var(--line);padding:2.2cqw 2.4cqw 2.6cqw;display:flex;flex-direction:column;gap:1.1cqw;min-width:0}
+.tool.pk{background:rgba(255,77,157,.08);border-color:rgba(255,123,168,.4)}
+.tool.bl{background:rgba(77,124,255,.09);border-color:rgba(140,190,255,.42)}
+.tool .head{display:flex;align-items:center;gap:1.4cqw}
+.tool .head .ico{font-size:5cqw}
+.tool .name{font-size:2.8cqw;font-weight:800;letter-spacing:-.03em;line-height:1.1}
+.tool .role{font-size:1.45cqw;margin-top:.3cqw}
 .tool.pk .role{color:var(--pink-soft)} .tool.bl .role{color:var(--blue-soft)}
-.tool .one{font-size:1.75cqw;line-height:1.5;color:var(--soft);word-break:keep-all}
+.tool .one{font-size:1.6cqw;line-height:1.5;color:var(--soft);word-break:keep-all;min-height:3em}
 .tool .one strong{color:#fff}
-.tool .nums{display:flex;gap:2.6cqw;margin-top:auto}
-.tool .cond{font-size:1.05cqw;color:var(--muted);line-height:1.5}
+.tool .nums{display:flex;gap:2.6cqw;margin-top:.6cqw}
+.tool .feat{display:flex;flex-direction:column;gap:1cqw;margin-top:.9cqw}
+.tool .feat .f{display:flex;align-items:center;gap:.9cqw;font-size:1.5cqw;font-weight:600;letter-spacing:-.01em;word-break:keep-all;line-height:1.3}
+.tool .feat .f i{font-style:normal;font-size:1.9cqw;width:2.4cqw;text-align:center;flex:none}
+.tool .cond{font-size:1.05cqw;color:var(--muted);line-height:1.5;margin-top:auto;padding-top:1.2cqw}
 /* 07·08 */
-.g72{display:grid;grid-template-columns:1.35fr 1fr;gap:2.6cqw;flex:1;min-height:0}
-.g72 .side{display:flex;flex-direction:column;justify-content:center;gap:1.8cqw;min-width:0}
-.mini{display:flex;align-items:center;gap:1.2cqw;font-size:1.7cqw;color:var(--soft)}
-.mini .ico{font-size:3.2cqw} .mini b{color:#fff}
-.mini .ar{color:rgba(255,255,255,.4);font-size:2.4cqw}
-.tl{display:flex;flex-direction:column;gap:0}
-.tl .it{display:grid;grid-template-columns:3.2cqw 1fr;gap:1.2cqw;align-items:start;position:relative;padding-bottom:1.3cqw}
-.tl .it:not(:last-child)::before{content:"";position:absolute;left:1.55cqw;top:3.2cqw;bottom:0;width:2px;background:rgba(140,190,255,.35)}
-.tl .dot{width:3.2cqw;height:3.2cqw;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.7cqw;background:rgba(77,124,255,.2);border:1px solid rgba(140,190,255,.5)}
-.tl .tx{font-size:1.75cqw;line-height:1.45;color:var(--soft);padding-top:.5cqw;word-break:keep-all}
+.g72{display:grid;grid-template-columns:1.3fr 1fr;gap:2.4cqw;flex:1;min-height:0}
+.g72 .side{display:flex;flex-direction:column;justify-content:flex-start;gap:1.2cqw;min-width:0}
+.mini{display:flex;align-items:center;gap:1.1cqw;font-size:1.6cqw;color:var(--soft);word-break:keep-all}
+.mini .ico{font-size:3cqw;flex:0 0 auto} .mini b{color:#fff;white-space:nowrap} .mini>span:last-child{min-width:0}
+.mini .ar{color:var(--dim);font-size:2.2cqw}
+.tl{display:flex;flex-direction:column}
+.tl .it{display:grid;grid-template-columns:3.2cqw 1fr;gap:1.2cqw;align-items:start;position:relative;padding-bottom:1.2cqw}
+.tl .it:not(:last-child)::before{content:"";position:absolute;left:1.55cqw;top:3.2cqw;bottom:0;width:2px;background:rgba(140,190,255,.3)}
+.tl .dot{width:3.2cqw;height:3.2cqw;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.6cqw;background:rgba(77,124,255,.16);border:1px solid rgba(140,190,255,.45)}
+.tl .tx{font-size:1.65cqw;line-height:1.45;color:var(--soft);padding-top:.5cqw;word-break:keep-all}
 .tl .tx b{color:#fff}
 /* 09 */
-.g9{display:grid;grid-template-columns:1.15fr 1fr;gap:3cqw;flex:1;min-height:0}
-.rows{display:flex;flex-direction:column;gap:.8cqw;margin-top:1.4cqw}
-.row{display:grid;grid-template-columns:1fr auto 1fr;gap:1cqw;align-items:center;border:1px solid var(--line);border-radius:1cqw;background:rgba(0,0,0,.3);padding:1cqw 1.3cqw;font-size:1.45cqw;line-height:1.35}
-.row .a{color:#fff} .row .ar{color:var(--muted);font-size:1.8cqw} .row .b{color:var(--soft)} .row .b strong{color:var(--blue-soft)}
-.ask{border-radius:1.6cqw;border:1px solid rgba(120,230,170,.45);background:linear-gradient(160deg,rgba(80,220,150,.14),rgba(80,220,150,.02));padding:2cqw 2.2cqw;display:flex;flex-direction:column;gap:1.2cqw;justify-content:center;height:100%}
-.ask .k{font-size:1.1cqw;letter-spacing:.12em;color:var(--muted)}
-.ask .q{display:flex;align-items:center;gap:1.2cqw;font-size:2.1cqw;font-weight:700;letter-spacing:-.02em}
-.ask .q i{font-style:normal;font-size:2.2cqw}
-.ask .fine{font-size:1.35cqw;color:var(--soft);margin-top:.4cqw}
+.g9{display:grid;grid-template-columns:1.15fr 1fr;gap:2.8cqw;flex:1;min-height:0}
+.rows{display:flex;flex-direction:column;gap:.7cqw;margin-top:1.3cqw}
+.row{display:grid;grid-template-columns:1fr auto 1fr;gap:1cqw;align-items:center;border:1px solid var(--line);border-radius:.7cqw;background:rgba(255,255,255,.04);padding:.9cqw 1.2cqw;font-size:1.4cqw;line-height:1.35;word-break:keep-all}
+.row .a{color:#fff} .row .ar{color:var(--dim);font-size:1.7cqw} .row .b{color:var(--soft)} .row .b strong{color:var(--blue-soft)}
+.strike{text-decoration:line-through;text-decoration-color:rgba(255,123,168,.95);text-decoration-thickness:.13em}
+.ask{border-radius:var(--r);border:1px solid rgba(120,230,170,.42);background:rgba(80,220,150,.08);padding:1.8cqw 2cqw;display:flex;flex-direction:column;gap:1.1cqw;justify-content:center;height:100%}
+.ask .k{font-family:var(--display);font-size:1.1cqw;letter-spacing:.12em;color:var(--muted);text-transform:uppercase}
+.ask .q{display:flex;align-items:center;gap:1.1cqw;font-size:2cqw;font-weight:700;letter-spacing:-.02em}
+.ask .q i{font-style:normal;font-size:2.1cqw}
+.ask .fine{font-size:1.3cqw;color:var(--soft);margin-top:.3cqw}
+.g9v{display:grid;grid-template-columns:1.3fr 1fr;gap:2.4cqw;flex:1;min-height:0;margin-top:1.6cqw}
+.rows.fill{margin-top:0;height:100%;min-height:0}
+.rows.fill .row{flex:1;min-height:0}
+.g9v .ask{justify-content:space-evenly;gap:0}
 /* 10 */
 .three{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2cqw;flex:1;min-height:0}
-.step{border:1px solid var(--line);border-radius:1.5cqw;background:var(--surface);padding:1.5cqw;display:flex;flex-direction:column;gap:.8cqw;min-height:0;position:relative}
-.step .n{position:absolute;right:1.4cqw;top:1cqw;font-size:4cqw;font-weight:800;color:rgba(255,255,255,.14);line-height:1}
-.step .ico{font-size:3.6cqw}
-.step .nm{font-size:2.1cqw;font-weight:800;letter-spacing:-.02em}
-.step .ds{font-size:1.4cqw;line-height:1.45;color:var(--soft);word-break:keep-all}
-.step .shot{flex:1;min-height:0}
-.step .tm{font-size:1.15cqw;color:var(--green);letter-spacing:.04em}
-.lead{font-size:1.8cqw;color:var(--soft);margin:-.5cqw 0 1.4cqw;line-height:1.5;word-break:keep-all;position:relative}
+.step{border:1px solid var(--line);border-radius:var(--r);background:rgba(255,255,255,.035);padding:1.4cqw;display:flex;flex-direction:column;gap:.8cqw;min-height:0;position:relative}
+.step .n{position:absolute;right:1.3cqw;top:.9cqw;font-family:var(--display);font-size:3.6cqw;font-weight:700;color:rgba(255,255,255,.14);line-height:1}
+.step .ico{font-size:3.2cqw}
+.step .nm{font-size:2cqw;font-weight:800;letter-spacing:-.02em}
+.step .ds{font-size:1.35cqw;line-height:1.45;color:var(--soft);word-break:keep-all;min-height:3.9cqw}
+.step .fig{flex:1;min-height:0}
+.step .img{background:transparent}
+.step .tm{font-size:1.1cqw;color:var(--green);letter-spacing:.04em}
+.lead{font-size:1.7cqw;color:var(--soft);margin:-.4cqw 0 1.4cqw;line-height:1.5;word-break:keep-all}
 .lead strong{color:#fff}
 /* 11 */
 .g11{display:grid;grid-template-columns:1.4fr 1fr;gap:3cqw;flex:1;min-height:0;align-items:center}
-.calls{display:flex;flex-direction:column;gap:2.4cqw}
-.stack{position:relative;height:22cqw}
-.stack .c{position:absolute;left:50%;width:14cqw;height:18cqw;border-radius:.8cqw;background:#fff;box-shadow:0 1cqw 3cqw rgba(0,0,0,.6);transform:translateX(-50%) rotate(var(--r));top:var(--t);display:flex;flex-direction:column;gap:.5cqw;padding:1.2cqw 1cqw}
-.stack .c i{display:block;height:.55cqw;border-radius:.3cqw;background:#d9dde6} .stack .c i.t{height:1cqw;background:#1a1a1a;width:70%} .stack .c i.p{background:#ffb3cc;width:60%}
-.stack .lbl{position:absolute;left:0;right:0;bottom:-.6cqw;text-align:center;font-size:1.3cqw;color:var(--soft)}
+.calls{display:flex;flex-direction:column;gap:2.2cqw}
+.cstack{position:relative;height:22cqw}
+.cstack .c{position:absolute;left:50%;width:14cqw;height:18cqw;border-radius:.6cqw;background:#fff;box-shadow:0 1cqw 3cqw rgba(0,0,0,.7);transform:translateX(-50%) rotate(var(--rot));top:var(--t);display:flex;flex-direction:column;gap:.5cqw;padding:1.2cqw 1cqw}
+.cstack .c i{display:block;height:.55cqw;border-radius:.3cqw;background:#d9dde6} .cstack .c i.t{height:1cqw;background:#1a1a1a;width:70%} .cstack .c i.p{background:#ffb3cc;width:60%}
+.cstack .lbl{position:absolute;left:0;right:0;bottom:-.6cqw;text-align:center;font-size:1.25cqw;color:var(--soft)}
 /* 12 */
 .seq{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:center;gap:1.6cqw;flex:1;min-height:0}
-.seq .s{display:flex;flex-direction:column;align-items:center;gap:1cqw;text-align:center}
-.seq .s .ico{font-size:8cqw}
-.seq .s b{font-size:3.4cqw;font-weight:800;letter-spacing:-.03em}
-.seq .s span{font-size:1.5cqw;color:var(--soft)}
-.seq .ar{font-size:4cqw;color:rgba(255,255,255,.35)}
+.seq .s{display:flex;flex-direction:column;align-items:center;gap:.9cqw;text-align:center}
+.seq .s .ico{font-size:7.5cqw}
+.seq .s b{font-size:3.2cqw;font-weight:800;letter-spacing:-.03em}
+.seq .s span{font-size:1.4cqw;color:var(--soft)}
+.seq .ar{font-family:var(--display);font-size:3.6cqw;color:var(--dim)}
 .seq .s.pk b{color:var(--pink-soft)} .seq .s.bl b{color:var(--blue-soft)} .seq .s.gr b{color:var(--green-soft)}
-.kit{display:flex;align-items:center;gap:1.6cqw;border:1px dashed rgba(255,255,255,.25);border-radius:1.2cqw;padding:1.2cqw 1.8cqw;font-size:1.5cqw;color:var(--soft);margin-top:1cqw}
-.kit .ico{font-size:2.8cqw} .kit code{font-family:ui-monospace,Menlo,monospace;color:var(--blue-soft);font-size:1.5cqw}
+.kit{display:flex;align-items:center;gap:1.4cqw;border:1px dashed rgba(255,255,255,.28);border-radius:var(--r);padding:1.1cqw 1.6cqw;font-size:1.4cqw;color:var(--soft);margin-top:1cqw}
+.kit .ico{font-size:2.6cqw} .kit code{font-family:ui-monospace,Menlo,monospace;color:var(--blue-soft);font-size:1.4cqw}
+/* 12 기능 추가 */
+.eq{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:1.6cqw;align-items:center;flex:0 0 auto}
+.eqb{border:1px solid var(--line);border-radius:var(--r);background:rgba(255,255,255,.04);padding:1.4cqw 1.2cqw;display:flex;align-items:center;justify-content:center;gap:1.1cqw}
+.eqb .ico{font-size:3.6cqw;line-height:1}
+.eqb b{font-size:2cqw;font-weight:800;letter-spacing:-.02em;white-space:nowrap}
+.eqb.sci{border-color:rgba(255,123,168,.5);background:rgba(255,77,157,.09)} .eqb.sci b{color:var(--pink-soft)}
+.eqb.cow{border-color:rgba(140,190,255,.5);background:rgba(77,124,255,.10)} .eqb.cow b{color:var(--blue-soft)}
+.eqb.man{border-color:rgba(120,230,170,.45);background:rgba(80,220,150,.08)} .eqb.man b{color:var(--green-soft)}
+.eq .op{font-family:var(--display);font-size:4cqw;font-weight:700;color:var(--dim);line-height:1}
+.cards3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2cqw;flex:1;min-height:0;margin-top:1.8cqw}
+.c3{display:flex;flex-direction:column;min-height:0;gap:.7cqw}
+.c3 .img{flex:1;min-height:0;overflow:hidden;border:1px solid var(--line);background:#fff;border-radius:.6cqw;display:flex;align-items:flex-start}
+.c3 .img img{display:block;width:100%;height:100%;object-fit:cover;object-position:top left}
+.c3.hot .img{border-color:rgba(255,123,168,.6);box-shadow:0 0 0 .25cqw rgba(255,123,168,.25)}
+.c3 .tag{font-size:1.5cqw;font-weight:700;color:#fff;text-align:center}
+.c3 .tag span{font-weight:500;color:var(--muted);font-size:1.15cqw;margin-left:.5cqw}
+.c3.hot .tag span{color:var(--pink-soft)}
+
+/* ===== 발표 대본 패널 ===== */
+:root{--sw:min(30vw,540px)}
+body.has-script{padding-right:var(--sw)}
+.script{position:fixed;top:0;right:0;width:var(--sw);height:100vh;box-sizing:border-box;background:#121214;color:#d8d8dc;border-left:1px solid #2a2a2e;overflow:auto;padding:0 0 40vh;font-family:var(--font);font-size:15px;line-height:1.75;z-index:200;display:none}
+body.has-script .script{display:block}
+.script .sh{position:sticky;top:0;background:#121214;border-bottom:1px solid #2a2a2e;padding:14px 18px;display:flex;align-items:center;gap:10px;z-index:1}
+.script .sh b{font-size:15px;color:#fff;letter-spacing:-.01em}
+.script .sh small{color:#8a8a90;font-size:12px}
+.script .sh button{margin-left:auto;background:#222226;color:#ddd;border:1px solid #333;border-radius:8px;padding:4px 10px;font-size:12px;cursor:pointer}
+.script .sb{padding:16px 18px 18px 22px;border-left:4px solid transparent;border-bottom:1px solid #1f1f23;scroll-margin-top:60px}
+.script .sb.on{border-left-color:#7CA0FF;background:#17171b}
+.script .sbh{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.script .sbn{font-family:var(--display);font-weight:700;color:#7CA0FF;font-size:13px;letter-spacing:.08em}
+.script .sbt{font-weight:700;color:#fff;font-size:15px;letter-spacing:-.01em}
+.script .sbm{margin-left:auto;font-size:12px;color:#8a8a90;white-space:nowrap}
+.script .sb p{margin:0 0 10px;word-break:keep-all}
+.script .sb p:last-child{margin-bottom:0}
+.script .sb em{font-style:normal;color:#9FEBC3}
+.script .cue{display:inline-block;font-size:12px;color:#8a8a90;border:1px solid #2e2e33;border-radius:6px;padding:0 6px;margin-right:6px;vertical-align:1px}
+.script-btn{position:fixed;top:12px;right:12px;z-index:210;background:#222226;color:#ddd;border:1px solid #333;border-radius:8px;padding:6px 12px;font:600 13px var(--font);cursor:pointer;display:none}
+body:not(.has-script) .script-btn{display:block}
+@media print{.script,.script-btn{display:none!important} body.has-script{padding-right:0}}
 </style>
 </head>
 <body>
@@ -166,212 +232,250 @@ h2{font-size:4.1cqw;font-weight:800;letter-spacing:-.03em;line-height:1.15;margi
 
 <!-- 01 표지 -->
 <section class="slide cover">
-  <div class="glow pk"></div>
-  <img class="card-bg" src="assets/card-cowork.png" alt="">
-  <div class="kicker">AI 분석비서</div>
-  <h1>상담카드 한 장,<br>어디까지 AI에게 맡길 수 있을까?</h1>
-  <div class="sub">논문을 찾고 허가사항과 맞춰 카드 한 장으로 만들기까지</div>
-  <div class="pills"><span class="pill">파마브로스 심포지엄</span><span class="pill">30분 · 처음 쓰는 분 대상</span></div>
+  <img class="art" src="assets/ax-cover-chrome.png" alt="">
+  <div class="year">2026</div>
+  <h1>상담카드 한 장,<br>어디까지 AI에게<br>맡길 수 있을까?</h1>
+  <div class="lead">논문을 찾고 허가사항과 맞춰 카드 한 장으로 만들기까지</div>
+  <div class="chips"><span class="chip">파마브로스 심포지엄</span><span class="chip light">AI 분석 비서</span></div>
   <div class="pageno">01</div>
 </section>
 
 <!-- 02 결과물 먼저 -->
 <section class="slide">
   <div class="glow bl"></div>
-  <div class="eyebrow"><span class="part">결과부터</span><span class="rule"></span><span>실측 2026-09-03</span></div>
+  <div class="kicker">결과부터 · 실측 2026-09-04</div>
   <h2>이 상담카드, AI에게 맡겨봤습니다</h2>
-  <div class="g2">
-    <div class="shot light"><div class="cap">코워크가 만든 카드 · 판콜에스 · 판피린큐 · 테라플루</div><img src="assets/card-cowork.png" alt="AI가 만든 감기약 상담카드"></div>
-    <div class="side">
-      <div class="num"><b>A4 1장</b><span>약사용 참고 카드 · 환자 배포용 아님</span></div>
-      <div class="num"><b>8건</b><span>허가와 안 맞아 뺀 근거 — 맨 아래에 이유와 함께</span></div>
-      <div class="num"><b class="plain">2번</b><span>사람이 한 붙여넣기 — 나머지는 AI가</span></div>
+  <div class="cols side" style="grid-template-columns:1fr 31cqw">
+    <div class="col stack">
+      <div><div class="num">A4<span class="sp"></span>1장</div><div class="numl">먼저 거를 것, 증상으로 고르기, 허가사항 그대로, 뺀 근거까지</div></div>
+      <div><div class="num acc">9건</div><div class="numl">허가와 안 맞아 뺀 근거 — 카드 맨 아래에 이유와 함께</div></div>
+      <div><div class="num gray">2번</div><div class="numl">사람이 한 붙여넣기 — 나머지는 AI가</div></div>
     </div>
   </div>
-  <div class="pull">제가 한 건 <em>약 이름 세 개</em>와 <em>붙여넣기 두 번</em></div>
+  <div class="hero02">
+    <img src="assets/card-cowork-v2.png" alt="AI가 만든 비염약 상담카드">
+    <div class="desc">약사용 참고 카드 (환자 배포용 아님)</div>
+  </div>
+  <div class="chips"><span class="chip">파마브로스 심포지엄</span><span class="chip light">AI 분석 비서</span></div>
   <div class="pageno">02</div>
 </section>
 
 <!-- 03 왜 필요한가 -->
 <section class="slide">
   <div class="glow pk"></div>
-  <div class="eyebrow"><span class="part">카운터</span><span class="rule"></span><span>매일 듣는 말</span></div>
+  <div class="kicker">카운터 · 매일 듣는 말</div>
   <h2>이 카드가 필요한 곳</h2>
-  <div class="g31">
+  <div style="flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center">
+  <div class="bubble" style="width:calc((100% - 3cqw)*2.4/3.4);box-sizing:border-box;white-space:nowrap;margin-bottom:1.8cqw"><span class="who">손님</span>“비염약 하나 주세요. 오늘 운전해야 해서 <span style="color:var(--blue-soft)">안 졸린 걸로요</span>.”</div>
+  <div class="cols" style="grid-template-columns:2.4fr 1fr;align-items:center;gap:3cqw;flex:0 0 auto">
     <div>
-      <div class="bubble wh"><span class="who">손님</span>“약사님, 이 감기약이랑 저 감기약이랑 뭐가 달라요?”</div>
-      <div class="boxes">
-        <div class="mbox" style="--c:#FF7BA8"><b>판콜에스</b><span>성분 5가지</span><span class="same">아세트아미노펜 +</span></div>
-        <div class="mbox" style="--c:#7CA0FF"><b>판피린큐</b><span>성분 6가지</span><span class="same">아세트아미노펜 +</span></div>
-        <div class="mbox" style="--c:#7EE8B0"><b>테라플루</b><span>성분 3가지</span><span class="same">아세트아미노펜 +</span></div>
+      <div class="boxes" style="margin-top:0">
+        <div class="mbox" style="--c:#FF7BA8"><b>지르텍정</b><span>세티리진 10mg</span><span class="same">2세대 항히스타민제</span></div>
+        <div class="mbox" style="--c:#7CA0FF"><b>클라리틴정</b><span>로라타딘 10mg</span><span class="same">2세대 항히스타민제</span></div>
+        <div class="mbox" style="--c:#7EE8B0"><b>알레그라정120mg</b><span>펙소페나딘 120mg</span><span class="same">2세대 항히스타민제</span></div>
       </div>
     </div>
-    <div class="num" style="align-items:center;text-align:center"><span class="ico">⏱️</span><b>1분</b><span>뒤에 줄 선 채로 답해야 하는 시간<br>허가사항을 펼쳐 볼 수는 없습니다</span></div>
+    <div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:.3cqw;align-self:center">
+      <span style="font-size:2.3cqw;line-height:1">⏱️</span>
+      <div class="num" style="font-size:3.8cqw;line-height:1">1분</div>
+      <div class="numl" style="margin-top:.1cqw;font-size:1.3cqw">셋 다 “안 졸린 약”으로 팔리지만<br>졸음 · 운전 · 나이 · 주스가 다릅니다</div>
+    </div>
+  </div>
   </div>
   <div class="pull">그래서 카운터에 <em>한 장</em></div>
+  <div class="chips"><span class="chip">파마브로스 심포지엄</span><span class="chip light">AI 분석 비서</span></div>
   <div class="pageno">03</div>
 </section>
 
 <!-- 04 근거 ≠ 정답 -->
 <section class="slide">
-  <div class="glow pk"></div>
-  <div class="eyebrow"><span class="part">그런데</span><span class="rule"></span><span>실측 9/3 · 사이언스 보고서</span></div>
+  <div class="tex"></div>
+  <div class="kicker"><span class="n">01 —</span> 그런데 · 실측 2026-09-04 · AI 보고서</div>
   <h2>근거를 찾았다고, 답까지 맞는 건 아닙니다</h2>
   <div class="vs">
-    <div class="bubble pk"><span class="who">🤖 AI가 쓴 문장</span>녹내장·전립선비대 환자<br><strong style="font-size:3.4cqw">금기</strong></div>
+    <div class="bubble pk"><span class="who">🤖 AI가 쓴 문장 · PMID 18219837, 실제 논문</span>펙소페나딘은 영유아에서도<br><strong style="font-size:3.2cqw">안전성 확인</strong></div>
     <div class="neq">≠</div>
-    <div class="bubble bl"><span class="who">📜 허가사항</span>녹내장·전립선비대 환자<br><strong style="font-size:3.4cqw">복용 전 상의</strong></div>
+    <div class="bubble bl"><span class="who">📜 허가사항 · 알레그라정120mg</span>12세 미만 소아<br><strong style="font-size:3.2cqw">안전성 미확립</strong></div>
   </div>
-  <div class="stat">
-    <div class="num"><b class="plain">51편</b><span>논문은 전부 진짜</span></div>
-    <div class="num"><b>8건</b><span>틀린 건 해석 — 문장만 보면 멀쩡</span></div>
+  <div style="display:flex;gap:3cqw;margin-top:2.4cqw;align-items:flex-end">
+    <div><div class="num gray" style="color:#fff">21편</div><div class="numl">논문은 전부 진짜</div></div>
+    <div><div class="num acc">9건</div><div class="numl">국내 허가와 다른 용법 · 다른 성분 — 문장만 보면 멀쩡</div></div>
   </div>
   <div class="pull">AI는 틀려도 <em>자신 있게</em> 말합니다</div>
+  <div class="chips"><span class="chip">파마브로스 심포지엄</span><span class="chip light">AI 분석 비서</span></div>
   <div class="pageno">04</div>
 </section>
 
 <!-- 05 흐름 -->
 <section class="slide">
   <div class="glow bl"></div>
-  <div class="eyebrow"><span class="part">흐름</span><span class="rule"></span><span>이 그림 하나만</span></div>
+  <div class="kicker">흐름 · 이 그림 하나만</div>
   <h2>약 이름만 적으면, 카드가 나옵니다</h2>
   <div class="flow">
-    <div class="fc man"><div class="ico">💊</div><div class="st">1 · 약사</div><div class="say">약 이름을 적습니다</div><div class="ex">판콜 · 판피린 · 테라플루</div><div class="more">비교하고 싶은 약 <strong>2개 이상</strong></div><div class="tag">사람이 하는 일 ①</div></div>
+    <div class="fc man"><div class="ico">💊</div><div class="st">1 · 약사</div><div class="say">약 이름을 적습니다</div><div class="ex">지르텍 · 클라리틴 · 알레그라</div><div class="more">비교하고 싶은 약 <strong>2개 이상</strong></div><div class="tag">사람이 하는 일 ①</div></div>
     <div class="farrow">→</div>
-    <div class="fc sci"><div class="ico">🔎</div><div class="st">2 · AI</div><div class="say">논문을 찾아 줍니다</div><div class="more"><strong>진짜 있는 논문만</strong> 골라 보고서로 정리합니다</div><div class="tag">클로드 사이언스 · 약 12분</div></div>
+    <div class="fc sci"><div class="ico">🔎</div><div class="st">2 · AI</div><div class="say">논문을 찾아 줍니다</div><div class="more"><strong>진짜 있는 논문만</strong> 골라 보고서로 정리합니다</div><div class="tag">AI가 하는 일 ①</div></div>
     <div class="farrow">→</div>
-    <div class="fc cow"><div class="ico">📋</div><div class="st">3 · AI</div><div class="say">허가 내용과 맞춰 봅니다</div><div class="more">안 맞는 말은 빼고, <strong>카드 한 장</strong>으로 만듭니다</div><div class="tag">클로드 코워크 · 약 19분</div></div>
+    <div class="fc cow"><div class="ico">📋</div><div class="st">3 · AI</div><div class="say">허가와 맞춰 봅니다</div><div class="more">안 맞는 말은 빼고, <strong style="white-space:nowrap">카드 한 장</strong>으로 만듭니다</div><div class="tag">AI가 하는 일 ②</div></div>
     <div class="farrow">→</div>
     <div class="fc man"><div class="ico">✅</div><div class="st">4 · 약사</div><div class="say">읽고 확인합니다</div><div class="more"><strong>⚠ 표시된 곳</strong>은 원문을 다시 봅니다</div><div class="tag">사람이 하는 일 ②</div></div>
   </div>
   <div class="pull">사람이 하는 건 <em>약 이름 적기</em>와 <em>마지막 확인</em>, 둘뿐입니다</div>
+  <div class="chips"><span class="chip">파마브로스 심포지엄</span><span class="chip light">AI 분석 비서</span></div>
   <div class="pageno">05</div>
 </section>
 
 <!-- 06 두 도구 -->
 <section class="slide">
-  <div class="eyebrow"><span class="part">오늘의 도구</span><span class="rule"></span><span>이름 두 개만 기억</span></div>
+  <div class="kicker">오늘의 도구 · 이름 두 개만 기억</div>
   <h2>두 도구는 이런 물건입니다</h2>
   <div class="tools">
     <div class="tool pk">
-      <div class="head"><span class="ico">🔎</span><div><div class="name">클로드 사이언스</div><div class="role">논문을 찾아 주는 AI</div></div></div>
-      <div class="one">의학 논문 사이트에서 찾고, <strong>진짜 있는 논문인지</strong> 확인해 <strong>보고서 파일</strong>로 저장합니다. 허가사항은 보지 않습니다.</div>
-      <div class="nums"><div class="num"><b>12분</b><span>실측 소요</span></div><div class="num"><b>51편</b><span>전부 확인</span></div></div>
-      <div class="cond">크롬으로 여는 로컬 앱 · 아직 베타 · macOS 13 이상 또는 Linux · Pro·Max·Team·Enterprise 요금제</div>
+      <div class="head"><span class="ico">🔎</span><div><div class="name">클로드 사이언스</div><div class="role">연구자용 클로드</div></div></div>
+      <div class="one">논문을 찾고, 데이터를 분석하고, <strong>보고서까지 쓰는</strong> 연구 비서입니다.</div>
+      <div class="feat">
+        <div class="f"><i>📚</i>PubMed에서 논문 검색 — PMID·DOI 실재 확인</div>
+        <div class="f"><i>📊</i>데이터 분석·코드 실행 (승인 후)</div>
+        <div class="f"><i>📄</i>결과를 보고서 파일로 저장 · 프로젝트별 지침</div>
+      </div>
+      <div class="cond">로컬 앱 · 아직 베타 · macOS / Linux · Pro 이상 요금제</div>
     </div>
     <div class="tool bl">
-      <div class="head"><span class="ico">📋</span><div><div class="name">클로드 코워크</div><div class="role">카드를 만들어 주는 AI</div></div></div>
-      <div class="one">폴더를 맡기면 <strong>끝까지 알아서</strong> 합니다. 보고서 문장을 <strong>식약처 허가사항과 하나씩 대조</strong>해 카드 한 장으로.</div>
-      <div style="margin-top:auto">
-        <div class="bar"><i class="ok" style="flex:15">15</i><i class="chk" style="flex:46">46</i><i class="cut" style="flex:8">8</i></div>
-        <div class="legend"><span><i style="background:#7EE8B0"></i>맞음</span><span><i style="background:#7CA0FF"></i>확인 필요</span><span><i style="background:#FF7BA8"></i>뺌</span><span style="margin-left:auto">69문장 · 19분</span></div>
+      <div class="head"><span class="ico">📋</span><div><div class="name">클로드 코워크</div><div class="role">내 폴더에서 일하는 클로드</div></div></div>
+      <div class="one">폴더 하나를 맡기면 파일을 읽고 쓰며 <strong>여러 단계 일을 끝까지</strong> 합니다.</div>
+      <div class="feat">
+        <div class="f"><i>📂</i>폴더 안 파일 읽기·쓰기 — 지시문·보고서</div>
+        <div class="f"><i>🌐</i>웹에서 자료 조회 — 허가사항 등</div>
+        <div class="f"><i>📑</i>PDF·엑셀·웹 페이지로 결과물 생성</div>
       </div>
-      <div class="cond">클로드 데스크톱 앱 · Cowork 모드 · 작업 폴더 지정 · 승인 수동</div>
+      <div class="cond">클로드 데스크톱 앱 · Cowork 모드</div>
     </div>
   </div>
+  <div class="chips"><span class="chip">파마브로스 심포지엄</span><span class="chip light">AI 분석 비서</span></div>
   <div class="pageno">06</div>
 </section>
 
 <!-- 07 사이언스 -->
 <section class="slide">
   <div class="glow pk"></div>
-  <div class="eyebrow"><span class="part">사이언스</span><span class="rule"></span><span>실측 캡처 · 2026-09-03</span></div>
+  <div class="kicker">사이언스 · 실측 캡처 2026-09-04</div>
   <h2>사이언스는 이렇게 부릅니다</h2>
   <div class="g72">
-    <div class="shot"><div class="cap">클로드 사이언스 · 보낸 프롬프트와 진행 단계</div><img src="assets/captures/S07a_science_prompt.png" alt="사이언스에 보낸 프롬프트 화면"></div>
+    <div class="fig"><div class="img contain"><img src="assets/captures/S07a_science_prompt_v2.png" alt="사이언스에 보낸 프롬프트 화면"></div><div class="cap"><div class="sub">클로드 사이언스</div><div class="desc">프로젝트 “상담카드”에서 새 세션, 다섯 줄을 보낸 직후</div></div></div>
     <div class="side">
-      <div class="bubble pk" style="font-size:1.75cqw;font-weight:600"><span class="who">부르는 말 · 이대로 붙여넣기</span>“판콜 · 판피린 · 테라플루의 주성분별 효능·주의사항 논문 근거를 찾아줘.<br><strong>실제로 있는 논문인지 확인</strong>해서 번호를 달고,<br>직접 비교한 임상이 <strong>없으면 없다고</strong> 써.<br>결과는 <strong>md 보고서 파일</strong>로 저장해줘.”</div>
-      <div class="mini"><span class="ico">⏱️</span><b>12분</b><span class="ar">→</span><span class="ico">📄</span><span><b>보고서 한 개</b>가 폴더에 · 논문 51편</span></div>
+      <div class="bubble pk" style="font-size:1.22cqw;font-weight:500;line-height:1.4;padding:1.3cqw 1.7cqw"><span class="who">부르는 말 · 이대로 붙여넣기</span>지르텍정 · 클라리틴정 · 알레그라정120mg — 비염약 세 가지를 비교할 논문 근거를 찾아줘.<br>1. 약마다 주성분의 효능과 주의사항을 논문에서 찾아줘.<br>2. <strong>실제로 있는 논문만</strong> 쓰고, 논문 번호(PMID)를 달아줘.<br>3. 세 약을 직접 비교한 임상시험이 <strong>없으면 “없음”</strong>이라고 써줘.<br>4. 결과는 <strong>md 보고서 파일</strong> 하나로 저장해줘.</div>
+      <div class="mini"><span class="ico">⏱️</span><b>6분</b><span class="ar">→</span><span class="ico">📄</span><span><b>보고서 한 개</b>가 폴더에 · 논문 21편 · 세 약 직접 비교 “없음”</span></div>
     </div>
   </div>
+  <div class="chips"><span class="chip">파마브로스 심포지엄</span><span class="chip light">AI 분석 비서</span></div>
   <div class="pageno">07</div>
 </section>
 
 <!-- 08 코워크 -->
 <section class="slide">
   <div class="glow bl"></div>
-  <div class="eyebrow"><span class="part">코워크</span><span class="rule"></span><span>실측 캡처 · 2026-09-03</span></div>
+  <div class="kicker">코워크 · 실측 캡처 2026-09-04</div>
   <h2>코워크는 이렇게 부릅니다</h2>
   <div class="g72">
-    <div class="shot"><div class="cap">클로드 코워크 · 지시문을 보낸 직후 · 작업 폴더 pharmacy</div><img src="assets/captures/S09_cowork_call.png" alt="코워크에 지시문을 보낸 화면"></div>
+    <div class="fig"><div class="img contain"><img src="assets/captures/S09_cowork_call_v2.png" alt="코워크에 지시문을 보낸 화면"></div><div class="cap"><div class="sub">클로드 코워크</div><div class="desc">오른쪽 말풍선을 프롬프트 하나로 넣은 직후 · 작업 폴더 pharmacy</div></div></div>
     <div class="side">
-      <div class="tl">
-        <div class="it"><div class="dot">📜</div><div class="tx"><b>허가사항 가져오기</b><br>약마다 식약처 허가 내용</div></div>
-        <div class="it"><div class="dot">🔍</div><div class="tx"><b>한 문장씩 맞춰보기</b><br>맞음 · 확인 필요 · 뺌</div></div>
-        <div class="it"><div class="dot">🗂️</div><div class="tx"><b>카드 한 장 만들기</b><br>맞는 것만으로 A4 한 장</div></div>
-      </div>
-      <div class="mini"><span class="ico">⏱️</span><b>19분</b><span class="ar">→</span><span class="ico">🗂️</span><span><b>카드 pdf</b> + 확인 결과표</span></div>
+      <div class="bubble bl" style="font-size:1.22cqw;font-weight:500;line-height:1.4;padding:1.3cqw 1.7cqw"><span class="who">부르는 말 · 지시문_상담카드.md 내용 전체를 이대로 붙여넣기</span><strong>키워드: 지르텍정 · 클라리틴정 · 알레그라정120mg</strong><br><br><strong># 지시문_상담카드</strong><br>&gt; 호출: 지시문_상담카드, &lt;키워드&gt; — 이 파일이 지시문이고, 키워드만 바뀝니다.<span class="vd">⋮</span><strong>## 역할</strong> — 호출할 때 받은 키워드가 대상이다.<span class="vd">⋮</span><strong>## 1단계</strong> — 품목 확정과 허가사항 가져오기<span class="vd">⋮</span><strong>## 2단계</strong> — 맞춰보기 (통과 · 확인 · 제외)<span class="vd">⋮</span><strong>## 3단계</strong> — 카드 만들기 (A4 1장 pdf)<span class="vd">⋮</span><strong>## 끝나면</strong> — 파일 경로와 판정 집계를 보고</div>
+      <div class="mini"><span class="ico">⏱️</span><b>19분</b><span class="ar">→</span><span class="ico">🗂️</span><span><b>카드 pdf</b> · 허가사항 · 확인표</span></div>
     </div>
   </div>
+  <div class="chips"><span class="chip">파마브로스 심포지엄</span><span class="chip light">AI 분석 비서</span></div>
   <div class="pageno">08</div>
 </section>
 
-<!-- 09 걸러진 것 · 약사의 차례 -->
+<!-- 09 걸러진 것 · 약사님의 차례 -->
 <section class="slide">
   <div class="glow gr"></div>
-  <div class="eyebrow"><span class="part">검증 결과</span><span class="rule"></span><span>실측 · 69문장</span></div>
-  <h2>걸러진 것, 그리고 약사의 차례</h2>
-  <div class="g9">
-    <div>
-      <div class="bar" style="height:3.2cqw"><i class="ok" style="flex:15">맞음 15</i><i class="chk" style="flex:46">확인 필요 46</i><i class="cut" style="flex:8">뺌 8</i></div>
-      <div class="rows">
-        <div class="row"><span class="a strike">녹내장 · 전립선비대 금기</span><span class="ar">→</span><span class="b">허가는 <strong>“복용 전 상의”</strong></span></div>
-        <div class="row"><span class="a strike">데이타임 “함량 자료 없음”</span><span class="ar">→</span><span class="b">허가에 <strong>650mg + 10mg</strong> 등재</span></div>
-        <div class="row"><span class="a strike">덱스트로메토르판 서술 4건</span><span class="ar">→</span><span class="b">세 제품엔 <strong>없는 성분</strong></span></div>
-      </div>
+  <div class="kicker">검증 결과 · 실측 31문장</div>
+  <h2>걸러진 것, 그리고 약사님의 차례</h2>
+  <div class="bar" style="height:3.4cqw"><i class="ok" style="flex:1"></i><i class="chk" style="flex:21">출처 있음 21</i><i class="cut" style="flex:9">안 맞아 뺌 9</i></div>
+  <div class="legend"><span><i style="background:#7EE8B0"></i>허가 있음 1</span><span><i style="background:#7CA0FF"></i>출처 있음 21</span><span><i style="background:#FF7BA8"></i>안 맞아 뺌 9</span></div>
+  <div class="g9v">
+    <div class="rows fill">
+      <div class="row"><span class="a strike">펙소페나딘, 영유아도 안전</span><span class="ar">→</span><span class="b">허가는 <strong>12세 미만 미확립</strong></span></div>
+      <div class="row"><span class="a strike">세티리진이 가장 세다</span><span class="ar">→</span><span class="b"><strong style="white-space:nowrap">60mg 1일 2회</strong> 비교, 국내 미등재</span></div>
+      <div class="row"><span class="a strike">다른 항히스타민제 비교 3건</span><span class="ar">→</span><span class="b">세 약에 <strong>없는 성분</strong></span></div>
     </div>
     <div class="ask">
-      <div class="k">약사가 묻는 셋</div>
+      <div class="k">약사님이 묻는 셋</div>
       <div class="q"><i>💊</i>제품이 정확한가</div>
       <div class="q"><i>📜</i>허가사항과 표현이 같은가</div>
       <div class="q"><i>🗣️</i>상담에 그대로 써도 되는가</div>
-      <div class="fine">⚠ 표시된 곳은 원문까지 열어 봅니다 — 싣을지 · 각주로 달지 · 뺄지는 약사가 정합니다</div>
     </div>
   </div>
-  <div class="pull">찾고 맞춰보는 데까지는 <em class="dim">맡기고</em>, 결정은 <em>약사가</em> 합니다</div>
+  <div class="pull">찾고 맞춰보는 데까지는 맡기고, 결정은 <em class="acc">약사님이</em> 합니다</div>
+  <div class="chips"><span class="chip">파마브로스 심포지엄</span><span class="chip light">AI 분석 비서</span></div>
   <div class="pageno">09</div>
 </section>
 
 <!-- 10 구성 세 걸음 -->
 <section class="slide">
   <div class="glow bl"></div>
-  <div class="eyebrow"><span class="part">구성</span><span class="rule"></span><span>한 번만 · 15분</span></div>
+  <div class="kicker">구성 · 한 번만 · 15분</div>
   <h2>구성은 세 걸음이면 됩니다</h2>
   <p class="lead">두 도구는 서로를 부르지 못합니다 — <strong>같은 폴더를 보게</strong> 하면 됩니다.</p>
   <div class="three">
-    <div class="step"><div class="n">01</div><div class="ico">📁</div><div class="nm">작업 폴더 만들기</div><div class="ds">폴더 하나 만들어 코워크에 넘깁니다.</div><div class="shot"><div class="cap">~/workspace/pharmacy</div><img src="assets/captures/S13_1_folder.png" alt="작업 폴더"></div><div class="tm">5분 · 한 번만</div></div>
-    <div class="step"><div class="n">02</div><div class="ico">📝</div><div class="nm">지시문을 파일로</div><div class="ds">오늘 쓴 지시문을 글 파일로. 약 이름 자리만 비워 둡니다.</div><div class="shot"><div class="cap">지시문_상담카드.md</div><img src="assets/captures/S13_2_instruction.png" alt="지시문 파일"></div><div class="tm">5분 · 한 번만</div></div>
-    <div class="step"><div class="n">03</div><div class="ico">🔎</div><div class="nm">사이언스 프로젝트 + 지침</div><div class="ds">프로젝트 하나, 지침 두 문장 — 진짜 논문만, 저장은 폴더에.</div><div class="shot"><div class="cap">클로드 사이언스 · New Project</div><img src="assets/captures/S07a_science_project.png" alt="사이언스 프로젝트 만들기"></div><div class="tm">5분 · 한 번만</div></div>
+    <div class="step"><div class="n">01</div><div class="ico">📋</div><div class="nm">코워크 작업 세션 만들기</div><div class="ds">새 세션을 Cowork 모드로 열고, 작업 폴더를 지정합니다.</div><div class="fig"><div class="img contain"><img src="assets/captures/S13_1_cowork_session_v2.png" alt="코워크 작업 세션 만들기"></div></div></div>
+    <div class="step"><div class="n">02</div><div class="ico">📝</div><div class="nm">지시문을 파일로</div><div class="ds">오늘 쓴 지시문을 글 파일로. 약 이름 자리만 비워 둡니다.</div><div class="fig"><div class="img contain"><img src="assets/captures/S13_2_instruction_v2.png" alt="지시문 파일"></div></div></div>
+    <div class="step"><div class="n">03</div><div class="ico">🔎</div><div class="nm">사이언스 프로젝트 + 지침</div><div class="ds">프로젝트 하나, 지침 두 문장 — 진짜 논문만, 저장은 폴더에.</div><div class="fig"><div class="img contain"><img src="assets/captures/S07a_science_project_v2.png" alt="사이언스 프로젝트 만들기"></div></div></div>
   </div>
+  <div class="chips"><span class="chip">파마브로스 심포지엄</span><span class="chip light">AI 분석 비서</span></div>
   <div class="pageno">10</div>
 </section>
 
 <!-- 11 다음부터 -->
 <section class="slide">
   <div class="glow pk"></div>
-  <div class="eyebrow"><span class="part">다음부터</span><span class="rule"></span><span>형태 예시 · 리허설에서 실측 예정</span></div>
+  <div class="kicker">다음부터 · 두 마디 호출 · 실측 2026-09-04</div>
   <h2>다음부터는 약 이름만 바꿉니다</h2>
   <div class="g11">
     <div class="calls">
-      <div class="bubble pk"><span class="who">🔎 사이언스에 — 한 줄</span>“<strong>베아제 · 훼스탈</strong> 논문 근거 찾아줘”</div>
-      <div class="bubble bl"><span class="who">📋 코워크에 — 두 마디</span>“지시문_상담카드, <strong>베아제 · 훼스탈</strong>”</div>
+      <div class="bubble pk" style="font-size:1.85cqw"><span class="who">🔎 사이언스에 — 한 줄</span>“<strong>후시딘연고 · 마데카솔케어연고</strong> 논문 근거 찾아줘”</div>
+      <div class="bubble bl" style="font-size:1.85cqw"><span class="who">📋 코워크에 — 두 마디</span>“지시문_상담카드, <strong>후시딘연고 · 마데카솔케어연고</strong>”</div>
       <div class="mini"><span class="ico">💊</span><span>약 이름은 <b>2개 이상</b> — 나머지는 프로젝트와 폴더가 기억합니다</span></div>
     </div>
-    <div class="stack">
-      <div class="c" style="--r:-9deg;--t:2.5cqw"><i class="t"></i><i></i><i></i><i class="p"></i><i></i><i></i></div>
-      <div class="c" style="--r:-3deg;--t:1.5cqw"><i class="t"></i><i></i><i></i><i class="p"></i><i></i><i></i></div>
-      <div class="c" style="--r:4deg;--t:.4cqw"><i class="t"></i><i></i><i></i><i class="p"></i><i></i><i></i></div>
+    <div class="cstack">
+      <div class="c" style="--rot:-9deg;--t:2.5cqw"><i class="t"></i><i></i><i></i><i class="p"></i><i></i><i></i></div>
+      <div class="c" style="--rot:-3deg;--t:1.5cqw"><i class="t"></i><i></i><i></i><i class="p"></i><i></i><i></i></div>
+      <div class="c" style="--rot:4deg;--t:.4cqw"><i class="t"></i><i></i><i></i><i class="p"></i><i></i><i></i></div>
       <div class="lbl">결과함에 카드가 한 장씩 쌓입니다</div>
     </div>
   </div>
   <div class="pull">사람 손은 <em>약 이름 적기</em>와 <em>마지막 확인</em>뿐</div>
+  <div class="chips"><span class="chip">파마브로스 심포지엄</span><span class="chip light">AI 분석 비서</span></div>
   <div class="pageno">11</div>
 </section>
 
-<!-- 12 마무리 -->
+<!-- 12 기능 추가 -->
 <section class="slide">
-  <div class="glow gr"></div>
-  <div class="eyebrow"><span class="part">마무리</span><span class="rule"></span><span>가져가실 것</span></div>
+  <div class="glow bl"></div>
+  <div class="kicker">확장 · 같은 구성으로 · 셋 다 실행함 (아래 둘은 화면 재현)</div>
+  <h2 style="margin-bottom:1.6cqw">기능 추가는, 프로젝트 하나와 지시문 하나입니다</h2>
+  <div class="eq">
+    <div class="eqb sci"><span class="ico">🔎</span><b>사이언스 프로젝트 1</b></div>
+    <div class="op">+</div>
+    <div class="eqb cow"><span class="ico">📋</span><b>코워크 지시문 1</b></div>
+    <div class="op">=</div>
+    <div class="eqb man"><span class="ico">🗂️</span><b>새 결과물 1개</b></div>
+  </div>
+  <div class="cards3">
+    <div class="c3 hot"><div class="img"><img src="assets/card-cowork-v2.png" alt="상담카드 PDF"></div><div class="tag">상담카드 <span>PDF · 실측</span></div></div>
+    <div class="c3"><div class="img"><img src="assets/card-mock-ingredient-html.png" alt="성분분석 웹 페이지"></div><div class="tag">성분분석 <span>웹 페이지 · 실행 결과</span></div></div>
+    <div class="c3"><div class="img"><img src="assets/card-mock-supplement-xlsx.png" alt="건강기능식품 엑셀"></div><div class="tag">건강기능식품 <span>엑셀 · 실행 결과</span></div></div>
+  </div>
+  <div class="pull" style="padding-top:1cqw">기능을 <em class="acc">사는</em> 게 아니라, 짝을 <em>늘리는</em> 겁니다</div>
+  <div class="chips"><span class="chip">파마브로스 심포지엄</span><span class="chip light">AI 분석 비서</span></div>
+  <div class="pageno">12</div>
+</section>
+
+<!-- 13 마무리 -->
+<section class="slide">
+  <div class="tex"></div>
+  <div class="kicker"><span class="n">02 —</span> 마무리 · 가져가실 것</div>
   <h2>오늘 가져가실 건, 일을 맡기는 순서입니다</h2>
   <div class="seq">
     <div class="s pk"><span class="ico">🔎</span><b>찾고</b><span>클로드 사이언스</span></div>
@@ -380,11 +484,48 @@ h2{font-size:4.1cqw;font-weight:800;letter-spacing:-.03em;line-height:1.15;margi
     <div class="ar">→</div>
     <div class="s gr"><span class="ico">✅</span><b>결정</b><span>약사</span></div>
   </div>
-  <div class="kit"><span class="ico">📦</span><span>구성 파일 한 묶음 — <code>wolsey37.github.io/study/symposium/consult-card-kit.zip</code> (지시문 · 빈 폴더 · 사이언스 지침 · 오늘 결과물 견본 · 발표 후 업로드)</span></div>
-  <div class="pull">찾고 맞춰보는 데까지는 <em class="dim">맡기고</em>, 결정은 <em>약사가</em> 합니다</div>
-  <div class="pageno">12</div>
+  <div class="kit"><span class="ico">📦</span><span><b style="color:#fff">여기에 오늘 구성이 다 들어 있습니다</b> — <code>wolsey37.github.io/study/symposium/consult-card-kit.zip</code><br>작업 폴더 · 지시문 · 사이언스 지침 · 실측 견본. 새로 만들 것 없이 폴더만 지정하면 됩니다.</span></div>
+  <div class="pull">찾고 맞춰보는 데까지는 맡기고, 결정은 <em class="acc">약사님이</em> 합니다</div>
+  <div class="chips"><span class="chip">파마브로스 심포지엄</span><span class="chip light">AI 분석 비서</span></div>
+  <div class="pageno">13</div>
 </section>
 
+
 </div>
+
+<button class="script-btn" id="scriptBtn" title="N">대본 보기</button>
+<aside class="script" id="script">
+  <div class="sh"><b>발표 대본 · 30분</b><small>슬라이드를 넘기면 따라옵니다 · N 키로 숨기기</small><button id="scriptHide">숨기기</button></div>
+  <div class="sb" data-i="0"><div class="sbh"><span class="sbn">01</span><span class="sbt">상담카드 한 장, 어디까지 AI에게 맡길 수 있을까?</span><span class="sbm">1분 · 누적 1분</span></div><p>안녕하세요. 오늘 30분 동안 "상담카드 한 장, 어디까지 AI에게 맡길 수 있을까", 이 이야기를 해보겠습니다.</p><p>이렇게 상상해 보시면 됩니다. 약국에 실습생이 하나 들어왔는데, "지르텍, 클라리틴, 알레그라 비교해서 카운터용 카드 한 장 만들어 와" 하고 시키는 겁니다. 논문 찾는 데 반나절, 허가사항 대조에 또 반나절 걸릴 일입니다. 그 일을 AI 둘이서 <em>25분 만에</em> 해냈습니다.</p><p>그런데 실습생 결과물을 그대로 카운터에 올리지는 않듯이, AI 결과물도 그대로 믿을 수는 없었습니다. 어디까지 맡기고 어디부터 약사님이 봐야 하는지, 오늘 그 선을 보여드리겠습니다. 화면은 전부 9월 4일에 제 컴퓨터에서 실제로 돌린 결과입니다.</p></div>
+  <div class="sb" data-i="1"><div class="sbh"><span class="sbn">02</span><span class="sbt">이 상담카드, AI에게 맡겨봤습니다</span><span class="sbm">3분 · 누적 4분</span></div><p>결과부터 보겠습니다. 오른쪽이 AI가 만든 카드입니다. 비염약 세 가지를 비교한 <em>약사용 참고 카드</em>입니다. 환자분께 드리는 게 아니라 카운터에서 약사님이 보는 용도입니다.</p><p>약사님이 직접 만드신다고 생각해 보시면, 약학정보원을 세 번 열어서 허가사항을 옮기고, 논문은 따로 찾아서 정리해야 합니다. 제 경험으로는 한두 시간은 잡아야 하는 일입니다. 이 카드는 그걸 A4 한 장에 네 칸으로 정리했습니다. 먼저 거를 것, 증상으로 고르기, 허가사항 그대로, 그리고 뺀 근거입니다.</p><p><span class="cue">9건</span>파란 숫자 9가 오늘의 핵심입니다. AI가 논문에서 찾아온 문장 중에 국내 허가사항과 안 맞아서 뺀 문장이 아홉 개입니다. 예를 들어 카드 맨 아래에는 이렇게 적혀 있습니다. "펙소페나딘은 영유아에서도 안전성이 확인됐다는 문장은, 국내 허가사항의 12세 미만 미확립과 상충해서 뺐다." 뺀 이유까지 남기는 게 보통 사람이 만드는 카드와 다른 점입니다.</p><p><span class="cue">2번</span>이 카드에 사람 손이 간 건 딱 두 번입니다. 약 이름 세 개를 적어 넣은 것, 그리고 완성된 카드를 읽고 확인한 것. 처방 조제에 비유하면, 처방전을 건네는 일과 마지막 감사를 하는 일만 사람이 한 셈입니다. 그 사이는 전부 AI가 했습니다.</p></div>
+  <div class="sb" data-i="2"><div class="sbh"><span class="sbn">03</span><span class="sbt">이 카드가 필요한 곳</span><span class="sbm">2분 · 누적 6분</span></div><p>이 카드가 왜 필요한지부터 말씀드리겠습니다. 카운터에서 매일 듣는 말입니다. "비염약 하나 주세요. 오늘 운전해야 해서 안 졸린 걸로요."</p><p>후보는 셋입니다. 지르텍, 클라리틴, 알레그라. 셋 다 2세대 항히스타민제라서 다 "안 졸린 약"으로 팔립니다. 그런데 같은 질문이라도 손님이 누구냐에 따라 답이 달라집니다. 운전하는 직장인이면 소아 시험에서 세티리진은 졸음이 1.3%, 로라타딘은 0%였다는 차이가 의미가 있습니다. 열 살 아이를 데려온 부모라면 알레그라정120mg은 12세 미만에 쓸 수 없다는 게 먼저입니다. 아침마다 자몽주스를 드시는 어르신이면 알레그라 흡수가 절반까지 떨어질 수 있다는 걸 말씀드려야 합니다.</p><p>이걸 손님 앞에서 <em>1분 안에</em> 골라서 말해야 합니다. 머릿속에는 다 있지만, 바쁜 오후에 세 약의 차이를 한 번에 꺼내기는 쉽지 않습니다. 그래서 카운터에 한 장이 있으면 좋겠다 싶었고, 그 한 장을 AI에게 시켜 본 것입니다.</p></div>
+  <div class="sb" data-i="3"><div class="sbh"><span class="sbn">04</span><span class="sbt">근거를 찾았다고, 답까지 맞는 건 아닙니다</span><span class="sbm">3분 · 누적 9분</span></div><p>그런데 여기서 첫 번째 교훈이 나옵니다. 근거를 찾았다고 답까지 맞는 건 아니었습니다.</p><p><span class="cue">왼쪽</span>AI가 쓴 문장입니다. "펙소페나딘은 영유아에서도 안전성이 확인됐다." 옆에 논문 번호 PMID 18219837이 붙어 있고, 이 논문은 실제로 있습니다. 생후 6개월에서 2세 영유아를 대상으로 한 위약 대조 시험입니다. 논문 자체는 진짜입니다.</p><p><span class="cue">오른쪽</span>알레그라정120mg의 국내 허가사항입니다. "12세 미만 소아에 대한 안전성과 유효성이 확립되어 있지 않다." 정반대입니다. 게다가 그 논문은 15mg, 30mg을 하루 두 번 먹인 시험인데, 국내에는 그 용량으로 쓰는 허가가 없습니다.</p><p>비유하자면 외국 교과서를 그대로 번역해 온 것과 같습니다. 문장은 다 맞는데 우리 현장에서는 못 쓰는 말입니다. 검증에는 두 종류가 있습니다. 하나는 "이 논문이 실제로 있느냐"는 사실 검증이고, 다른 하나는 "우리 허가사항과 맞느냐"는 맥락 검증입니다. 이번에 AI가 찾아온 논문 21편은 <em>전부 실제로 있는 논문</em>이었습니다. 사실 검증은 통과한 겁니다. 그런데도 맥락 검증에서 9건이 걸렸습니다. 문장만 보면 멀쩡하고, AI는 틀려도 자신 있게 말합니다. 그래서 논문을 찾는 단계 뒤에 허가사항과 맞춰 보는 단계를 반드시 따로 두게 됐습니다.</p></div>
+  <div class="sb" data-i="4"><div class="sbh"><span class="sbn">05</span><span class="sbt">약 이름만 적으면, 카드가 나옵니다</span><span class="sbm">3분 · 누적 12분</span></div><p>그래서 흐름을 이렇게 잡았습니다. 조제실을 떠올리시면 됩니다. 조제하는 약사와 감사하는 약사를 나누듯이, 찾는 AI와 검사하는 AI를 나눴습니다.</p><p><span class="cue">1</span>약사가 약 이름을 적습니다. 지르텍, 클라리틴, 알레그라. 비교하고 싶은 약을 두 개 이상 적는 게 전부입니다. 처방전을 건네는 단계입니다.</p><p><span class="cue">2</span>첫 번째 AI가 논문을 찾습니다. 진짜 있는 논문만 골라서 보고서로 정리합니다. 사람이 하면 반나절인 일이 6분 정도 걸렸습니다.</p><p><span class="cue">3</span>두 번째 AI가 허가사항과 맞춰 봅니다. 보고서의 문장을 하나씩 식약처 허가사항과 대조해서, 안 맞는 말은 빼고 카드 한 장으로 만듭니다. 19분 정도 걸렸습니다. 감사 단계에 해당합니다.</p><p><span class="cue">4</span>약사가 읽고 확인합니다. 카드에 경고 표시가 붙은 곳은 원문을 다시 봅니다.</p><p>사람이 하는 건 1번과 4번, <em>약 이름 적기와 마지막 확인, 이 둘뿐</em>입니다. 가운데를 왜 하나가 아니라 둘로 나눴느냐 하면, 앞 장에서 본 그 문제 때문입니다. 찾은 쪽이 스스로 검사하게 두면 자기가 찾은 걸 그대로 통과시킵니다. 이 두 AI가 무엇인지는 다음 장에서 이름을 말씀드리겠습니다.</p></div>
+  <div class="sb" data-i="5"><div class="sbh"><span class="sbn">06</span><span class="sbt">두 도구는 이런 물건입니다</span><span class="sbm">3분 · 누적 15분</span></div><p>도구 이름은 두 개만 기억하시면 됩니다. 둘 다 클로드입니다. 같은 회사 제품인데 쓰임이 다릅니다.</p><p><span class="cue">왼쪽</span>클로드 사이언스입니다. 연구자용 클로드입니다. 도서관 사서와 연구 조교를 합쳐 놓은 것이라고 보시면 됩니다. PubMed에서 논문을 검색하는데, 논문 번호와 DOI가 실제로 있는지까지 확인합니다. 필요하면 코드를 돌려서 분석도 하는데, 그럴 때마다 제 승인을 받습니다. 결과는 보고서 파일로 저장하고, 프로젝트마다 지침을 적어 둘 수 있습니다. 아직 베타라서 맥과 리눅스용 로컬 앱으로 깔아야 하고, Pro 이상 요금제가 필요합니다.</p><p><span class="cue">오른쪽</span>클로드 코워크입니다. 내 폴더에서 일하는 클로드입니다. 보통 쓰시는 채팅과 무엇이 다르냐 하면, 채팅은 대답을 화면에 보여주고 끝나지만 코워크는 제 폴더에 파일을 만들어 놓고 끝납니다. 클로드 데스크톱 앱에서 Cowork 모드를 켜고 폴더 하나를 맡기면, 그 폴더 안의 파일을 읽고 쓰면서 여러 단계 일을 끝까지 합니다. 지시문을 읽고, 보고서를 읽고, 웹에서 허가사항을 조회하고, 결과를 PDF나 엑셀이나 웹 페이지로 만들어 냅니다.</p><p>정리하면 <em>사이언스는 찾는 도구, 코워크는 맞춰 보고 만드는 도구</em>입니다. 사서와 사무 보조, 이렇게 기억하시면 됩니다.</p></div>
+  <div class="sb" data-i="6"><div class="sbh"><span class="sbn">07</span><span class="sbt">사이언스는 이렇게 부릅니다</span><span class="sbm">3분 · 누적 18분</span></div><p>사이언스를 실제로 어떻게 불렀는지 보여드리겠습니다. 오른쪽 말풍선이 제가 넣은 말 전부입니다. 실습생에게 일 시키듯이 쓴 말입니다.</p><p>"지르텍정, 클라리틴정, 알레그라정120mg, 비염약 세 가지를 비교할 논문 근거를 찾아줘." 그리고 네 줄입니다. 약마다 주성분의 효능과 주의사항을 논문에서 찾을 것. 실제로 있는 논문만 쓰고 논문 번호를 달 것. 세 약을 직접 비교한 임상시험이 없으면 없다고 쓸 것. 결과는 보고서 파일 하나로 저장할 것.</p><p>특별한 기술이 아니라 그냥 부탁하는 말입니다. 다만 <em>"없으면 없다고 써라"</em> 이 줄이 중요합니다. 실습생에게 "모르면 모른다고 말해"라고 미리 일러두는 것과 같습니다. AI는 빈칸을 채우려는 성질이 있어서, 이 줄이 없으면 세 약을 한꺼번에 비교한 시험이 있는 것처럼 그럴듯한 요약을 만들어 냅니다.</p><p>왼쪽 화면이 보낸 직후 모습이고, 6분 뒤에 폴더에 보고서 한 개가 생겼습니다. 논문 21편이 정리됐고, 세 약을 직접 비교한 시험은 "없음"이라고 정직하게 적혀 있었습니다. 이 "없음" 한 줄이 나중에 카드의 신뢰도를 지켜 줬습니다.</p></div>
+  <div class="sb" data-i="7"><div class="sbh"><span class="sbn">08</span><span class="sbt">코워크는 이렇게 부릅니다</span><span class="sbm">3분 · 누적 21분</span></div><p>다음은 코워크입니다. 여기서는 프롬프트 하나를 넣는데, 그 내용이 오른쪽에 있는 지시문 전체입니다. 신입 직원에게 주는 업무 매뉴얼이라고 생각하시면 됩니다. 처음 한 번은 이 매뉴얼을 통째로 붙여 넣습니다.</p><p>맨 위에 키워드, 약 이름 세 개. 그 아래가 지시문입니다. 역할은 "호출할 때 받은 키워드가 대상이다." 1단계, 약학정보원에서 품목을 확정하고 허가사항을 가져온다. 2단계, 사이언스 보고서의 문장을 허가사항과 맞춰 본다. 판정은 세 가지, 통과, 확인, 제외. 3단계, A4 한 장 PDF 카드로 만든다. 끝나면 파일 경로와 판정 집계를 보고한다.</p><p>판정 예를 하나 들면, "자몽주스가 펙소페나딘 흡수를 낮춘다"는 문장은 허가사항에 같은 내용이 있어서 통과입니다. "영유아에서 안전하다"는 문장은 12세 미만 미확립과 부딪혀서 제외입니다. 이렇게 31개 문장에 하나씩 표를 붙였습니다.</p><p>이 지시문은 <em>한 번 만들어 두면 다시 쓸 일이 없습니다.</em> 약 이름 자리만 바뀝니다. 19분 뒤에 폴더에 세 가지가 생겼습니다. 카드 PDF, 허가사항 파일, 그리고 문장마다 판정과 이유를 적은 확인표입니다. 이 확인표가 있어서 나중에 왜 뺐는지 추적할 수 있습니다.</p></div>
+  <div class="sb" data-i="8"><div class="sbh"><span class="sbn">09</span><span class="sbt">걸러진 것, 그리고 약사님의 차례</span><span class="sbm">3분 · 누적 24분</span></div><p>판정 결과입니다. 보고서에서 나온 문장이 31개였고, 그중 9개를 뺐습니다. 열 문장 중 세 문장은 국내에서 그대로 쓰면 안 되는 말이었다는 뜻입니다.</p><p><span class="cue">막대</span>초록색 1건은 허가사항에 이미 그대로 있는 문장입니다. 알레그라의 자몽주스 상호작용이었습니다. 파란색 21건은 허가사항에는 없지만 논문 출처가 진짜이고 성분과 용량이 맞아서, 출처를 달고 쓸 수 있는 문장입니다. 분홍색 9건이 허가와 안 맞아서 뺀 문장입니다.</p><p><span class="cue">세 줄</span>"펙소페나딘은 영유아도 안전하다"는 12세 미만 미확립과 정면으로 부딪힙니다. "세티리진이 가장 세다"는 비교 상대가 펙소페나딘 60mg 하루 두 번이었는데, 국내에는 그 용법이 없습니다. 다른 항히스타민제 비교 3건은 세 약에 없는 성분이 섞인 연구였습니다.</p><p>여기까지가 AI가 한 일이고, 이제 약사님 차례입니다. 카드를 받으시면 세 가지만 물어보시면 됩니다. 첫째, 제품이 정확한가. 알레그라는 120mg 말고 소아용 30mg 전문의약품이 따로 있어서 헷갈리기 쉽습니다. 둘째, 허가사항과 표현이 같은가. "안전하다"와 "확립되지 않았다"는 같은 논문을 두고도 정반대 말이 됩니다. 셋째, 상담에 그대로 써도 되는가. 카드의 문장을 손님에게 그대로 읽어 드려도 되는지 보시는 겁니다. <em>찾고 맞춰 보는 데까지는 맡기고, 결정은 약사님이 하시는 겁니다.</em></p></div>
+  <div class="sb" data-i="9"><div class="sbh"><span class="sbn">10</span><span class="sbt">구성은 세 걸음이면 됩니다</span><span class="sbm">2분 · 누적 26분</span></div><p>그러면 이걸 내 약국에서 쓰려면 뭘 해야 하느냐. 구성은 세 걸음이고, 한 번만 하시면 됩니다. 15분이면 충분합니다.</p><p>핵심은 이겁니다. <em>두 도구는 서로를 부르지 못합니다.</em> 서로 말을 못 하는 직원 둘에게 같은 서류함을 쓰게 하는 것과 같습니다. 사이언스가 근거함에 보고서를 넣어 두면, 코워크가 그걸 꺼내 씁니다.</p><p><span class="cue">01</span>코워크에서 새 세션을 Cowork 모드로 열고 작업 폴더를 지정합니다. 저는 pharmacy라는 폴더 하나를 만들고, 그 안에 근거함, 허가사항, 확인결과, 결과함 이렇게 네 칸을 두었습니다.</p><p><span class="cue">02</span>아까 본 지시문을 글 파일로 그 폴더에 넣습니다. 약 이름 자리만 비워 둡니다.</p><p><span class="cue">03</span>사이언스에 프로젝트 하나를 만들고 지침 두 문장을 적습니다. 진짜 논문만 쓸 것, 결과는 그 폴더의 근거함에 저장할 것.</p><p>이게 끝입니다. 이후로는 두 도구가 같은 폴더를 통해서 일을 주고받게 됩니다.</p></div>
+  <div class="sb" data-i="10"><div class="sbh"><span class="sbn">11</span><span class="sbt">다음부터는 약 이름만 바꿉니다</span><span class="sbm">1.5분 · 누적 27.5분</span></div><p>구성이 끝나면, 다음부터는 약 이름만 바꾸시면 됩니다. 처음에는 지시문을 통째로 붙여 넣었지만, 이제 폴더에 들어 있으니 이름만 부르면 됩니다.</p><p>사이언스에는 한 줄. "후시딘연고, 마데카솔케어연고 논문 근거 찾아줘." 코워크에는 두 마디. "지시문_상담카드, 후시딘연고, 마데카솔케어연고." 지시문 이름과 약 이름, 그게 다입니다. 입력하는 데 10초도 안 걸립니다.</p><p>연고 두 개로 실제로 돌려 봤는데, 비염약 때와 똑같은 모양의 카드가 결과함에 한 장 더 쌓였습니다. 약 이름은 두 개 이상이면 되고, 나머지는 프로젝트와 폴더가 기억하고 있습니다.</p></div>
+  <div class="sb" data-i="11"><div class="sbh"><span class="sbn">12</span><span class="sbt">기능 추가는, 프로젝트 하나와 지시문 하나입니다</span><span class="sbm">1.5분 · 누적 29분</span></div><p>같은 구성으로 기능을 늘리는 것도 어렵지 않았습니다. 새 프로그램을 사는 게 아니라, <em>사이언스 프로젝트 하나에 코워크 지시문 하나</em>를 짝지으면 새 결과물이 하나 나옵니다.</p><p>오늘 본 상담카드 PDF가 첫 번째 짝입니다. 두 번째로 성분분석 지시문을 만들어서 이부프로펜을 넣었더니, 효능과 주의사항을 정리한 웹 페이지가 나왔습니다. 세 번째로 건강기능식품 지시문에 오메가3와 비타민D를 넣었더니, 식약처 인정 기능성과 논문 근거 수준을 색으로 표시한 엑셀 표가 나왔습니다. 셋 다 실제로 돌린 결과이고, 뒤의 둘은 화면을 그대로 옮겨 놓은 것입니다.</p><p>기능을 사는 게 아니라, 짝을 늘리는 것입니다. 지시문 한 장을 더 쓰는 일입니다.</p></div>
+  <div class="sb" data-i="12"><div class="sbh"><span class="sbn">13</span><span class="sbt">오늘 가져가실 건, 일을 맡기는 순서입니다</span><span class="sbm">1분 · 누적 30분</span></div><p>오늘 가져가실 건 일을 맡기는 순서 하나입니다. 찾고, 클로드 사이언스. 맞춰 보고, 클로드 코워크. 결정은, 약사님. 처음에 말씀드린 실습생 비유로 돌아가면, 일 잘하는 실습생 둘을 얻은 셈이고 감사는 여전히 약사님이 하시는 겁니다.</p><p>화면에 있는 주소에 오늘 구성이 전부 들어 있습니다. 작업 폴더, 지시문, 사이언스 지침, 실측 견본까지 전부 들어 있습니다. 새로 만드실 것 없이 폴더만 지정하시면 됩니다.</p><p><em>찾고 맞춰 보는 데까지는 맡기고, 결정은 약사님이 하시면 됩니다.</em> 들어주셔서 감사합니다. 질문 있으시면 편하게 해주시기 바랍니다.</p></div>
+</aside>
+<script>
+(function(){
+  var body=document.body, panel=document.getElementById('script');
+  var blocks=[].slice.call(panel.querySelectorAll('.sb'));
+  var secs=[].slice.call(document.querySelectorAll('section.slide'));
+  function setOpen(o){ body.classList.toggle('has-script',o); try{localStorage.setItem('v2script',o?'1':'0')}catch(e){} }
+  var saved=null; try{saved=localStorage.getItem('v2script')}catch(e){}
+  setOpen(saved!=='0');
+  document.getElementById('scriptBtn').onclick=function(){setOpen(true)};
+  document.getElementById('scriptHide').onclick=function(){setOpen(false)};
+  document.addEventListener('keydown',function(e){ if((e.key==='n'||e.key==='N')&&!e.metaKey&&!e.ctrlKey&&!e.altKey){ setOpen(!body.classList.contains('has-script')); } });
+  var cur=-1;
+  function activate(i){ if(i===cur) return; cur=i; blocks.forEach(function(b,k){b.classList.toggle('on',k===i)}); var b=blocks[i]; if(b){ panel.scrollTo({top:Math.max(0,b.offsetTop-64),behavior:'smooth'}); } }
+  function pick(){ var mid=window.innerHeight/2, best=0, bd=1e9; secs.forEach(function(s,k){ var r=s.getBoundingClientRect(); var c=(r.top+r.bottom)/2; var d=Math.abs(c-mid); if(d<bd){bd=d;best=k;} }); activate(best); }
+  window.addEventListener('scroll',pick,{passive:true}); window.addEventListener('resize',pick); pick();
+})();
+</script>
 </body>
 </html>
