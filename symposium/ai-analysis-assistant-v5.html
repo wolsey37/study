@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI, 어디까지 신뢰하시나요? (v5)</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600,700&display=swap">
+<style>
+:root{
+  --bg:#000;--ink:#fff;--soft:#C9C9CF;--muted:#8A8A93;--dim:#5A5A63;--line:rgba(255,255,255,.14);
+  --pink:#FF7BA8;--pink-soft:#FFB3CC;--blue:#7CA0FF;--blue-soft:#A9D4FF;--green:#7EE8B0;--green-soft:#C8F5DC;--accent:#4D7CFF;
+  --chip-dark:#2A2A2E;--chip-light:#D8D8DC;
+  --display:"Clash Display","Pretendard","Apple SD Gothic Neo",system-ui,sans-serif;
+  --font:"Pretendard","Apple SD Gothic Neo",system-ui,sans-serif;
+  --r:.9cqw;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:#0a0a0a;color:var(--ink);font-family:var(--font);-webkit-font-smoothing:antialiased}
+.deck{max-width:1920px;margin:0 auto;padding:2vw 1vw;display:flex;flex-direction:column;gap:2vw;container-type:inline-size}
+.slide{position:relative;width:100%;aspect-ratio:16/9;background:var(--bg);padding:4.8cqw 9cqw 8cqw;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 0 0 1px rgba(255,255,255,.08)}
+.slide > *{position:relative}
+.glow{position:absolute;width:56cqw;height:56cqw;border-radius:50%;filter:blur(9cqw);opacity:.16;pointer-events:none}
+.glow.bl{background:#3D5BFF;right:-26cqw;top:-28cqw} .glow.pk{background:#FF4D9D;right:-26cqw;top:-28cqw} .glow.gr{background:#3FCF8E;right:-26cqw;bottom:-30cqw}
+/* 타이포 */
+.kicker{font-family:var(--display);font-weight:600;font-size:1.2cqw;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:1.3cqw}
+.kicker .n{font-size:2.3cqw;font-weight:700;color:var(--dim);letter-spacing:0;margin-right:.6cqw;vertical-align:-.15cqw}
+h2{font-family:var(--font);font-size:4.3cqw;font-weight:800;letter-spacing:-.035em;line-height:1.1;margin:0 0 2cqw;word-break:keep-all}
+.sub{font-size:1.75cqw;font-weight:700;color:#fff;margin:0 0 .45cqw;letter-spacing:-.01em}
+.desc{font-size:1.42cqw;line-height:1.5;color:var(--soft);word-break:keep-all}
+.desc strong{color:#fff;font-weight:600}
+.meta{font-size:1.12cqw;color:var(--muted);margin-top:.7cqw}
+.num{font-family:var(--display);font-weight:700;font-size:5.8cqw;letter-spacing:-.03em;line-height:1;color:#fff}
+.num.gray{color:var(--dim)} .num.acc{color:var(--blue-soft)}
+.num .sp{display:inline-block;width:.22em}
+.numl{font-size:1.4cqw;color:var(--soft);margin-top:.6cqw;word-break:keep-all}
+.big{font-size:2.6cqw;font-weight:400;line-height:1.35;letter-spacing:-.02em;color:#fff;word-break:keep-all}
+.big strong{font-weight:700}
+.pull{margin-top:auto;padding-top:1.2cqw;font-size:2.2cqw;font-weight:700;letter-spacing:-.02em;word-break:keep-all;color:var(--soft)}
+.pull em{font-style:normal;color:#fff}
+.pull em.acc{color:var(--blue-soft)}
+/* 칩 · 페이지 */
+.chips{position:absolute;left:9cqw;bottom:3.4cqw;display:flex;gap:.6cqw;align-items:center}
+.chip{font-size:1.12cqw;font-weight:500;padding:.55cqw 1cqw;line-height:1;border-radius:.3cqw;background:var(--chip-dark);color:#fff}
+.chip.light{border-radius:99px;background:var(--chip-light);color:#111;padding:.55cqw 1.1cqw}
+.pageno{position:absolute;right:4cqw;bottom:3.7cqw;font-family:var(--display);font-size:1.15cqw;color:var(--dim);letter-spacing:.08em}
+/* 이미지 */
+.fig{display:flex;flex-direction:column;min-height:0;min-width:0}
+.fig .img{flex:1;min-height:0;overflow:hidden;background:#111;display:flex;align-items:flex-start;justify-content:center}
+.fig .img img{display:block;width:100%;height:100%;object-fit:cover;object-position:top}
+.fig .img.contain img{object-fit:contain;object-position:top left;background:#111}
+.fig .img.paper{background:#fff}
+.fig .cap{margin-top:1cqw}
+.hero02{position:absolute;right:4cqw;top:6.5cqw;bottom:5.2cqw;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:.7cqw;z-index:1}
+.hero02 img{display:block;width:36cqw;height:auto;background:transparent}
+.hero02 .desc{font-size:1.1cqw;line-height:1.45;white-space:nowrap}
+/* 레이아웃 */
+.cols{display:grid;gap:2.4cqw;flex:1;min-height:0;align-items:stretch}
+.cols.c2{grid-template-columns:1fr 1fr} .cols.c3{grid-template-columns:1fr 1fr 1fr}
+.cols.side{grid-template-columns:1.25fr 1fr}
+.col{min-width:0;display:flex;flex-direction:column}
+.stack{display:flex;flex-direction:column;justify-content:space-between;padding:.5cqw 0}
+/* 말풍선 */
+.bubble{position:relative;border-radius:var(--r);padding:1.6cqw 2cqw;font-size:2.2cqw;font-weight:700;line-height:1.4;letter-spacing:-.02em;word-break:keep-all;border:1px solid var(--line);background:rgba(255,255,255,.05)}
+.bubble::after{content:"";position:absolute;bottom:-1cqw;left:2.6cqw;border:1cqw solid transparent;border-bottom:0;border-top-color:rgba(255,255,255,.16)}
+.bubble.pk{background:rgba(255,77,157,.10);border-color:rgba(255,123,168,.42)} .bubble.pk::after{border-top-color:rgba(255,123,168,.42)}
+.bubble.bl{background:rgba(77,124,255,.12);border-color:rgba(140,190,255,.45)} .bubble.bl::after{border-top-color:rgba(140,190,255,.45)}
+.bubble .who{display:block;font-size:1.05cqw;font-weight:500;letter-spacing:.08em;color:var(--muted);margin-bottom:.7cqw}
+.bubble strong{color:var(--pink-soft)} .bubble.bl strong{color:var(--blue-soft)}
+.ico{font-size:4.6cqw;line-height:1}
+.vs .bubble::after{display:none}
+.bubble .vd{display:block;color:var(--muted);line-height:1;padding:.12cqw 0 .12cqw .35cqw;letter-spacing:.1em}
+/* 막대 */
+.bar{display:flex;width:100%;height:2.2cqw;gap:.2cqw;border-radius:.4cqw;overflow:hidden}
+.bar i{display:flex;align-items:center;justify-content:center;font-style:normal;font-family:var(--display);font-size:1.15cqw;font-weight:700;color:#0b0b0d}
+.bar .ok{background:#7EE8B0} .bar .chk{background:#7CA0FF} .bar .cut{background:#FF7BA8}
+.legend{display:flex;gap:1.6cqw;font-size:1.15cqw;color:var(--soft);margin-top:.7cqw;flex-wrap:wrap}
+.legend i{display:inline-block;width:.85cqw;height:.85cqw;border-radius:.15cqw;margin-right:.4cqw;vertical-align:-.05cqw}
+/* 표지 */
+.cover{padding-top:6cqw}
+.cover .year{font-family:var(--display);font-weight:700;font-size:6cqw;color:var(--dim);letter-spacing:-.02em;line-height:1;margin-bottom:.6cqw}
+.cover h1{font-weight:800;font-size:6.2cqw;letter-spacing:-.04em;line-height:1.05;margin:0 0 2cqw;word-break:keep-all;max-width:60%}
+.cover .lead{font-size:1.9cqw;color:var(--soft);max-width:50%;line-height:1.5;word-break:keep-all}
+.cover .art{position:absolute;right:0;top:0;height:100%;width:34%;object-fit:cover;object-position:left center}
+.tex{position:absolute;inset:-4cqw;background:url(assets/ax-section-dark.png) center/cover no-repeat;opacity:.9;pointer-events:none;filter:blur(1.2cqw)}
+.tex::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#000 0%,rgba(0,0,0,.85) 45%,rgba(0,0,0,.35) 100%)}
+/* 03 약 상자 */
+.boxes{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.4cqw;margin-top:1.6cqw}
+.mbox{border-radius:var(--r);padding:1.4cqw 1.4cqw 1.4cqw 2cqw;border:1px solid var(--line);background:rgba(255,255,255,.04);display:flex;flex-direction:column;gap:.4cqw;position:relative;overflow:hidden}
+.mbox::before{content:"";position:absolute;left:0;top:0;bottom:0;width:.5cqw;background:var(--c,#7CA0FF)}
+.mbox b{font-size:1.75cqw;letter-spacing:-.03em;line-height:1.2;min-height:2.4em}
+.mbox span{font-size:1.25cqw;color:var(--soft)}
+.mbox .same{font-size:1.05cqw;color:var(--muted)}
+.boxes .mbox b{min-height:0;white-space:nowrap}
+.boxes .mbox{padding-top:1.7cqw;padding-bottom:1.7cqw}
+/* 04 */
+.vs{display:grid;grid-template-columns:1fr auto 1fr;gap:2cqw;align-items:center}
+.vs .neq{font-family:var(--display);font-size:6.5cqw;font-weight:700;color:var(--dim);line-height:1}
+/* 05 흐름 */
+.flow{display:grid;grid-template-columns:1fr 2.8cqw 1fr 2.8cqw 1fr 2.8cqw 1fr;align-items:stretch;flex:1;min-height:0}
+.fc{border:1px solid var(--line);border-radius:var(--r);background:rgba(255,255,255,.035);padding:2cqw 1.5cqw 1.5cqw;display:flex;flex-direction:column;align-items:center;text-align:center;gap:.9cqw;min-width:0;justify-content:flex-start}
+.fc.man{border-color:rgba(120,230,170,.4);background:rgba(80,220,150,.07)}
+.fc.sci{border-color:rgba(255,123,168,.42);background:rgba(255,77,157,.08)}
+.fc.cow{border-color:rgba(140,190,255,.42);background:rgba(77,124,255,.09)}
+.fc .ico{font-size:5.6cqw}
+.fc .st{font-family:var(--display);font-size:1.1cqw;letter-spacing:.14em;color:var(--muted)}
+.fc .say{font-size:2.15cqw;font-weight:800;letter-spacing:-.025em;line-height:1.22;word-break:keep-all;min-height:2.44em;display:flex;align-items:center}
+.fc.man .say{color:var(--green-soft)} .fc.sci .say{color:var(--pink-soft)} .fc.cow .say{color:var(--blue-soft)}
+.fc .more{font-size:1.42cqw;line-height:1.5;color:var(--soft);word-break:keep-all;min-height:3em;margin-top:auto}
+.fc .more strong{color:#fff}
+.fc .ex{border:1px solid var(--line);border-radius:.6cqw;background:rgba(0,0,0,.4);padding:.55cqw .9cqw;font-size:1.05cqw;font-weight:600;color:var(--soft);white-space:nowrap;max-width:100%}
+.fc .tag{padding-top:.3cqw;font-size:1.1cqw;color:var(--muted)}
+/* 05 사람 vs AI 비교 */
+/* 06 검증 기준 */
+.crit-slide .fc{padding:1.2cqw 1.1cqw 1cqw;gap:.5cqw}
+.crit-slide .fc .ico{font-size:3.6cqw}
+.crit-slide .fc .say{min-height:0}
+.crit-slide .fc .more{min-height:0}
+.crit{margin-top:1.4cqw;border:1px dashed rgba(140,190,255,.45);border-radius:.9cqw;padding:1.1cqw 1.4cqw 1.2cqw;background:rgba(77,124,255,.06)}
+.crit .ch{font-family:var(--display);font-size:1.05cqw;letter-spacing:.06em;color:var(--muted);margin-bottom:.8cqw}
+.crit .cg{display:grid;grid-template-columns:repeat(4,1fr);gap:.7cqw}
+.crit .c{border:1px solid rgba(140,190,255,.5);background:rgba(77,124,255,.14);border-radius:.7cqw;padding:.9cqw .6cqw;font-size:1.4cqw;font-weight:600;color:var(--blue-soft);text-align:center;white-space:nowrap}
+.crit .c i{font-style:normal;margin-right:.4cqw}
+.crit .cr{display:flex;gap:2.2cqw;margin-top:1cqw;font-size:1.3cqw;font-weight:700;justify-content:center}
+.crit .cr .ok{color:var(--green-soft)} .crit .cr .chk{color:var(--blue-soft)} .crit .cr .cut{color:var(--pink-soft)}
+/* 06 대조 · 판정 */
+.judge h2{margin-bottom:1.2cqw}
+.judge .fc{padding:1cqw 1.1cqw .8cqw;gap:.5cqw;justify-content:flex-start}
+.judge .fc .ico{font-size:3.6cqw}
+.judge .fc .st{font-size:1.25cqw}
+.judge .fc .big{font-size:2.6cqw;font-weight:800;letter-spacing:-.03em;color:var(--pink-soft);margin-top:.4cqw}
+.judge .fc.man .big{color:var(--green-soft)}
+.judge .fc .tag{margin-top:auto;font-size:1.2cqw}
+.judge .lay{display:flex;flex-direction:column;gap:.5cqw;width:100%;margin-top:.2cqw}
+.judge .lay span{border:1px solid rgba(140,190,255,.5);background:rgba(77,124,255,.14);border-radius:.7cqw;padding:.4cqw .7cqw;font-size:1.35cqw;font-weight:700;color:var(--blue-soft);white-space:nowrap}
+.judge .lay span b{color:#fff;font-weight:700}
+.judge .axes{display:grid;grid-template-columns:repeat(4,1fr);gap:.45cqw;width:100%}
+.judge .axes span{border:1px solid rgba(255,255,255,.22);background:rgba(0,0,0,.35);border-radius:.6cqw;padding:.4cqw .2cqw;font-size:1.15cqw;font-weight:700;color:var(--soft);white-space:nowrap;text-align:center;min-width:0}
+.judge .verd{display:flex;flex-direction:column;gap:.5cqw;width:100%;margin-top:.2cqw}
+.judge .verd span{border-radius:.7cqw;padding:.4cqw .7cqw;font-size:1.3cqw;font-weight:800;white-space:nowrap;border:1px solid;text-align:center}
+.judge .verd .ok{color:var(--green-soft);border-color:rgba(120,230,170,.5);background:rgba(80,220,150,.12)}
+.judge .verd .chk{color:var(--blue-soft);border-color:rgba(140,190,255,.5);background:rgba(77,124,255,.14)}
+.judge .verd .cut{color:var(--pink-soft);border-color:rgba(255,123,168,.5);background:rgba(255,77,157,.12)}
+.jex{display:flex;flex-direction:column;gap:.45cqw;margin-top:1cqw}
+.judge .pull{padding-top:.8cqw}
+.jex .jr{display:grid;grid-template-columns:14cqw 1fr 4cqw 1fr;gap:.8cqw;align-items:center;border:1px solid var(--line);border-radius:.7cqw;background:rgba(255,255,255,.04);padding:.4cqw 1.2cqw;font-size:1.4cqw;line-height:1.3;word-break:keep-all}
+.jex .v{font-weight:800;white-space:nowrap}
+.jex .v.ok{color:var(--green-soft)}
+.jex .v.chk{color:var(--blue-soft)}
+.jex .v.cut{color:var(--pink-soft)}
+.jex .a{color:#fff;font-weight:600;text-align:right}
+.jex .b{color:var(--soft)}
+.jex .b strong{color:var(--blue-soft)}
+.jex .op{font-family:var(--display);font-size:2.3cqw;font-weight:700;text-align:center;line-height:1}
+.jex .op.ok{color:var(--green-soft)}
+.jex .op.chk{color:var(--blue-soft)}
+.jex .op.cut{color:var(--pink-soft)}
+/* 07 검증 결과 · 두 겹 */
+.lay2{display:grid;grid-template-columns:1fr 1fr;gap:1.6cqw;margin-top:2.4cqw}
+.lay2 .l2c{display:flex;flex-direction:row;align-items:center;gap:1.2cqw;border:1px solid var(--line);border-radius:var(--r);background:rgba(255,255,255,.04);padding:2cqw 2.2cqw;min-width:0}
+.lay2 .l2c i{font-style:normal;font-size:3.2cqw;line-height:1}
+.lay2 .l2c b{font-size:2.1cqw;font-weight:800;white-space:nowrap;letter-spacing:-.02em}
+.lay2 .l2c span{font-size:1.65cqw;color:var(--soft);white-space:nowrap;margin-left:auto}
+.lay2 .l2c.ok{border-color:rgba(120,230,170,.45);background:rgba(80,220,150,.07)}
+.lay2 .l2c.ok b{color:var(--green-soft)}
+.lay2 .l2c.cut{border-color:rgba(255,123,168,.45);background:rgba(255,77,157,.07)}
+.lay2 .l2c.cut b{color:var(--pink-soft)}
+
+.cmp{display:grid;grid-template-columns:10cqw repeat(4,1fr) 7cqw;gap:.45cqw .6cqw;align-items:center;margin:-.6cqw 0 1.3cqw;font-size:1.12cqw}
+.cmp .hd{font-family:var(--display);font-size:.95cqw;letter-spacing:.06em;color:var(--muted);text-align:center}
+.cmp .hd.r{text-align:right}
+.cmp .who{font-weight:700;font-size:1.2cqw;white-space:nowrap}
+.cmp .cell{border:1px solid var(--line);border-radius:.5cqw;padding:.5cqw .5cqw;text-align:center;background:rgba(255,255,255,.05);font-weight:600;white-space:nowrap}
+.cmp .cell.sci{border-color:rgba(255,123,168,.5);background:rgba(255,77,157,.12);color:var(--pink-soft)}
+.cmp .cell.cow{border-color:rgba(140,190,255,.5);background:rgba(77,124,255,.14);color:var(--blue-soft)}
+.cmp .cell .man{color:var(--green-soft)}
+.cmp .time{font-family:var(--display);font-weight:700;font-size:1.35cqw;text-align:right;color:var(--soft);white-space:nowrap}
+.cmp .time.acc{color:var(--blue-soft)}
+.cmp.s{font-size:1.3cqw;grid-template-columns:8cqw repeat(4,1fr) 7.5cqw;gap:1.1cqw .6cqw;margin:0}
+.cmp.s .hd{font-size:1cqw}
+.cmp.s .who{font-size:1.4cqw}
+.cmp.s .cell{padding:1.25cqw .4cqw;font-size:1.3cqw;border-radius:.7cqw}
+.cmp.s .time{font-size:1.7cqw}
+.cmp .cell.ai{border-color:rgba(140,190,255,.55);background:rgba(77,124,255,.18);color:var(--blue-soft)}
+.cmp .cell.man{border-color:rgba(120,230,170,.5);background:rgba(80,220,150,.12);color:var(--green-soft)}
+.cmp.s .cell{display:flex;flex-direction:column;align-items:center;justify-content:center;align-self:stretch;line-height:1.25}
+.cmp .who.man{color:var(--green-soft)}
+.cmp .who.ai{color:var(--blue-soft)}
+.note03{width:100%;box-sizing:border-box;margin-top:1.4cqw;padding:1cqw 1.6cqw;border:1px dashed rgba(255,255,255,.3);border-radius:.8cqw;font-size:1.5cqw;color:var(--soft);text-align:center;word-break:keep-all}
+.note03 strong{color:#fff}
+.cmpbox{border:1px solid rgba(255,255,255,.22);border-radius:var(--r);background:rgba(255,255,255,.04);padding:1.8cqw 1.8cqw 1.9cqw;box-shadow:0 0 0 1px rgba(0,0,0,.4) inset}
+.cmp.big{font-size:1.7cqw;grid-template-columns:15cqw repeat(4,1fr) 13cqw;gap:1.1cqw 1cqw;margin:0}
+.cmp.big .hd{font-size:1.25cqw}
+.cmp.big .who{font-size:1.9cqw}
+.cmp.big .cell{padding:1.3cqw .8cqw;font-size:1.7cqw;border-radius:.8cqw}
+.cmp.big .time{font-size:2.3cqw}
+
+.fc.sci .tag{color:var(--pink-soft)} .fc.cow .tag{color:var(--blue-soft)} .fc.man .tag{color:#9FEBC3}
+.farrow{display:flex;align-items:center;justify-content:center;color:var(--dim);font-size:2.4cqw}
+/* 06 도구 */
+.tools{display:grid;grid-template-columns:1fr 1fr;gap:2.4cqw;flex:1;min-height:0}
+.tool{border-radius:var(--r);border:1px solid var(--line);padding:2.2cqw 2.4cqw 2.6cqw;display:flex;flex-direction:column;gap:1.1cqw;min-width:0}
+.tool.pk{background:rgba(255,77,157,.08);border-color:rgba(255,123,168,.4)}
+.tool.bl{background:rgba(77,124,255,.09);border-color:rgba(140,190,255,.42)}
+.tool .head{display:flex;align-items:center;gap:1.4cqw}
+.tool .head .ico{font-size:5cqw}
+.tool .name{font-size:2.8cqw;font-weight:800;letter-spacing:-.03em;line-height:1.1}
+.tool .role{font-size:1.45cqw;margin-top:.3cqw}
+.tool.pk .role{color:var(--pink-soft)} .tool.bl .role{color:var(--blue-soft)}
+.tool .one{font-size:1.6cqw;line-height:1.5;color:var(--soft);word-break:keep-all;min-height:3em}
+.tool .one strong{color:#fff}
+.tool .nums{display:flex;gap:2.6cqw;margin-top:.6cqw}
+.tool .feat{display:flex;flex-direction:column;gap:1cqw;margin-top:.9cqw}
+.tool .feat .f{display:flex;align-items:center;gap:.9cqw;font-size:1.5cqw;font-weight:600;letter-spacing:-.01em;word-break:keep-all;line-height:1.3}
+.tool .feat .f i{font-style:normal;font-size:1.9cqw;width:2.4cqw;text-align:center;flex:none}
+.tool .cond{font-size:1.05cqw;color:var(--muted);line-height:1.5;margin-top:auto;padding-top:1.2cqw}
+/* 07·08 */
+.g72{display:grid;grid-template-columns:1.3fr 1fr;gap:2.4cqw;flex:1;min-height:0}
+.g72 .side{display:flex;flex-direction:column;justify-content:flex-start;gap:1.2cqw;min-width:0}
+.mini{display:flex;align-items:center;gap:1.1cqw;font-size:1.6cqw;color:var(--soft);word-break:keep-all}
+.mini .ico{font-size:3cqw;flex:0 0 auto} .mini b{color:#fff;white-space:nowrap} .mini>span:last-child{min-width:0}
+.mini .ar{color:var(--dim);font-size:2.2cqw}
+.tl{display:flex;flex-direction:column}
+.tl .it{display:grid;grid-template-columns:3.2cqw 1fr;gap:1.2cqw;align-items:start;position:relative;padding-bottom:1.2cqw}
+.tl .it:not(:last-child)::before{content:"";position:absolute;left:1.55cqw;top:3.2cqw;bottom:0;width:2px;background:rgba(140,190,255,.3)}
+.tl .dot{width:3.2cqw;height:3.2cqw;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.6cqw;background:rgba(77,124,255,.16);border:1px solid rgba(140,190,255,.45)}
+.tl .tx{font-size:1.65cqw;line-height:1.45;color:var(--soft);padding-top:.5cqw;word-break:keep-all}
+.tl .tx b{color:#fff}
+/* 09 */
+.g9{display:grid;grid-template-columns:1.15fr 1fr;gap:2.8cqw;flex:1;min-height:0}
+.rows{display:flex;flex-direction:column;gap:.7cqw;margin-top:1.3cqw}
+.row{display:grid;grid-template-columns:1fr auto 1fr;gap:1cqw;align-items:center;border:1px solid var(--line);border-radius:.7cqw;background:rgba(255,255,255,.04);padding:.9cqw 1.2cqw;font-size:1.4cqw;line-height:1.35;word-break:keep-all}
+.row .a{color:#fff} .row .ar{color:var(--dim);font-size:1.7cqw} .row .b{color:var(--soft)} .row .b strong{color:var(--blue-soft)}
+.strike{text-decoration:line-through;text-decoration-color:rgba(255,123,168,.95);text-decoration-thickness:.13em}
+.ask{border-radius:var(--r);border:1px solid rgba(120,230,170,.42);background:rgba(80,220,150,.08);padding:1.8cqw 2cqw;display:flex;flex-direction:column;gap:1.1cqw;justify-content:center;height:100%}
+.ask .k{font-family:var(--display);font-size:1.1cqw;letter-spacing:.12em;color:var(--muted);text-transform:uppercase}
+.ask .q{display:flex;align-items:center;gap:1.1cqw;font-size:2cqw;font-weight:700;letter-spacing:-.02em}
+.ask .q i{font-style:normal;font-size:2.1cqw}
+.ask .fine{font-size:1.3cqw;color:var(--soft);margin-top:.3cqw}
+.g9v{display:grid;grid-template-columns:1.3fr 1fr;gap:2.4cqw;flex:1;min-height:0;margin-top:1.6cqw}
+.rows.fill{margin-top:0;height:100%;min-height:0}
+.rows.fill .row{flex:1;min-height:0}
+.g9v .ask{justify-content:space-evenly;gap:0}
+/* 10 */
+.three{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2cqw;flex:1;min-height:0}
+.step{border:1px solid var(--line);border-radius:var(--r);background:rgba(255,255,255,.035);padding:1.4cqw;display:flex;flex-direction:column;gap:.8cqw;min-height:0;position:relative}
+.step .n{position:absolute;right:1.3cqw;top:.9cqw;font-family:var(--display);font-size:3.6cqw;font-weight:700;color:rgba(255,255,255,.14);line-height:1}
+.step .ico{font-size:3.2cqw}
+.step .nm{font-size:2cqw;font-weight:800;letter-spacing:-.02em}
+.step .ds{font-size:1.35cqw;line-height:1.45;color:var(--soft);word-break:keep-all;min-height:3.9cqw}
+.step .fig{flex:1;min-height:0}
+.step .img{background:transparent}
+.step .tm{font-size:1.1cqw;color:var(--green);letter-spacing:.04em}
+.lead{font-size:1.7cqw;color:var(--soft);margin:-.4cqw 0 1.4cqw;line-height:1.5;word-break:keep-all}
+.lead strong{color:#fff}
+/* 11 */
+.g11{display:grid;grid-template-columns:1.4fr 1fr;gap:3cqw;flex:1;min-height:0;align-items:center}
+.calls{display:flex;flex-direction:column;gap:2.2cqw}
+.cstack{position:relative;height:22cqw}
+.cstack .c{position:absolute;left:50%;width:14cqw;height:18cqw;border-radius:.6cqw;background:#fff;box-shadow:0 1cqw 3cqw rgba(0,0,0,.7);transform:translateX(-50%) rotate(var(--rot));top:var(--t);display:flex;flex-direction:column;gap:.5cqw;padding:1.2cqw 1cqw}
+.cstack .c i{display:block;height:.55cqw;border-radius:.3cqw;background:#d9dde6} .cstack .c i.t{height:1cqw;background:#1a1a1a;width:70%} .cstack .c i.p{background:#ffb3cc;width:60%}
+.cstack .lbl{position:absolute;left:0;right:0;bottom:-.6cqw;text-align:center;font-size:1.25cqw;color:var(--soft)}
+/* 12 */
+.seq{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:center;gap:1.6cqw;flex:1;min-height:0}
+.seq .s{display:flex;flex-direction:column;align-items:center;gap:.9cqw;text-align:center}
+.seq .s .ico{font-size:7.5cqw}
+.seq .s b{font-size:3.2cqw;font-weight:800;letter-spacing:-.03em}
+.seq .s span{font-size:1.4cqw;color:var(--soft)}
+.seq .ar{font-family:var(--display);font-size:3.6cqw;color:var(--dim)}
+.seq .s.pk b{color:var(--pink-soft)} .seq .s.bl b{color:var(--blue-soft)} .seq .s.gr b{color:var(--green-soft)}
+.kit{display:flex;align-items:center;gap:1.4cqw;border:1px dashed rgba(255,255,255,.28);border-radius:var(--r);padding:1.1cqw 1.6cqw;font-size:1.4cqw;color:var(--soft);margin-top:1cqw}
+.kit .ico{font-size:2.6cqw} .kit code{font-family:ui-monospace,Menlo,monospace;color:var(--blue-soft);font-size:1.4cqw}
+/* 12 기능 추가 */
+.eq{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:1.6cqw;align-items:center;flex:0 0 auto}
+.eqb{border:1px solid var(--line);border-radius:var(--r);background:rgba(255,255,255,.04);padding:1.4cqw 1.2cqw;display:flex;align-items:center;justify-content:center;gap:1.1cqw}
+.eqb .ico{font-size:3.6cqw;line-height:1}
+.eqb b{font-size:2cqw;font-weight:800;letter-spacing:-.02em;white-space:nowrap}
+.eqb.sci{border-color:rgba(255,123,168,.5);background:rgba(255,77,157,.09)} .eqb.sci b{color:var(--pink-soft)}
+.eqb.cow{border-color:rgba(140,190,255,.5);background:rgba(77,124,255,.10)} .eqb.cow b{color:var(--blue-soft)}
+.eqb.man{border-color:rgba(120,230,170,.45);background:rgba(80,220,150,.08)} .eqb.man b{color:var(--green-soft)}
+.eq .op{font-family:var(--display);font-size:4cqw;font-weight:700;color:var(--dim);line-height:1}
+.cards3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2cqw;flex:1;min-height:0;margin-top:1.8cqw}
+.c3{display:flex;flex-direction:column;min-height:0;gap:.7cqw}
+.c3 .img{flex:1;min-height:0;overflow:hidden;border:1px solid var(--line);background:#fff;border-radius:.6cqw;display:flex;align-items:flex-start}
+.c3 .img img{display:block;width:100%;height:100%;object-fit:cover;object-position:top left}
+.c3.hot .img{border-color:rgba(255,123,168,.6);box-shadow:0 0 0 .25cqw rgba(255,123,168,.25)}
+.c3 .tag{font-size:1.5cqw;font-weight:700;color:#fff;text-align:center}
+.c3 .tag span{font-weight:500;color:var(--muted);font-size:1.15cqw;margin-left:.5cqw}
+.c3.hot .tag span{color:var(--pink-soft)}
+
+/* ===== 발표 대본 패널 ===== */
+:root{--sw:min(30vw,540px)}
+body.has-script{padding-right:var(--sw)}
+.script{position:fixed;top:0;right:0;width:var(--sw);height:100vh;box-sizing:border-box;background:#121214;color:#d8d8dc;border-left:1px solid #2a2a2e;overflow:auto;padding:0 0 40vh;font-family:var(--font);font-size:15px;line-height:1.75;z-index:200;display:none}
+body.has-script .script{display:block}
+.script .sh{position:sticky;top:0;background:#121214;border-bottom:1px solid #2a2a2e;padding:14px 18px;display:flex;align-items:center;gap:10px;z-index:1}
+.script .sh b{font-size:15px;color:#fff;letter-spacing:-.01em}
+.script .sh small{color:#8a8a90;font-size:12px}
+.script .sh button{margin-left:auto;background:#222226;color:#ddd;border:1px solid #333;border-radius:8px;padding:4px 10px;font-size:12px;cursor:pointer}
+.sb{padding:16px 18px 18px 22px;border-left:4px solid transparent;border-bottom:1px solid #1f1f23;scroll-margin-top:60px;font-family:var(--font);font-size:15px;line-height:1.75;color:#d8d8dc}
+.sb.on{border-left-color:#7CA0FF;background:#17171b}
+.sbh{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.sbn{font-family:var(--display);font-weight:700;color:#7CA0FF;font-size:13px;letter-spacing:.08em}
+.sbt{font-weight:700;color:#fff;font-size:15px;letter-spacing:-.01em}
+.sbm{margin-left:auto;font-size:12px;color:#8a8a90;white-space:nowrap}
+.sb p{margin:0 0 10px;word-break:keep-all}
+.sb p:last-child{margin-bottom:0}
+.sb em{font-style:normal;color:#9FEBC3}
+.cue{display:inline-block;font-size:12px;color:#8a8a90;border:1px solid #2e2e33;border-radius:6px;padding:0 6px;margin-right:6px;vertical-align:1px}
+.script-btn{position:fixed;top:12px;right:12px;z-index:210;background:#222226;color:#ddd;border:1px solid #333;border-radius:8px;padding:6px 12px;font:600 13px var(--font);cursor:pointer;display:none}
+body:not(.has-script) .script-btn{display:block}
+@media print{.script,.script-btn,.mobile-btn{display:none!important} body.has-script{padding-right:0}}
+/* 모바일: 슬라이드 아래 인라인 대본 */
+.sb-inline{display:none}
+.mobile-btn{display:none}
+@media (max-width:900px){
+  body.has-script{padding-right:0}
+  .script,.script-btn{display:none!important}
+  .sb-inline{display:block;background:#141416;border:1px solid #2a2a2e;border-radius:10px;margin:-1vw 0 2vw}
+  .sb-inline .sb{border-left-width:4px;border-bottom:0;padding:14px 16px 16px 16px;font-size:16px;line-height:1.8}
+  .sb-inline .sbt{font-size:16px}
+  .sb-inline .sbm{margin-left:0;width:100%}
+  body.no-inline .sb-inline{display:none}
+  .mobile-btn{display:block;position:fixed;right:10px;bottom:10px;z-index:210;background:#222226;color:#ddd;border:1px solid #444;border-radius:999px;padding:8px 14px;font:600 13px var(--font);cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.5)}
+}
+
+</style>
+</head>
+<body>
+<div class="deck">
+
+<!-- 01 표지 -->
+<section class="slide cover">
+  <img class="art" src="assets/ax-cover-chrome.png" alt="">
+  <div class="year">2026</div>
+  <h1>AI,<br>어디까지<br>신뢰하시나요?</h1>
+  <div class="lead">근거 → 기준 → 검증 → 산출물 → 확장</div>
+  <div class="chips"><span class="chip">파마브로스 심포지엄</span><span class="chip light">AI 분석 비서</span></div>
+  <div class="pageno">01</div>
+</section>
+
+<!-- 02 왜 필요한가 -->
+<section class="slide">
+  <div class="glow pk"></div>
+  <div class="kicker">사례 · 카운터에서 매일 듣는 말</div>
+  <h2>사례 · 카운터의 질문 하나</h2>
+  <div style="flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center">
+  <div class="bubble" style="width:100%;box-sizing:border-box;white-space:nowrap;margin-bottom:1.8cqw"><span class="who">손님</span>“비염약 하나 주세요. 오늘 운전해야 해서 <span style="color:var(--blue-soft)">안 졸린 걸로요</span>.”</div>
+  <div class="boxes" style="margin-top:0;width:100%">
+    <div class="mbox" style="--c:#FF7BA8"><b>지르텍정</b><span class="same">2세대 항히스타민제</span></div>
+    <div class="mbox" style="--c:#7CA0FF"><b>클라리틴정</b><span class="same">2세대 항히스타민제</span></div>
+    <div class="mbox" style="--c:#7EE8B0"><b>알레그라정120mg</b><span class="same">2세대 항히스타민제</span></div>
+  </div>
+  <div class="note03">셋 다 “안 졸린 약” · <strong>졸음 · 운전 · 나이 · 주스</strong>는 다름</div>
+  </div>
+  <div class="chips"><span class="chip">파마브로스 심포지엄</span><span class="chip light">AI 분석 비서</span></div>
+  <div class="pageno">02</div>
+</section>
+
+<!-- 03 근거 ≠ 정답 -->
+<section class="slide">
+  <div class="tex"></div>
+  <div class="kicker">사례 · 함정 · 실측 2026-09-04</div>
+  <h2>사례 · 출처는 진짜, 답은 틀림</h2>
+  <div style="flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center">
+  <div class="vs">
+    <div class="bubble pk"><span class="who">🤖 AI 문장 · PMID 18219837 (실재)</span>펙소페나딘은 영유아에서도<br><strong style="font-size:3.2cqw">안전성 확인</strong></div>
+    <div class="neq">≠</div>
+    <div class="bubble bl"><span class="who">📜 허가사항 · 알레그라정120mg</span>12세 미만 소아<br><strong style="font-size:3.2cqw">안전성 미확립</strong></div>
+  </div>
+  </div>
+  <div class="pull">AI는 틀려도 <em>자신 있게</em> 말합니다</div>
+  <div class="chips"><span class="chip">파마브로스 심포지엄</span><span class="chip light">AI 분석 비서</span></div>
+  <div class="pageno">03</div>
+</section>
+
+<!-- 04 ① 검색 개념 -->
+<section class="slide">
+  <div class="glow pk"></div>
+  <div class="kicker">① 근거 찾기 · 논문 (PubMed) · 첫 번째 AI</div>
+  <h2>① 근거 찾기 · 검증할 수 있게 가져오기</h2>
+  <div class="flow" style="grid-template-columns:1fr 2.8cqw 1fr 2.8cqw 1fr">
+    <div class="fc sci"><div class="ico">🔍</div><div class="st">조회</div><div class="say">PubMed 검색</div><div class="more">약마다 <strong>효능 · 주의사항</strong> 논문</div><div class="tag">첫 번째 AI</div></div>
+    <div class="farrow">→</div>
+    <div class="fc sci"><div class="ico">🔖</div><div class="st">근거마다</div><div class="say">논문 번호</div><div class="more">나중에 <strong>실재 확인</strong> · 사실 검증용</div><div class="tag">없으면 “없음”</div></div>
+    <div class="farrow">→</div>
+    <div class="fc sci"><div class="ico">🧾</div><div class="st">근거마다</div><div class="say">성분 · 용량 · 대상</div><div class="more">나중에 <strong>허가와 대조</strong> · 맥락 검증용</div><div class="tag">어느 약 · 어떤 조건</div></div>
+  </div>
+  <div class="pull">찾는 게 아니라, <em class="acc">검증할 수 있게</em> 가져온다</div>
+  <div class="chips"><span class="chip">파마브로스 심포지엄</span><span class="chip light">AI 분석 비서</span></div>
+  <div class="pageno">04</div>
+</section>
+
+<!-- 06 ② 국내 규제 개념 -->
+<section class="slide">
+  <div class="glow bl"></div>
+  <div class="kicker">② 기준 가져오기 · 국내 규제 (약학정보원) · 두 번째 AI</div>
+  <h2>② 기준 가져오기 · 국내 허가사항</h2>
+  <div class="flow" style="grid-template-columns:1fr 2.8cqw 1fr 2.8cqw 1fr">
+    <div class="fc cow"><div class="ico">🔎</div><div class="st">품목 확정</div><div class="say">약학정보원</div><div class="more"><strong>대표 1개</strong></div><div class="tag">두 번째 AI</div></div>
+    <div class="farrow">→</div>
+    <div class="fc cow"><div class="ico">📜</div><div class="st">허가사항</div><div class="say">성분 · 효능 · 용법 · 주의</div><div class="more"><strong>쓸 수 있는 말</strong>의 범위</div><div class="tag">식약처 허가</div></div>
+    <div class="farrow">→</div>
+    <div class="fc cow"><div class="ico">🧾</div><div class="st">원본 저장</div><div class="say">B 파일</div><div class="more">원문 그대로 · <strong>대조 가능</strong></div><div class="tag">허가사항.md</div></div>
+  </div>
+  <div class="pull">검증의 잣대는 <em class="acc">국내 허가사항</em></div>
+  <div class="chips"><span class="chip">파마브로스 심포지엄</span><span class="chip light">AI 분석 비서</span></div>
+  <div class="pageno">05</div>
+</section>
+
+<!-- NN ③ 대조 · 판정 -->
+<section class="slide judge">
+  <div class="glow gr"></div>
+  <div class="kicker">③ 검증 · A ↔ B · 두 번째 AI</div>
+  <h2>③ 검증 · 대조 → 판정</h2>
+  <div class="flow" style="grid-template-columns:1fr 2.8cqw 1.35fr 2.8cqw 1fr">
+    <div class="fc sci"><div class="ico">📚</div><div class="st">A · 근거 문장</div><div class="big">하나씩</div><div class="tag">31문장</div></div>
+    <div class="farrow">→</div>
+    <div class="fc cow"><div class="ico">⚖️</div><div class="st">대조 · 두 겹</div>
+      <div class="lay"><span>🔖 사실 · <b>논문 실재</b></span><span>📜 맥락 · <b>허가 일치</b></span></div>
+      <div class="axes"><span>🧪 성분</span><span>💊 용법</span><span>👶 대상</span><span>📝 표현</span></div>
+      <div class="tag">두 번째 AI</div></div>
+    <div class="farrow">→</div>
+    <div class="fc man"><div class="ico">🗂️</div><div class="st">판정</div><div class="big">이유 기록</div><div class="tag">확인표</div></div>
+  </div>
+  <div class="jex">
+    <div class="jr"><span class="v ok">🟢 통과</span><span class="a">자몽주스 · 흡수 감소</span><span class="op ok">=</span><span class="b">허가에 <strong>같은 말</strong></span></div>
+    <div class="jr"><span class="v chk">🔵 출처 달아 사용</span><span class="a">소아 · 졸음 보고</span><span class="op chk">≈</span><span class="b">허가엔 없음 · <strong>성분 · 대상 ✓</strong></span></div>
+    <div class="jr"><span class="v cut">🩷 제외</span><span class="a">영유아 안전</span><span class="op cut">≠</span><span class="b"><strong>12세 미만 미확립</strong> · 대상 ✗</span></div>
+  </div>
+  <div class="pull">문장마다 대조 · <em class="acc">판정마다 이유</em></div>
+  <div class="chips"><span class="chip">파마브로스 심포지엄</span><span class="chip light">AI 분석 비서</span></div>
+  <div class="pageno">06</div>
+</section>
+
+<!-- 07 검증 -->
+<section class="slide">
+  <div class="glow gr"></div>
+  <div class="kicker">③ 검증 · 판정 결과 · 확인표</div>
+  <h2>③ 검증 · 근거 × 기준 = 판정 31</h2>
+  <div class="eq" style="margin-bottom:2cqw">
+    <div class="eqb sci"><span class="ico">📚</span><b>A · 근거 · 논문 21편</b></div>
+    <div class="op">+</div>
+    <div class="eqb cow"><span class="ico">📜</span><b>B · 기준 · 국내 허가사항</b></div>
+    <div class="op">=</div>
+    <div class="eqb man"><span class="ico">🗂️</span><b>확인표 · 31문장 판정</b></div>
+  </div>
+  <div class="bar" style="height:4cqw"><i class="ok" style="flex:1"></i><i class="chk" style="flex:21">출처 달아 사용 21</i><i class="cut" style="flex:9">제외 9</i></div>
+  <div class="legend"><span><i style="background:#7EE8B0"></i>통과 1</span><span><i style="background:#7CA0FF"></i>출처 달아 사용 21</span><span><i style="background:#FF7BA8"></i>제외 9</span></div>
+  <div class="lay2">
+    <div class="l2c ok"><i>🔖</i><b>사실 검증</b><span>논문 번호 21편 · 전부 실재</span></div>
+    <div class="l2c cut"><i>📜</i><b>맥락 검증</b><span>허가와 대조 · 9건 걸림</span></div>
+  </div>
+  <div class="pull">출처가 있어도, <em class="acc">허가와 맞아야</em> 쓴다</div>
+  <div class="chips"><span class="chip">파마브로스 심포지엄</span><span class="chip light">AI 분석 비서</span></div>
+  <div class="pageno">07</div>
+</section>
+
+<!-- 08 걸러진 것 · 약사님의 차례 -->
+<section class="slide">
+  <div class="glow gr"></div>
+  <div class="kicker">③ 검증 · 뺀 9건 · 누가 무엇을 하나</div>
+  <h2>③ 역할 분리 · 찾기 · 판정 · 결정</h2>
+  <div class="g9v" style="margin-top:0">
+    <div class="rows fill">
+      <div class="row"><span class="a strike">펙소페나딘, 영유아도 안전</span><span class="ar">→</span><span class="b"><strong>12세 미만 미확립</strong></span></div>
+      <div class="row"><span class="a strike">세티리진이 가장 세다</span><span class="ar">→</span><span class="b"><strong style="white-space:nowrap">60mg 1일 2회</strong> · 국내 미등재</span></div>
+      <div class="row"><span class="a strike">다른 항히스타민제 비교 3건</span><span class="ar">→</span><span class="b">세 약에 <strong>없는 성분</strong></span></div>
+    </div>
+    <div class="ask">
+      <div class="k">역할 분리</div>
+      <div class="q"><i>🔎</i>찾기 — 첫 번째 AI</div>
+      <div class="q"><i>📜</i>대조 · 판정 — 두 번째 AI</div>
+      <div class="q"><i>✅</i>결정 — 약사</div>
+    </div>
+  </div>
+  <div class="pull">진료는 의사, 약은 약사 — <em class="acc">찾은 쪽이 판정하지 않는다</em></div>
+  <div class="chips"><span class="chip">파마브로스 심포지엄</span><span class="chip light">AI 분석 비서</span></div>
+  <div class="pageno">08</div>
+</section>
+
+<!-- NN 산출물 -->
+<section class="slide">
+  <div class="glow bl"></div>
+  <div class="kicker">④ 산출물 · 검증을 거친 카드 · 약사님의 검증</div>
+  <h2>④ 산출물 · 상담카드 → 결정은 약사</h2>
+  <div style="flex:1;min-height:0;display:flex;align-items:center;justify-content:center;gap:2.6cqw">
+    <img src="assets/card-cowork-v2.png" alt="AI가 만든 비염약 상담카드" style="height:100%;width:auto;background:#fff;display:block">
+    <div style="display:flex;flex-direction:column;gap:1.4cqw;min-width:0;flex:1">
+      <div class="ask" style="height:auto">
+        <div class="k">약사님이 묻는 셋</div>
+        <div class="q"><i>💊</i>제품이 맞는가</div>
+        <div class="q"><i>📜</i>허가 표현과 같은가</div>
+        <div class="q"><i>🗣️</i>상담에 써도 되는가</div>
+      </div>
+      <div class="numl" style="font-size:1.4cqw">A4 1장 · 30분 · 사람 손 2번 (약 이름 · 마지막 확인)</div>
+    </div>
+  </div>
+  <div class="pull">카드는 결론이 아니라, <em class="acc">약사님의 검토 자료</em></div>
+  <div class="chips"><span class="chip">파마브로스 심포지엄</span><span class="chip light">AI 분석 비서</span></div>
+  <div class="pageno">09</div>
+</section>
+
+<!-- NN 도구 둘 -->
+<section class="slide">
+  <div class="kicker">오늘의 AI 도구 · 이름 두 개만 기억</div>
+  <h2>도구 둘 · 찾는 AI, 검증하는 AI</h2>
+  <div class="tools">
+    <div class="tool pk">
+      <div class="head"><span class="ico">🔎</span><div><div class="name">클로드 사이언스</div><div class="role">연구자용 클로드</div></div></div>
+      <div class="one">논문 찾기 · 분석 · <strong>보고서</strong></div>
+      <div class="feat">
+        <div class="f"><i>📚</i>PubMed 검색</div>
+        <div class="f"><i>📄</i>보고서 파일</div>
+      </div>
+      <div class="cond">로컬 앱 · 아직 베타 · macOS / Linux · Pro 이상 요금제</div>
+    </div>
+    <div class="tool bl">
+      <div class="head"><span class="ico">📋</span><div><div class="name">클로드 코워크</div><div class="role">검증하고 만드는 클로드</div></div></div>
+      <div class="one">지시문 하나 · 여러 단계 · <strong>끝까지</strong></div>
+      <div class="feat">
+        <div class="f"><i>📂</i>보고서 검증하고 카드 쓰기</div>
+        <div class="f"><i>🌐</i>약학정보원 조회</div>
+        <div class="f"><i>📑</i>PDF · 엑셀 · 웹 페이지</div>
+      </div>
+      <div class="cond">클로드 데스크톱 앱 · Cowork 모드</div>
+    </div>
+  </div>
+  <div class="chips"><span class="chip">파마브로스 심포지엄</span><span class="chip light">AI 분석 비서</span></div>
+  <div class="pageno">10</div>
+</section>
+
+<!-- 10 기능 추가 -->
+<section class="slide">
+  <div class="glow bl"></div>
+  <div class="kicker">⑤ 확장 · 지시문 하나 더 · 셋 다 실제 실행 · 둘은 화면 재현</div>
+  <h2 style="margin-bottom:1.6cqw">⑤ 확장 · 지시문 하나 더</h2>
+  <div class="eq">
+    <div class="eqb sci"><span class="ico">🔎</span><b>사이언스 프로젝트 1</b></div>
+    <div class="op">+</div>
+    <div class="eqb cow"><span class="ico">📋</span><b>코워크 지시문 1</b></div>
+    <div class="op">=</div>
+    <div class="eqb man"><span class="ico">🗂️</span><b>새 결과물 1개</b></div>
+  </div>
+  <div class="cards3">
+    <div class="c3 hot"><div class="img"><img src="assets/card-cowork-v2.png" alt="상담카드 PDF"></div><div class="tag">상담카드 <span>PDF</span></div></div>
+    <div class="c3"><div class="img"><img src="assets/card-mock-ingredient-html.png" alt="성분분석 웹 페이지"></div><div class="tag">성분 비교표 <span>웹 페이지</span></div></div>
+    <div class="c3"><div class="img"><img src="assets/card-mock-supplement-xlsx.png" alt="건강기능식품 엑셀"></div><div class="tag">건강기능식품 <span>엑셀</span></div></div>
+  </div>
+  <div class="pull" style="padding-top:1cqw"><em class="acc">사는</em> 게 아니라, 짝을 <em>늘리기</em></div>
+  <div class="chips"><span class="chip">파마브로스 심포지엄</span><span class="chip light">AI 분석 비서</span></div>
+  <div class="pageno">11</div>
+</section>
+
+<!-- 11 구성 세 걸음 -->
+<section class="slide">
+  <div class="glow bl"></div>
+  <div class="kicker">구성 · 한 번만 · 15분 → 다음부터 약 이름만</div>
+  <h2>구성 · 세 걸음, 한 번만</h2>
+  <p class="lead">두 AI 도구 → <strong>같은 폴더</strong></p>
+  <div class="three">
+    <div class="step"><div class="n">01</div><div class="ico">📋</div><div class="nm">코워크 세션 + 폴더</div><div class="ds">Cowork 모드 · 작업 폴더 지정</div><div class="fig"><div class="img contain"><img src="assets/captures/S13_1_cowork_session_v2.png" alt="코워크 작업 세션 만들기"></div></div></div>
+    <div class="step"><div class="n">02</div><div class="ico">📝</div><div class="nm">지시문 파일</div><div class="ds">폴더에 저장 · 약 이름만 비움</div><div class="fig"><div class="img contain"><img src="assets/captures/S13_2_instruction_v2.png" alt="지시문 파일"></div></div></div>
+    <div class="step"><div class="n">03</div><div class="ico">🔎</div><div class="nm">사이언스 프로젝트 + 지침</div><div class="ds">지침 2문장 · 실재 논문만 · 폴더에 저장</div><div class="fig"><div class="img contain"><img src="assets/captures/S07a_science_project_v2.png" alt="사이언스 프로젝트 만들기"></div></div></div>
+  </div>
+  <div class="pull">다음부터는 <em>약 이름만</em> · 두 마디 호출</div>
+  <div class="chips"><span class="chip">파마브로스 심포지엄</span><span class="chip light">AI 분석 비서</span></div>
+  <div class="pageno">12</div>
+</section>
+
+<!-- 12 시연 -->
+<section class="slide">
+  <div class="glow gr"></div>
+  <div class="kicker">시연 · 실제 화면 · 약 4분</div>
+  <h2>시연 · ①부터 ④까지 실제 화면</h2>
+  <div class="flow">
+    <div class="fc sci"><div class="ico">🔎</div><div class="st">① 근거</div><div class="say">사이언스 보내기</div><div class="more">프롬프트 5줄 → <strong>실제 전송</strong></div><div class="tag">실제 실행</div></div>
+    <div class="farrow">→</div>
+    <div class="fc cow"><div class="ico">📜</div><div class="st">② 기준</div><div class="say">B 파일 열기</div><div class="more">허가사항 · 성분 · 용법 · 주의</div><div class="tag">실측 파일</div></div>
+    <div class="farrow">→</div>
+    <div class="fc cow"><div class="ico">🗂️</div><div class="st">③ 검증</div><div class="say">확인표 열기</div><div class="more">문장마다 <strong>판정 · 이유</strong></div><div class="tag">실측 파일</div></div>
+    <div class="farrow">→</div>
+    <div class="fc man"><div class="ico">📄</div><div class="st">④ 산출물</div><div class="say">카드 PDF 열기</div><div class="more">A4 1장 · <strong>뺀 근거</strong></div><div class="tag">실측 파일</div></div>
+  </div>
+  <div class="pull">①만 실제 전송 · 결과는 <em class="acc">질의응답</em> 때</div>
+  <div class="chips"><span class="chip">파마브로스 심포지엄</span><span class="chip light">AI 분석 비서</span></div>
+  <div class="pageno">13</div>
+</section>
+
+<!-- 13 마무리 -->
+<section class="slide">
+  <div class="tex"></div>
+  <div class="kicker">마무리 · 가져가실 것</div>
+  <h2>검증 세 겹 · 사실 · 맥락 · 약사</h2>
+  <div class="seq">
+    <div class="s pk"><span class="ico">🔎</span><b>찾고</b><span>클로드 사이언스</span></div>
+    <div class="ar">→</div>
+    <div class="s bl"><span class="ico">📋</span><b>맞춰보고</b><span>클로드 코워크</span></div>
+    <div class="ar">→</div>
+    <div class="s gr"><span class="ico">✅</span><b>결정</b><span>약사</span></div>
+  </div>
+  <div class="kit"><span class="ico">📦</span><span><b style="color:#fff">오늘 구성 전부</b> — <code>wolsey37.github.io/study/symposium/consult-card-kit.zip</code><br>작업 폴더 · 지시문 · 사이언스 지침 · 견본 · 폴더만 지정</span></div>
+  <div class="pull">출처가 있어도 <em>허가와 맞아야</em> 쓴다 · 대조까지 AI, 결정은 <em class="acc">약사님</em></div>
+  <div class="chips"><span class="chip">파마브로스 심포지엄</span><span class="chip light">AI 분석 비서</span></div>
+  <div class="pageno">14</div>
+</section>
+
+
+</div>
+
+<button class="script-btn" id="scriptBtn" title="N">대본 보기</button>
+<aside class="script" id="script">
+  <div class="sh"><b>발표 대본 · 30분</b><small>슬라이드를 넘기면 따라옵니다 · N 키로 숨기기</small><button id="scriptHide">숨기기</button></div>
+  <div class="sb" data-i="0"><div class="sbh"><span class="sbn">01</span><span class="sbt">AI, 어디까지 신뢰하시나요?</span><span class="sbm">1분 · 누적 1분</span></div><p>안녕하세요. 파마브로스 ooo입니다. 오늘 제 주제는 "AI, 어디까지 신뢰하시나요"입니다. 약사님들 모임이지만 오늘은 약 이야기가 아니라 AI 도구 이야기를 하려고 합니다. 약에 대한 판단은 여기 계신 약사님들 몫으로 남겨 두었습니다.</p><p>순서는 다섯 단계입니다. 근거, 기준, 검증, 산출물, 그리고 확장입니다. 논문에서 근거를 찾고, 국내 허가사항이라는 기준을 가져와서, 둘을 맞춰 보는 것이 검증입니다. 단계마다 실제 화면과 실제 파일을 보여드리고, "어디까지"의 답은 화면이 말하게 하겠습니다. 화면은 전부 9월 4일에 제 컴퓨터에서 돌린 것입니다. 그럼 사례 하나로 시작하겠습니다.</p></div>
+  <div class="sb" data-i="1"><div class="sbh"><span class="sbn">02</span><span class="sbt">사례 · 카운터의 질문 하나</span><span class="sbm">2분 · 누적 3분</span></div><p>출발은 손님 질문 하나였습니다. 카운터에서 매일 들으시는 말이라고 들었습니다. "비염약 하나 주세요. 오늘 운전해야 해서 안 졸린 걸로요."</p><p>이 질문에 대한 후보는 화면에 있는 세 가지인데, 셋 다 "안 졸린 약"으로 팔립니다. 그런데 손님에 따라 답이 갈립니다. 어떤 손님에게는 졸음 정도가, 어떤 손님에게는 나이가, 어떤 손님에게는 같이 먹는 음식이 걸립니다. 그 판단은 약사님들이 하시는 것이고, 제 눈에 보인 건 그 근거가 허가사항과 논문 여기저기에 흩어져 있다는 점이었습니다.</p><p>예를 들면, 약국에 실습생이 새로 왔다고 생각해 보시면, 그 실습생에게 "약 비교해서 카운터에 둘 카드 한 장 만들어 와" 하고 시키는 일이 있을 겁니다. 그 일을 저는 AI에게 시켜 봤습니다. 그런데 시켜 보니까 바로 문제가 하나 나왔습니다. 그 문제부터 보여드리겠습니다.</p></div>
+  <div class="sb" data-i="2"><div class="sbh"><span class="sbn">03</span><span class="sbt">사례 · 출처는 진짜, 답은 틀림</span><span class="sbm">2.5분 · 누적 5.5분</span></div><p>문제는 이것이었는데, 논문에서 근거를 찾았다고 해서 답까지 맞는 건 아니었습니다. 이게 오늘의 첫 번째 교훈입니다.</p><p>왼쪽을 보시면 AI가 쓴 문장인데, 세 약 중 하나를 두고 "아주 어린 아이에게도 안전성이 확인됐다"고 썼습니다. 옆에 논문 번호가 붙어 있고, 이 논문은 실제로 있는, 어린 아이들을 대상으로 한 진짜 임상시험입니다. 그래서 솔직히 저는 이 문장을 보고 "출처도 있고 잘 찾았네" 하고 넘어갔습니다.</p><p>그런데 오른쪽을 보시면, 같은 약의 국내 허가사항에는 "12세 미만은 안전성과 유효성이 확립되어 있지 않다"고 되어 있습니다. 정반대입니다. 게다가 그 논문에서 쓴 용량은 국내에 허가된 용량도 아니었습니다. 이 충돌을 잡아낸 건 제가 아니라, 뒤에서 말씀드릴 검증 담당 AI였습니다.</p><p>비유하자면 외국 교과서를 그대로 번역해 온 것과 같은데, 문장은 다 맞아도 우리 현장에서는 못 쓰는 말입니다. 문장만 보면 멀쩡하고, AI는 틀려도 자신 있게 말하기 때문에 사람이 읽어서는 잘 안 걸립니다. 그래서 오늘 다섯 단계 중에 근거 뒤에 기준과 검증이 따로 있는 것입니다. 그럼 첫 단계, 근거 찾기부터 보겠습니다.</p></div>
+  <div class="sb" data-i="3"><div class="sbh"><span class="sbn">04</span><span class="sbt">① 근거 찾기 · 검증할 수 있게 가져오기</span><span class="sbm">2.5분 · 누적 8분</span></div><p>첫 단계는 근거 찾기인데, 그냥 찾는 게 아니라 나중에 검증할 수 있는 모양으로 가져오는 것이 요점입니다. 화면의 세 칸이 첫 번째 AI 도구가 하는 일입니다.</p><p>첫째 칸, 펍메드에서 약마다 효능과 주의사항에 관한 논문을 조회합니다. 둘째 칸, 근거 문장마다 논문 번호를 답니다. 이 번호가 있어야 나중에 그 논문이 실제로 있는지 확인할 수 있습니다. 사실 검증의 재료입니다. 없으면 없다고 쓰게 해서 지어내지 못하게 합니다. 셋째 칸, 근거 문장마다 어느 약의 어떤 성분, 어떤 용량, 어떤 대상에 대한 말인지 같이 적게 합니다. 이게 있어야 나중에 국내 허가사항과 하나씩 맞춰 볼 수 있습니다. 맥락 검증의 재료입니다.</p><p>정리하면, 근거를 찾는 단계에서 번호와 성분·용량·대상을 붙여 두지 않으면 뒤의 검증이 불가능합니다. 그래서 찾는 조건을 그렇게 정했습니다. 이 일은 첫 번째 AI 도구가 합니다. AI 도구 이름은 뒤에서 말씀드리고, 실제로 보내는 장면은 시연에서 보여드리겠습니다. 여기서 나온 결과가 A 파일, 논문 21편이 정리된 보고서입니다. 이제 둘째 단계로 가겠습니다.</p></div>
+  <div class="sb" data-i="4"><div class="sbh"><span class="sbn">05</span><span class="sbt">② 기준 가져오기 · 국내 허가사항</span><span class="sbm">2.5분 · 누적 10.5분</span></div><p>둘째 단계는 기준 가져오기입니다. 검증의 잣대, 그러니까 국내 허가사항을 약학정보원에서 가져오는 일인데, 화면의 세 칸이 두 번째 AI 도구가 하는 일입니다.</p><p>첫째 칸, 약 이름으로 약학정보원에서 품목을 확정합니다. 같은 이름에 변형이 여럿이면 대표 하나를 정하고 나머지는 참고로 둡니다. 둘째 칸, 그 품목의 허가사항을 가져옵니다. 성분과 함량, 효능효과, 용법용량, 사용상의 주의사항입니다. 이것이 오늘 검증의 잣대입니다. 논문이 뭐라고 하든, 국내에서 쓸 수 있는 말은 이 허가사항 안에 있어야 합니다. 셋째 칸, 가져온 원문을 그대로 파일로 저장합니다. 나중에 사람이 직접 대조할 수 있어야 하기 때문입니다. 오늘은 이걸 B 파일이라고 부르겠습니다.</p><p>이 일은 두 번째 AI 도구가 합니다. 첫 번째와 두 번째, 이 둘을 합쳐서 오늘 AI 분석 비서라고 부르겠습니다. 두 번째 AI에는 지시문 하나를 한 번 주면 되는데, 그러면 30분 안에 B 파일과 확인표, 카드가 함께 생깁니다. 지시문 파일은 구성에서, 실제 화면은 시연에서 보여드리겠습니다. 이제 셋째 단계, 검증입니다.</p></div>
+  <div class="sb" data-i="5"><div class="sbh"><span class="sbn">06</span><span class="sbt">③ 검증 · 대조 → 판정</span><span class="sbm">2.5분 · 누적 13분</span></div><p>셋째 단계가 오늘의 중심인 검증입니다. 앞에서 가져온 두 파일을 여기서 맞춥니다. 왼쪽부터 보시면, 근거 A 파일에서 문장을 하나씩 꺼냅니다. 문장마다 논문 번호와 성분, 용량, 대상이 붙어 있는데, 첫 단계에서 그렇게 가져오라고 한 이유가 바로 이 대조 때문입니다.</p><p>가운데가 대조인데, 두 겹으로 합니다. 하나는 사실 검증으로, 논문 번호가 실제 논문을 가리키는지 확인합니다. 다른 하나는 맥락 검증으로, 그 문장이 국내 허가사항과 맞는지 네 가지로 맞춥니다. 성분과 함량이 같은가, 용법과 용량이 국내 허가 범위 안인가, 대상이 허가와 맞는가, 그러니까 연령이나 임부 같은 조건이 허가와 같은가, 그리고 표현이 허가 문구와 같은가입니다.</p><p>오른쪽이 판정인데, 결과는 이유와 함께 확인표에 적힙니다. 판정은 셋 중 하나입니다. 허가에 이미 있는 말이면 통과, 허가에는 없지만 네 가지가 맞으면 출처를 달아 사용, 하나라도 어긋나면 제외입니다. 이 대조와 판정을 두 번째 AI가 문장마다 합니다.</p><p>아래 세 줄이 그 세 가지의 실제 예입니다. 첫째 줄, 어떤 음료와 같이 먹으면 흡수가 줄어든다는 문장은 허가사항의 상호작용 항목에 같은 말이 그대로 있어서 통과입니다. 논문 없이도 카드에 실을 수 있습니다. 둘째 줄, 소아 시험에서 한 약은 졸음 보고가 조금 있었고 다른 약은 없었다는 문장은 허가사항에 그 수치는 없지만 논문이 실재하고 성분과 대상이 같아서, 논문 번호를 달고 사용입니다. 셋째 줄이 앞에서 보신 사례인데, 어린 아이에게도 안전하다는 문장은 논문은 실재하지만 허가사항에는 어린 소아에게 확립되지 않았다고 되어 있어서, 대상이 어긋나 제외입니다. 이렇게 판정마다 이유가 남습니다. 이 규칙으로 31문장을 전부 판정한 결과를 보겠습니다.</p></div>
+  <div class="sb" data-i="6"><div class="sbh"><span class="sbn">07</span><span class="sbt">③ 검증 · 근거 × 기준 = 판정 31</span><span class="sbm">1.5분 · 누적 14.5분</span></div><p>31문장을 전부 판정한 결과입니다. 위의 식을 보시면, 근거 A 파일 논문 21편과 기준 B 파일 국내 허가사항을 맞춰서 확인표 하나가 나왔습니다.</p><p>막대를 보시면 셋으로 나뉩니다. 초록색 통과 1건, 파란색 출처 달아 사용 21건, 분홍색 제외 9건입니다.</p><p>아래 두 칸이 두 겹의 결과입니다. 사실 검증에서는 논문 번호 21편이 전부 실재했습니다. 그런데 맥락 검증에서 9건이 걸렸습니다. 출처가 전부 진짜여도 허가와 맞지 않는 문장이 있었다는 뜻입니다. 오늘 핵심을 한 문장으로 하면 이것입니다. 출처가 있어도 허가와 맞아야 쓴다. 그리고 그 대조까지 AI에게 시킬 수 있다는 것이 이번에 확인한 내용입니다. 걸린 아홉 개를 보겠습니다.</p></div>
+  <div class="sb" data-i="7"><div class="sbh"><span class="sbn">08</span><span class="sbt">③ 역할 분리 · 찾기 · 판정 · 결정</span><span class="sbm">2.5분 · 누적 17분</span></div><p>뺀 아홉 개는 세 갈래로 나뉩니다. 첫째 줄은 아까 그 사례처럼 국내 허가사항과 정면으로 부딪히는 문장입니다. 둘째 줄은 비교 시험에서 쓴 용법이 국내에 없는 용법이라 그대로 옮길 수 없는 문장입니다. 셋째 줄은 우리 세 약이 아닌 다른 약이 섞인 연구를 근거로 든 문장입니다. 열 문장 중 세 문장은 국내에서 그대로 쓰면 안 되는 말이었다는 뜻입니다.</p><p>여기서 역할 분리를 말씀드리겠습니다. 오른쪽 상자처럼, 찾는 일은 첫 번째 AI, 대조해서 판정하는 일은 두 번째 AI, 그리고 결정은 약사가 합니다. 진료는 의사가 하고 약은 약사가 하듯이 역할을 나눈 것인데, 특히 찾은 쪽이 스스로 판정하게 두면 자기가 찾은 걸 그대로 통과시키기 때문에 찾는 AI와 검증하는 AI를 나눴습니다.</p><p>AI가 한 검증은 여기까지이고, 마지막 결정은 약사님이 하십니다. 그 결정을 어디서 하느냐, 바로 산출물 앞에서입니다. 넷째 단계를 보겠습니다.</p></div>
+  <div class="sb" data-i="8"><div class="sbh"><span class="sbn">09</span><span class="sbt">④ 산출물 · 상담카드 → 결정은 약사</span><span class="sbm">2분 · 누적 19분</span></div><p>넷째 단계는 산출물, 이 카드입니다. 비염약 세 가지를 비교한 약사용 참고 카드이고, 환자분께 드리는 게 아니라 카운터에서 약사님이 보시는 용도입니다. 위에서부터 먼저 거를 것, 증상으로 고르기, 허가사항 그대로, 그리고 맨 아래에 허가와 안 맞아서 뺀 근거가 있습니다. 검증을 통과한 문장만 실렸고, 통과하지 못한 문장은 맨 아래에 이유와 함께 남아 있습니다.</p><p>이 카드를 받으시면 약사님의 검증이 시작됩니다. 오른쪽의 세 가지만 물어보시면 됩니다. 첫째는 제품이 맞는가입니다. 같은 이름에 함량이 다른 제품이 있어서 헷갈리기 쉽습니다. 둘째는 허가 표현과 같은가입니다. "안전하다"와 "확립되지 않았다"는 같은 논문을 두고도 정반대 말이 되기 때문입니다. 셋째는 상담에 써도 되는가입니다. 카드의 문장을 손님에게 그대로 읽어 드려도 되는지는 약사님만 아십니다. 그래서 이 카드는 결론이 아니라 약사님이 검토하실 자료입니다.</p><p>만드는 데 걸린 시간은 30분 안이었고, 사람 손이 간 건 약 이름 세 개를 적은 것과 이 마지막 확인, 두 번입니다. 사람이 하면 몇 시간 걸릴 일입니다. 다음으로 넘어가기 전에, 지금까지 첫 번째 AI, 두 번째 AI라고 부른 AI 도구가 무엇인지 말씀드리겠습니다.</p></div>
+  <div class="sb" data-i="9"><div class="sbh"><span class="sbn">10</span><span class="sbt">도구 둘 · 찾는 AI, 검증하는 AI</span><span class="sbm">2분 · 누적 21분</span></div><p>여기까지 첫 번째 AI, 두 번째 AI라고만 불렀는데, 이제 이름을 말씀드리겠습니다. 둘 다 클로드인데, 같은 회사 제품이지만 쓰임이 다릅니다.</p><p>왼쪽의 클로드 사이언스는 연구자용 클로드인데, 도서관 사서와 연구 조교를 합쳐 놓은 것이라고 보시면 됩니다. 하는 일은 두 가지, 펍메드에서 논문을 찾는 것과 결과를 보고서 파일로 저장하는 것입니다. 첫 단계 근거 찾기를 맡습니다. 다만 아직 베타라서 맥이나 리눅스에 앱으로 깔아야 하고, 프로 이상 요금제가 필요합니다.</p><p>오른쪽의 클로드 코워크는 검증하고 만드는 클로드인데, 평소 쓰시는 채팅과 뭐가 다르냐 하면, 채팅은 답을 화면에 보여 주고 끝나지만 코워크는 여러 단계 일을 끝까지 하고 결과를 파일로 만들어 놓습니다. 약학정보원에서 허가사항을 조회하고, 보고서를 검증하고, 카드를 PDF로 만듭니다. 둘째 단계 기준 가져오기부터 넷째 단계 산출물까지를 맡습니다. 클로드 데스크톱 앱에서 코워크 모드를 켜면 됩니다.</p><p>한 줄로 정리하면, 사이언스는 찾는 AI 도구이고 코워크는 검증하고 만드는 AI 도구입니다. 둘 다 평소 말하듯 자연어로 부탁하면 됩니다. 그러면 같은 방식으로 다른 것도 되느냐, 다섯째 단계입니다.</p></div>
+  <div class="sb" data-i="10"><div class="sbh"><span class="sbn">11</span><span class="sbt">⑤ 확장 · 지시문 하나 더</span><span class="sbm">1.5분 · 누적 22.5분</span></div><p>됩니다. 새 프로그램을 사는 게 아니라, 지시문 하나를 더 쓰면 새 결과물이 하나 나옵니다. 오늘 본 상담카드가 첫 번째이고, 성분 비교표 지시문에 흔한 진통제 하나를 넣었더니 효능과 주의사항을 정리한 웹 페이지가 나왔습니다. 건강기능식품 지시문에 흔한 영양제 둘을 넣었더니 식약처 인정 기능성과 논문 근거 수준을 색으로 표시한 엑셀 표가 나왔습니다.</p><p>셋 다 실제로 돌린 결과이고, 뒤의 둘은 화면을 그대로 옮겨 놓은 것입니다. 기능을 사는 게 아니라 짝을 늘리는 것이고, 그 지시문에 들어갈 규칙은 약사님들이 정하시면 됩니다. 그러면 이걸 내 약국에서 쓰려면 뭘 해야 하는지 보겠습니다.</p></div>
+  <div class="sb" data-i="11"><div class="sbh"><span class="sbn">12</span><span class="sbt">구성 · 세 걸음, 한 번만</span><span class="sbm">2분 · 누적 24.5분</span></div><p>개발자는 필요 없습니다. 구성은 세 걸음이고 한 번만 하시면 됩니다. 15분이면 충분합니다. 요점은 두 AI 도구가 서로를 부르지 못한다는 것인데, 그래서 같은 폴더를 보게 해 줍니다. 사이언스가 폴더에 A 파일을 넣어 두면 코워크가 그걸 꺼내 검증하는 식입니다.</p><p>첫째 걸음은 코워크에서 새 세션을 열고 그 폴더를 작업 폴더로 지정하는 것입니다. 둘째 걸음은 아까 말씀드린 지시문을 글 파일로 그 폴더에 넣는 것입니다. 셋째 걸음은 사이언스에 프로젝트 하나를 만들고 지침 두 문장, 그러니까 진짜 논문만 쓸 것과 결과는 그 폴더에 저장할 것을 적는 것입니다.</p><p>이렇게 한 번 해 두면 다음부터는 약 이름만 바꾸면 됩니다. 사이언스에는 약 이름과 "논문 근거 찾아줘" 한 줄, 코워크에는 지시문 이름과 약 이름 두 마디입니다. 연고 두 개로 실제로 돌려 봤고, 같은 모양의 카드가 한 장 더 나왔습니다. 정리하기 전에, 실제 화면을 단계별로 잠깐 보겠습니다.</p></div>
+  <div class="sb" data-i="12"><div class="sbh"><span class="sbn">13</span><span class="sbt">시연 · ①부터 ④까지 실제 화면</span><span class="sbm">4분 · 누적 28.5분</span></div><p>실제 화면을 단계 순서대로 네 가지 보여드리겠습니다.</p><p>첫째, 근거 찾기입니다. 사이언스 프로젝트를 열고 준비해 둔 다섯 줄을 실제로 보내겠습니다. 6분쯤 걸리니까 기다리지 않고 넘어가고, 결과는 질의응답 때 열어 보겠습니다.</p><p>둘째, 기준입니다. 코워크가 약학정보원에서 가져온 B 파일을 열어 보면 품목과 성분, 용법, 주의사항이 정리되어 있습니다.</p><p>셋째, 검증입니다. 확인표를 열어 보면 문장마다 판정과 이유가 적혀 있습니다. 아까 본 아홉 개가 여기서 "제외"로 표시되어 있습니다.</p><p>넷째, 산출물입니다. 카드 PDF를 열어 맨 아래 뺀 근거 칸까지 보여드리겠습니다. 이제 정리하겠습니다.</p></div>
+  <div class="sb" data-i="13"><div class="sbh"><span class="sbn">14</span><span class="sbt">검증 세 겹 · 사실 · 맥락 · 약사</span><span class="sbm">1.5분 · 누적 30분</span></div><p>오늘 가져가실 건 검증 세 겹입니다. 논문이 진짜인지 보는 사실 검증, 허가와 맞는지 보는 맥락 검증, 그리고 약사님의 검증입니다. 앞의 둘은 AI 도구에 맡길 수 있고, 마지막은 약사님이 하십니다. 한 문장으로 하면, 출처가 있어도 허가와 맞아야 쓴다. 찾는 건 클로드 사이언스, 검증하고 만드는 건 클로드 코워크입니다.</p><p>그 구성은 화면의 주소에 전부 들어 있습니다. 작업 폴더, 지시문, 사이언스 지침, 실측 견본까지 전부이고, 새로 만드실 것 없이 폴더만 지정하시면 됩니다.</p><p>오늘 카드에서 이상한 점을 보셨다면, 그게 저에게는 가장 큰 도움입니다. 들어주셔서 감사합니다. 질문 있으시면 편하게 해주시기 바랍니다.</p></div>
+</aside>
+<script>
+(function(){
+  var body=document.body, panel=document.getElementById('script');
+  var blocks=[].slice.call(panel.querySelectorAll('.sb'));
+  var secs=[].slice.call(document.querySelectorAll('section.slide'));
+  function setOpen(o){ body.classList.toggle('has-script',o); try{localStorage.setItem('v2script',o?'1':'0')}catch(e){} }
+  var saved=null; try{saved=localStorage.getItem('v2script')}catch(e){}
+  setOpen(saved!=='0');
+  document.getElementById('scriptBtn').onclick=function(){setOpen(true)};
+  document.getElementById('scriptHide').onclick=function(){setOpen(false)};
+  document.addEventListener('keydown',function(e){ if((e.key==='n'||e.key==='N')&&!e.metaKey&&!e.ctrlKey&&!e.altKey){ setOpen(!body.classList.contains('has-script')); } });
+  var cur=-1;
+  function activate(i){ if(i===cur) return; cur=i; blocks.forEach(function(b,k){b.classList.toggle('on',k===i)}); var b=blocks[i]; if(b){ panel.scrollTo({top:Math.max(0,b.offsetTop-64),behavior:'smooth'}); } }
+  function pick(){ var mid=window.innerHeight/2, best=0, bd=1e9; secs.forEach(function(s,k){ var r=s.getBoundingClientRect(); var c=(r.top+r.bottom)/2; var d=Math.abs(c-mid); if(d<bd){bd=d;best=k;} }); activate(best); }
+  window.addEventListener('scroll',pick,{passive:true}); window.addEventListener('resize',pick); pick();
+  // 모바일: 슬라이드 아래로 대본 이동
+  var mq=window.matchMedia('(max-width:900px)');
+  var holders=secs.map(function(sec){ var h=document.createElement('div'); h.className='sb-inline'; sec.insertAdjacentElement('afterend',h); return h; });
+  function layout(){ if(mq.matches){ blocks.forEach(function(b,k){ if(holders[k]&&b.parentNode!==holders[k]) holders[k].appendChild(b); }); } else { blocks.forEach(function(b){ if(b.parentNode!==panel) panel.appendChild(b); }); } }
+  layout(); (mq.addEventListener?mq.addEventListener('change',layout):mq.addListener(layout));
+  var mb=document.createElement('button'); mb.className='mobile-btn'; mb.textContent='대본 접기'; document.body.appendChild(mb);
+  mb.onclick=function(){ var off=body.classList.toggle('no-inline'); mb.textContent=off?'대본 펼치기':'대본 접기'; };
+})();
+</script>
+</body>
+</html>
