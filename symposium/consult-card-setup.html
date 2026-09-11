@@ -121,6 +121,12 @@ figure.shot.narrow img{max-width:520px}
 .perm{list-style:none;margin:0;padding:0;display:grid;gap:6px;font-size:15px}
 .perm li{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:baseline}
 .perm .pick{font-weight:700;font-size:13.5px;background:var(--ok-soft);color:var(--ok);padding:2px 9px;border-radius:6px}
+.need{background:var(--surface);border:2px solid var(--ink);border-radius:12px;padding:14px 18px;display:grid;gap:8px}
+.need h2{font-size:17px}
+.need ul{margin:0;padding:0;list-style:none;display:grid;gap:6px}
+.need li{display:grid;grid-template-columns:22px minmax(0,1fr);gap:8px;font-size:16px}
+.need li::before{content:"✓";color:var(--ok);font-weight:700}
+.need .sub{color:var(--muted);font-size:14.5px}
 </style>
 
 <div class="wrap">
@@ -130,6 +136,15 @@ figure.shot.narrow img{max-width:520px}
   <h1>상담카드 프로젝트 설정</h1>
   <p class="lede">처음 한 번만 설정하면, 그다음부터는 약 이름만 넣으면 됩니다. 파란 <b>복사</b> 버튼을 누르고, 넣을 칸을 클릭한 뒤 <kbd>⌘</kbd>+<kbd>V</kbd>로 붙여 넣으세요.</p>
 </header>
+
+<section class="need" aria-labelledby="need-h">
+  <h2 id="need-h">시작 전에 필요한 것</h2>
+  <ul>
+    <li><span><b>Mac</b> (macOS 13 이상) <span class="sub">— 클로드 사이언스는 Mac에서만 쓸 수 있습니다</span></span></li>
+    <li><span><b>클로드 유료 요금제</b> (Pro 이상) <span class="sub">— 무료 요금제로는 클로드 사이언스와 Cowork를 쓸 수 없습니다</span></span></li>
+    <li><span><b>클로드 데스크톱 앱</b>과 <b>클로드 사이언스</b> 설치</span></li>
+  </ul>
+</section>
 
 <ol class="road" aria-label="전체 순서">
   <li><a href="#s1"><span class="n">1</span><br><span class="t">폴더 두기</span><br><span class="m">약 1분</span></a></li>
@@ -141,7 +156,7 @@ figure.shot.narrow img{max-width:520px}
 <!-- 1 -->
 <section class="stage" id="s1" aria-labelledby="h1s">
   <div class="stage-head"><div class="row"><span class="n">1</span><h2 id="h1s">작업 폴더 두기</h2><span class="time">약 1분</span></div>
-    <p class="why">사이언스와 클로드가 같은 폴더를 쓰도록, 킷의 <code>workspace</code> 폴더를 홈 폴더에 둡니다. 클로드 데스크톱 앱과 클로드 사이언스는 미리 설치해 두세요.</p></div>
+    <p class="why">사이언스와 클로드가 같은 폴더를 쓰도록, 킷의 <code>workspace</code> 폴더를 홈 폴더에 둡니다.</p></div>
   <ol class="do">
     <li><div class="b"><p class="act"><a href="https://wolsey37.github.io/study/symposium/consult-card-kit.zip" target="_blank" rel="noopener">consult-card-kit.zip</a>을 받아 두 번 클릭합니다.</p>
       <p class="see">다운로드 폴더에 <code>workspace</code> 폴더가 생기고, 그 안에 <code>pharmacy</code> 폴더가 있습니다</p></div></li>
