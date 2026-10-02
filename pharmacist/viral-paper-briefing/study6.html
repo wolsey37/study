@@ -355,6 +355,9 @@
   .ov-srclegend span.src { margin-right:.3rem; }
   .ov-gate { display:inline-flex; align-items:center; justify-content:center; width:1.25rem; height:1.25rem; border-radius:50%;
     background:var(--clay); color:#fff; font-size:.72rem; font-weight:800; margin-right:.2rem; vertical-align:middle; }
+  .ov-gate--1 { background:#D64545; }   /* ① 숫자 대조 */
+  .ov-gate--2 { background:#D98A00; }   /* ② 빠진 항목 검사 */
+  .ov-gate--3 { background:#0E9F8E; }   /* ③ 원고 검토 */
   .ov-legend { display:grid; grid-template-columns:repeat(auto-fit,minmax(14rem,1fr)); gap:.6rem; margin-top:.8rem; }
   .ov-leg { border:1px solid var(--rule); border-radius:10px; padding:.6rem .8rem; font-size:.88rem; display:flex; gap:.5rem; align-items:flex-start; }
   .ov-leg b { display:block; }
@@ -628,17 +631,17 @@
       <div class="ov-cell ov-cell--a">논문 골라내기<span class="ov-note">근거등급 S1~S4 매기기</span><span class="srcs"><span class="src src--pm">PubMed</span></span></div>
       <div class="ov-cell ov-cell--a">콘텐츠 적합도 · 경고<span class="ov-note">초록에서 핵심 숫자 뽑기</span><span class="srcs"><span class="src src--pm">PubMed</span></span></div>
       <div class="ov-cell ov-cell--x"></div>
-      <div class="ov-cell ov-cell--a">원고 쓰기<br><span class="ov-gate">③</span>다른 담당이 검토<span class="ov-note">큰 지적이 있으면 한 번만 고쳐 씀</span></div>
+      <div class="ov-cell ov-cell--a">원고 쓰기<br><span class="ov-gate ov-gate--3">③</span>다른 담당이 검토<span class="ov-note">큰 지적이 있으면 한 번만 고쳐 씀</span></div>
       <div class="ov-cell ov-cell--x"></div>
 
       <div class="ov-who ov-who--s">프로그램</div>
-      <div class="ov-cell ov-cell--s ov-cell--from"><span class="ov-up">↑ 없으면</span><b>먼저</b> 식약처 신고 조회<br><span class="ov-gate">②</span>함량 원문 검사<span class="srcs"><span class="src src--mf">식약처</span></span></div>
+      <div class="ov-cell ov-cell--s ov-cell--from"><span class="ov-up">↑ 없으면</span><b>먼저</b> 식약처 신고 조회<br><span class="ov-gate ov-gate--2">②</span>함량 원문 검사<span class="srcs"><span class="src src--mf">식약처</span></span></div>
       <div class="ov-cell ov-cell--s ov-cell--from"><span class="ov-up">↕ 주고받기</span>① 최근 네이버 제목 모으기<br>② 그 주제로 논문 건수 · 검색량 · 최근 글 수 → 트렌드 점수<br>③ 이미 쓴 논문 확인<span class="srcs"><span class="src src--pm">PubMed</span><span class="src src--nv">네이버</span></span></div>
       <div class="ov-cell ov-cell--x"></div>
-      <div class="ov-cell ov-cell--s">PubMed 조회 · 인용수<br><span class="ov-gate">②</span>빠진 항목 검사<span class="srcs"><span class="src src--pm">PubMed</span><span class="src src--ep">Europe PMC</span></span></div>
-      <div class="ov-cell ov-cell--s"><span class="ov-gate">②</span>판정·배점 검사<span class="ov-note">앞 단계 판정을 바꿨나 · 점수 계산이 맞나</span></div>
-      <div class="ov-cell ov-cell--s"><span class="ov-gate">①</span>초록과 글자 대조<span class="ov-note">이미 쓴 논문에 🔁 표시</span><span class="srcs"><span class="src src--pm">PubMed</span></span></div>
-      <div class="ov-cell ov-cell--s"><span class="ov-gate">①</span>원고 숫자 재대조<span class="srcs"><span class="src src--pm">PubMed</span></span></div>
+      <div class="ov-cell ov-cell--s">PubMed 조회 · 인용수<br><span class="ov-gate ov-gate--2">②</span>빠진 항목 검사<span class="srcs"><span class="src src--pm">PubMed</span><span class="src src--ep">Europe PMC</span></span></div>
+      <div class="ov-cell ov-cell--s"><span class="ov-gate ov-gate--2">②</span>판정·배점 검사<span class="ov-note">앞 단계 판정을 바꿨나 · 점수 계산이 맞나</span></div>
+      <div class="ov-cell ov-cell--s"><span class="ov-gate ov-gate--1">①</span>초록과 글자 대조<span class="ov-note">이미 쓴 논문에 🔁 표시</span><span class="srcs"><span class="src src--pm">PubMed</span></span></div>
+      <div class="ov-cell ov-cell--s"><span class="ov-gate ov-gate--1">①</span>원고 숫자 재대조<span class="srcs"><span class="src src--pm">PubMed</span></span></div>
       <div class="ov-cell ov-cell--s">HTML · 목록 · 기록<span class="ov-note">맨 위 「초록 기준」 안내 · 경고 상자</span></div>
     </div>
     <p class="ov-srclegend">
@@ -648,14 +651,14 @@
       <span><span class="src src--mf">식약처</span>제품 신고정보 — 식품안전나라 키 (선택)</span>
       <span><span class="src src--web">웹 검색</span>해외 맥락·제품 — 키 없음</span>
     </p>
-    <p class="ov-cap">사람은 두 번 고르고(제품명이면 세 번), 판단은 AI 담당이, 확인은 프로그램이 합니다 · P0~P9 는 진행 줄에 찍히는 단계 번호 · 빨간 동그라미는 아래 확인 단계 번호 · 폰에서는 옆으로 밀어 봅니다</p>
+    <p class="ov-cap">사람은 두 번 고르고(제품명이면 세 번), 판단은 AI 담당이, 확인은 프로그램이 합니다 · P0~P9 는 진행 줄에 찍히는 단계 번호 · 색 동그라미 ①②③은 아래 확인 단계 번호 · 폰에서는 옆으로 밀어 봅니다</p>
   </div>
 
   <p class="sec__sub">4 · 결과를 믿을 수 있게 하는 확인 단계 세 개</p>
   <div class="ov-legend">
-    <div class="ov-leg"><span class="ov-gate">①</span><div><b>숫자 대조</b>초록 원문에 글자 그대로 없으면 지웁니다. 원고에서도 한 번 더 — 반올림도 걸립니다</div></div>
-    <div class="ov-leg"><span class="ov-gate">②</span><div><b>빠진 항목 검사</b>필수 항목이 빠졌거나 앞 단계 판정이 바뀌면 다음 단계로 못 갑니다</div></div>
-    <div class="ov-leg"><span class="ov-gate">③</span><div><b>원고 검토</b>숫자가 맞아도 문장이 틀릴 수 있어 다른 담당이 초록과 견줘 봅니다</div></div>
+    <div class="ov-leg"><span class="ov-gate ov-gate--1">①</span><div><b>숫자 대조</b>초록 원문에 글자 그대로 없으면 지웁니다. 원고에서도 한 번 더 — 반올림도 걸립니다</div></div>
+    <div class="ov-leg"><span class="ov-gate ov-gate--2">②</span><div><b>빠진 항목 검사</b>필수 항목이 빠졌거나 앞 단계 판정이 바뀌면 다음 단계로 못 갑니다</div></div>
+    <div class="ov-leg"><span class="ov-gate ov-gate--3">③</span><div><b>원고 검토</b>숫자가 맞아도 문장이 틀릴 수 있어 다른 담당이 초록과 견줘 봅니다</div></div>
   </div>
 
   <p class="sec__sub">5 · 오늘 실습은 이 순서로</p>
