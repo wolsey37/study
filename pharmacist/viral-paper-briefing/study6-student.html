@@ -348,6 +348,20 @@
     align-items:center; justify-content:center; font-size:.75rem; line-height:1; }
   .apilist__r.is-on .apilist__box { background:#3B9BE0; border-color:#3B9BE0; color:#fff; }
   @media (max-width:30rem) { .apilist__h, .apilist__r { grid-template-columns:2rem 6.5rem 1fr; font-size:.74rem; } }
+  .ch { margin:0; display:flex; flex-direction:column; gap:.5rem; }
+  .ch__lab { margin:0; font-family:var(--mono); font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint); }
+  .ch__q { border:1.5px solid var(--rule); border-radius:10px; background:var(--paper-2); padding:.7rem .85rem; max-width:40rem; }
+  .ch__top { margin:0 0 .3rem; display:flex; gap:.5rem; align-items:center; }
+  .ch__chip { font-size:.72rem; font-weight:800; padding:.05rem .5rem; border-radius:999px; background:var(--green); color:var(--paper); }
+  .ch__kind { font-size:.72rem; color:var(--ink-faint); }
+  .ch__text { margin:0 0 .45rem; font-weight:700; font-size:.92rem; line-height:1.5; }
+  .ch__opts { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:.25rem; }
+  .ch__opts li { display:flex; gap:.55rem; align-items:flex-start; padding:.35rem .5rem; border-radius:7px; border:1px solid transparent; font-size:.86rem; line-height:1.4; }
+  .ch__opts li b { display:block; font-weight:700; }
+  .ch__opts li small { display:block; color:var(--ink-faint); font-size:.76rem; }
+  .ch__opts li.is-picked { background:var(--green-soft); border-color:var(--green); }
+  .ch__opts li.ch__other b { font-weight:500; color:var(--ink-soft); }
+  .ch__mark { width:1.1rem; flex:none; color:var(--green); font-size:.95rem; line-height:1.35; }
   .srcs { display:flex; flex-wrap:wrap; gap:.2rem; margin-top:.3rem; }
   .src { display:inline-block; font-size:.64rem; font-weight:700; line-height:1.5; padding:0 .38rem; border-radius:999px;
     color:#fff; white-space:nowrap; letter-spacing:.01em; }
@@ -893,7 +907,7 @@
       <p class="sec__sub">한 번의 질문 — 어떤 주제로 볼까요</p>
 
       <div class="reply">
-        <p class="reply__lab">이렇게 물어봅니다</p>
+        <p class="reply__lab">먼저 후보 표를 보여 줍니다</p>
         <p class="reply__box">「오메가3」 주제 후보입니다. 이번에 다룰 것을 골라 주세요.
 네이버 키가 없어 트렌드 점수는 비우고 최근 화제만 셌습니다
 
@@ -904,15 +918,12 @@
   눈건강      - · 화제 0     <b>37편</b>     사전     <i>대규모 추적연구에서 예방효과 없음</i>
   산패        - · 화제 0      <b>7편</b>     사전
 
-  🔁 여성질환 — PMID 35266254 (PMS 메타분석)을 2026-09-15에 쓰셨습니다   <i>← 발행 기록이 있을 때만</i>
-
-이어서 선택 상자가 뜹니다 — 「주력 주제」 하나, 「곁들일 주제」 여러 개</p>
+  🔁 여성질환 — PMID 35266254 (PMS 메타분석)을 2026-09-15에 쓰셨습니다   <i>← 발행 기록이 있을 때만</i></p>
       </div>
 
-      <div class="ex">
-        <p class="ex__lab">오늘은 이렇게 고릅니다 (글로 치지 않고 상자에서 클릭)</p>
-        <p class="ex__box">주력 주제    ▸ 여성질환
-곁들일 주제  ▸ 곁들이지 않음</p>
+      <div class="ch" role="img" aria-label="주제 선택 상자. 주력 주제는 여성질환, 곁들일 주제는 곁들이지 않음을 고른 모습">
+        <p class="ch__lab">이어서 선택 상자가 뜹니다 — 오늘은 이렇게 클릭 (글로 치지 않습니다)</p>
+        <div class="ch__q"><p class="ch__top"><span class="ch__chip">주력 주제</span><span class="ch__kind">하나 고르기</span></p><p class="ch__text">브리핑 맨 앞에 둘 주력 주제를 골라 주세요. (목록에 없는 주제는 Other 에 이름을 적으세요)</p><ul class="ch__opts"><li class="is-picked"><span class="ch__mark">●</span><span><b>여성질환 (추천)</b><small>논문 24편 · 사전 · 관심분야 여성 건강 · 🔁 PMS 메타분석 사용</small></span></li><li class=""><span class="ch__mark">○</span><span><b>심방세동</b><small>최근 화제 12 · 논문 ~88편 · 트렌드 주제</small></span></li><li class=""><span class="ch__mark">○</span><span><b>중성지방</b><small>논문 102편 · 사전 · 관심분야 다이어트·대사</small></span></li><li class=""><span class="ch__mark">○</span><span><b>눈건강</b><small>논문 37편 · 사전</small></span></li><li class="ch__other"><span class="ch__mark">○</span><span><b>Other</b><small>목록에 없는 주제 이름 직접 입력</small></span></li></ul></div><div class="ch__q"><p class="ch__top"><span class="ch__chip">곁들일 주제</span><span class="ch__kind">여러 개 고르기</span></p><p class="ch__text">같이 볼 주제를 골라 주세요. 하나 늘 때마다 10분 안팎 더 걸립니다.</p><ul class="ch__opts"><li class="is-picked"><span class="ch__mark">☑</span><span><b>곁들이지 않음</b><small>주력 주제 하나만 — 가장 빠릅니다</small></span></li><li class=""><span class="ch__mark">☐</span><span><b>심방세동</b><small>최근 화제 12 · 논문 ~88편</small></span></li><li class=""><span class="ch__mark">☐</span><span><b>중성지방</b><small>논문 102편</small></span></li><li class=""><span class="ch__mark">☐</span><span><b>눈건강</b><small>논문 37편</small></span></li><li class="ch__other"><span class="ch__mark">☐</span><span><b>Other</b><small>직접 입력</small></span></li></ul></div>
       </div>
 
       <div class="prose">
@@ -1252,20 +1263,9 @@ P5 검증 완료 — 주장 25건 중 <b>검증 25건, 폐기 0건</b>, 효과�
     </div>
     <div class="lab__body">
 
-      <div class="reply">
-        <p class="reply__lab">마지막에 이렇게 물어봅니다</p>
-        <p class="reply__box">이번 콘텐츠에 쓰실 논문을 기록해 둘까요?
-기록해 두면 다음 브리핑에서 「🔁 이미 씀」 으로 표시되고,
-나중에 반응을 적으면 콘텐츠 적합도가 맞았는지 볼 수 있습니다.
-
-  1. PMID 37545015 — 월경통 메타분석 (75점)
-  2. PMID 35266254 — PMS 메타분석 (69점)
-  …</p>
-      </div>
-
-      <div class="ex">
-        <p class="ex__lab">오늘은 선택 상자에서 이렇게 고릅니다 — 아직 발행 전이니까요</p>
-        <p class="ex__box">▸ 나중에</p>
+      <div class="ch" role="img" aria-label="발행 기록 선택 상자. 나중에를 고른 모습">
+        <p class="ch__lab">마지막에 선택 상자로 묻습니다 — 오늘은 「나중에」 (아직 발행 전이니까요)</p>
+        <div class="ch__q"><p class="ch__top"><span class="ch__chip">발행 기록</span><span class="ch__kind">여러 개 고르기</span></p><p class="ch__text">이번 콘텐츠에 쓰실 논문을 기록해 둘까요? 기록하면 다음 브리핑에서 「🔁 이미 씀」으로 표시되고, 나중에 반응을 적으면 콘텐츠 적합도가 맞았는지 볼 수 있습니다.</p><ul class="ch__opts"><li class="is-picked"><span class="ch__mark">☑</span><span><b>나중에</b><small>아직 발행 전이면 이것 — 기록하는 명령을 알려 줍니다</small></span></li><li class=""><span class="ch__mark">☐</span><span><b>PMID 37545015</b><small>월경통 메타분석 · 콘텐츠 적합도 85점</small></span></li><li class=""><span class="ch__mark">☐</span><span><b>PMID 35266254</b><small>PMS 메타분석 · 79점</small></span></li><li class=""><span class="ch__mark">☐</span><span><b>PMID 35059756</b><small>원발성 월경통 메타분석 · 79점</small></span></li><li class="ch__other"><span class="ch__mark">☐</span><span><b>Other</b><small>다른 논문의 PMID 직접 입력</small></span></li></ul></div>
       </div>
 
       <div class="prose">
@@ -1326,27 +1326,14 @@ P5 검증 완료 — 주장 25건 중 <b>검증 25건, 폐기 0건</b>, 효과�
         <p class="say__box">/브리핑 알티지 오메가3 1200</p>
       </div>
 
-      <div class="reply">
-        <p class="reply__lab">사전에 없는 이름이라 먼저 이렇게 묻습니다</p>
-        <p class="reply__box">「알티지 오메가3 1200」은 성분 이름인가요, 제품 이름인가요?</p>
+      <div class="ch" role="img" aria-label="성분인지 제품인지 묻는 선택 상자. 제품 이름을 고른 모습">
+        <p class="ch__lab">사전에 없는 이름이라 먼저 선택 상자로 묻습니다 — 「제품 이름」</p>
+        <div class="ch__q"><p class="ch__top"><span class="ch__chip">이름 종류</span><span class="ch__kind">하나 고르기</span></p><p class="ch__text">「알티지 오메가3 1200」은 성분 이름인가요, 제품 이름인가요?</p><ul class="ch__opts"><li class=""><span class="ch__mark">○</span><span><b>성분 이름</b><small>MeSH 후보를 찾아 고르게 합니다</small></span></li><li class="is-picked"><span class="ch__mark">●</span><span><b>제품 이름</b><small>식약처 신고 정보에서 제품을 찾습니다</small></span></li><li class="ch__other"><span class="ch__mark">○</span><span><b>Other</b><small>직접 입력</small></span></li></ul></div>
       </div>
 
-      <div class="ex">
-        <p class="ex__lab">선택 상자에서 이렇게 고릅니다</p>
-        <p class="ex__box">▸ 제품 이름</p>
-      </div>
-
-      <div class="reply">
-        <p class="reply__lab">그러면 제품 후보를 보여 줍니다 (2026-09-29 실제 조회)</p>
-        <p class="reply__box">「알티지 오메가3 1200」으로 찾은 제품입니다. 어느 제품인가요?
-(식약처 품목제조신고 기준 · 함량은 신고된 표시량)
-
-  1. 아크 어써라이즈 식물성 알티지 오메가3 1200mg
-                                코스맥스바이오(주)  EPA+DHA <b>1200mg</b>  <u>⚠ 원료가 조류 유지</u>
-  2. 알티지 오메가3              주식회사한미양행    EPA+DHA <b>600mg</b>
-  3. 알티지 오메가3              (주)알피바이오      EPA+DHA <b>600 mg</b>
-  4. 알티지 오메가3              코스맥스엔비티(주)  EPA+DHA <b>500mg</b>
-  …</p>
+      <div class="ch" role="img" aria-label="제품 후보 선택 상자. 네 개 제품과 함량이 보이는 모습">
+        <p class="ch__lab">그러면 제품 후보를 선택 상자로 보여 줍니다 (2026-09-29 실제 조회 · 식약처 신고 표시량)</p>
+        <div class="ch__q"><p class="ch__top"><span class="ch__chip">제품</span><span class="ch__kind">하나 고르기</span></p><p class="ch__text">「알티지 오메가3 1200」으로 찾은 제품입니다. 어느 제품인가요? (목록에 없는 후보는 질문 위에 번호로 적혀 있어 Other 에 번호를 적습니다)</p><ul class="ch__opts"><li class=""><span class="ch__mark">○</span><span><b>아크 어써라이즈 식물성 알티지 오메가3 1200mg · 코스맥스바이오(주)</b><small>EPA+DHA 1200mg · ⚠ 원료가 조류 유지(사전이 제외하는 원료)</small></span></li><li class=""><span class="ch__mark">○</span><span><b>알티지 오메가3 · 주식회사한미양행</b><small>EPA+DHA 600mg</small></span></li><li class=""><span class="ch__mark">○</span><span><b>알티지 오메가3 · (주)알피바이오</b><small>EPA+DHA 600 mg</small></span></li><li class=""><span class="ch__mark">○</span><span><b>알티지 오메가3 · 코스맥스엔비티(주)</b><small>EPA+DHA 500mg</small></span></li><li class="ch__other"><span class="ch__mark">○</span><span><b>Other</b><small>다른 후보 번호 직접 입력</small></span></li></ul></div>
       </div>
 
       <div class="easy">
