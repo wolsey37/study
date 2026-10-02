@@ -330,6 +330,13 @@
   .ov-cell--a { background:var(--green-soft); border:1.5px solid var(--green); }
   .ov-cell--s { background:var(--paper-2); border:1.5px solid var(--ink-faint); }
   .ov-cell--x { border:1px dashed var(--rule); }
+  .srcs { display:flex; flex-wrap:wrap; gap:.2rem; margin-top:.3rem; }
+  .src { display:inline-block; font-size:.64rem; font-weight:700; line-height:1.5; padding:0 .38rem; border-radius:999px;
+    color:#fff; white-space:nowrap; letter-spacing:.01em; }
+  .src--pm { background:#2E6DA4; } .src--ep { background:#7A4A9E; } .src--nv { background:#03A64E; }
+  .src--mf { background:#D9622B; } .src--web { background:#6B7280; }
+  .ov-srclegend { display:flex; flex-wrap:wrap; gap:.35rem .9rem; justify-content:center; margin:.55rem 0 0; font-size:.78rem; color:var(--ink-soft); }
+  .ov-srclegend span.src { margin-right:.3rem; }
   .ov-gate { display:inline-flex; align-items:center; justify-content:center; width:1.25rem; height:1.25rem; border-radius:50%;
     background:var(--clay); color:#fff; font-size:.72rem; font-weight:800; margin-right:.2rem; vertical-align:middle; }
   .ov-legend { display:grid; grid-template-columns:repeat(auto-fit,minmax(14rem,1fr)); gap:.6rem; margin-top:.8rem; }
@@ -584,25 +591,32 @@
       <div class="ov-cell ov-cell--p">쓸 논문 고르기</div>
 
       <div class="ov-who ov-who--a">에이전트</div>
-      <div class="ov-cell ov-cell--a">신고 정보가 없으면 웹에서</div>
-      <div class="ov-cell ov-cell--a">화제 모으기</div>
+      <div class="ov-cell ov-cell--a">신고 정보가 없으면 웹에서<span class="srcs"><span class="src src--web">웹 검색</span></span></div>
+      <div class="ov-cell ov-cell--a">화제 모으기<span class="srcs"><span class="src src--web">웹 검색</span></span></div>
       <div class="ov-cell ov-cell--x"></div>
-      <div class="ov-cell ov-cell--a">논문 골라내기</div>
-      <div class="ov-cell ov-cell--a">점수 · 경고 · 인용문</div>
+      <div class="ov-cell ov-cell--a">논문 골라내기<span class="srcs"><span class="src src--pm">PubMed</span></span></div>
+      <div class="ov-cell ov-cell--a">점수 · 경고 · 인용문<span class="srcs"><span class="src src--pm">PubMed</span></span></div>
       <div class="ov-cell ov-cell--x"></div>
       <div class="ov-cell ov-cell--a">원고 쓰기<br><span class="ov-gate">③</span>다른 담당이 검토</div>
       <div class="ov-cell ov-cell--x"></div>
 
       <div class="ov-who ov-who--s">스크립트</div>
-      <div class="ov-cell ov-cell--s">식약처 신고 조회<br><span class="ov-gate">②</span>함량 원문 검사</div>
-      <div class="ov-cell ov-cell--s">논문 건수 · 검색량</div>
+      <div class="ov-cell ov-cell--s">식약처 신고 조회<br><span class="ov-gate">②</span>함량 원문 검사<span class="srcs"><span class="src src--mf">식약처</span></span></div>
+      <div class="ov-cell ov-cell--s">논문 건수 · 검색량<span class="srcs"><span class="src src--pm">PubMed</span><span class="src src--nv">네이버</span></span></div>
       <div class="ov-cell ov-cell--x"></div>
-      <div class="ov-cell ov-cell--s">PubMed 조회<br><span class="ov-gate">②</span>빠진 항목 검사</div>
+      <div class="ov-cell ov-cell--s">PubMed 조회 · 인용수<br><span class="ov-gate">②</span>빠진 항목 검사<span class="srcs"><span class="src src--pm">PubMed</span><span class="src src--ep">Europe PMC</span></span></div>
       <div class="ov-cell ov-cell--s"><span class="ov-gate">②</span>판정이 바뀌었나 검사</div>
-      <div class="ov-cell ov-cell--s"><span class="ov-gate">①</span>초록과 글자 대조</div>
-      <div class="ov-cell ov-cell--s"><span class="ov-gate">①</span>원고 숫자 재대조</div>
+      <div class="ov-cell ov-cell--s"><span class="ov-gate">①</span>초록과 글자 대조<span class="srcs"><span class="src src--pm">PubMed</span></span></div>
+      <div class="ov-cell ov-cell--s"><span class="ov-gate">①</span>원고 숫자 재대조<span class="srcs"><span class="src src--pm">PubMed</span></span></div>
       <div class="ov-cell ov-cell--s">HTML · 목록 · 기록</div>
     </div>
+    <p class="ov-srclegend">
+      <span><span class="src src--pm">PubMed</span>논문·초록 — NCBI 키 (필수)</span>
+      <span><span class="src src--ep">Europe PMC</span>인용수 — 키 없음</span>
+      <span><span class="src src--nv">네이버</span>검색량 — 네이버 키 (선택)</span>
+      <span><span class="src src--mf">식약처</span>제품 신고정보 — 식품안전나라 키 (선택)</span>
+      <span><span class="src src--web">웹 검색</span>화제·제품 — 키 없음</span>
+    </p>
     <p class="ov-cap">사람은 두 번 고르고(제품명이면 세 번), 판단은 에이전트가, 확인은 스크립트가 합니다 · P0~P9 는 진행 줄에 찍히는 단계 번호 · 빨간 동그라미는 아래 관문 번호 · 폰에서는 옆으로 밀어 봅니다</p>
   </div>
 
