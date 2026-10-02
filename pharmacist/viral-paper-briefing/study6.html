@@ -336,7 +336,7 @@
   .ov-up { position:absolute; top:-.78rem; left:50%; transform:translateX(-50%); z-index:1; white-space:nowrap;
     font-size:.64rem; font-weight:700; line-height:1.3; padding:0 .35rem; border-radius:4px;
     background:var(--paper); color:var(--ink-soft); border:1px solid var(--rule); }
-  .ov-note { display:block; margin-top:.2rem; font-size:.7rem; color:var(--ink-soft); }
+  .ov-note { display:block; margin-top:.2rem; font-size:.66rem; line-height:1.35; color:var(--ink-soft); }
   .apilist { margin:.5rem 0 .6rem; border:1px solid var(--rule); border-radius:8px; overflow:hidden; font-size:.82rem; max-width:34rem; }
   .apilist__h, .apilist__r { display:grid; grid-template-columns:2.2rem 8rem 1fr; align-items:center; padding:.3rem .6rem; }
   .apilist__h { background:var(--paper-2); font-weight:700; }
@@ -418,8 +418,8 @@
   }
 
   /* 강사 대본 — 오른쪽 사이드 바 (기본 접힘) */
-  .sp-toggle { position:fixed; right:0; top:50%; transform:translateY(-50%); z-index:60;
-    writing-mode:vertical-rl; padding:.9rem .45rem; border:1px solid var(--rule); border-right:0;
+  .sp-toggle { position:fixed; right:0; bottom:1.2rem; z-index:60;
+    writing-mode:vertical-rl; padding:.6rem .3rem; border:1px solid var(--rule); border-right:0;
     border-radius:10px 0 0 10px; background:var(--green); color:var(--paper); font:inherit; font-size:.82rem;
     font-weight:700; letter-spacing:.2em; cursor:pointer; box-shadow:-2px 2px 10px rgba(0,0,0,.12); }
   .sp-toggle:hover { filter:brightness(1.08); }
@@ -612,41 +612,41 @@
       <div class="ov-h">출력 · 기록<small><b>P8 · P9</b> · HTML · 발행</small></div>
 
       <div class="ov-who ov-who--p">사람</div>
-      <div class="ov-cell ov-cell--p">성분인지 제품인지 고르기<span class="ov-note">제품이면 → 어느 제품인지</span></div>
+      <div class="ov-cell ov-cell--p">성분인지 제품인지 고르기<span class="ov-note">제품이면 → 어느 제품인지<br>사전에 없는 성분이면 → MeSH 후보</span></div>
       <div class="ov-cell ov-cell--x"></div>
-      <div class="ov-cell ov-cell--p">주제 고르기</div>
-      <div class="ov-cell ov-cell--x"></div>
-      <div class="ov-cell ov-cell--x"></div>
+      <div class="ov-cell ov-cell--p">주제 고르기<span class="ov-note">트렌드 점수 보고 · 선택 상자</span></div>
       <div class="ov-cell ov-cell--x"></div>
       <div class="ov-cell ov-cell--x"></div>
-      <div class="ov-cell ov-cell--p">쓸 논문 고르기</div>
+      <div class="ov-cell ov-cell--x"></div>
+      <div class="ov-cell ov-cell--x"></div>
+      <div class="ov-cell ov-cell--p">쓸 논문 고르기<span class="ov-note">「나중에」도 가능 · 며칠 뒤 반응 기록</span></div>
 
       <div class="ov-who ov-who--a">AI 담당</div>
       <div class="ov-cell ov-cell--a">식약처에 <b>없을 때만</b><br>웹에서 찾기<span class="srcs"><span class="src src--web">웹 검색</span></span></div>
-      <div class="ov-cell ov-cell--a">화제 모으기<span class="ov-note">주제 후보 · 검색할 말</span><span class="srcs"><span class="src src--web">웹 검색</span></span></div>
+      <div class="ov-cell ov-cell--a">네이버 제목에서 화제 고르기<span class="ov-note">주제 후보 · 제목에 나온 표현으로 검색할 말 (네이버 키 없으면 웹 검색만)</span><span class="srcs"><span class="src src--nv">네이버</span><span class="src src--web">웹 검색 (보조)</span></span></div>
       <div class="ov-cell ov-cell--x"></div>
-      <div class="ov-cell ov-cell--a">논문 골라내기<span class="srcs"><span class="src src--pm">PubMed</span></span></div>
-      <div class="ov-cell ov-cell--a">점수 · 경고 · 인용문<span class="srcs"><span class="src src--pm">PubMed</span></span></div>
+      <div class="ov-cell ov-cell--a">논문 골라내기<span class="ov-note">근거등급 S1~S4 매기기</span><span class="srcs"><span class="src src--pm">PubMed</span></span></div>
+      <div class="ov-cell ov-cell--a">콘텐츠 적합도 · 경고<span class="ov-note">초록에서 핵심 숫자 뽑기</span><span class="srcs"><span class="src src--pm">PubMed</span></span></div>
       <div class="ov-cell ov-cell--x"></div>
       <div class="ov-cell ov-cell--a">원고 쓰기<br><span class="ov-gate">③</span>다른 담당이 검토<span class="ov-note">큰 지적이 있으면 한 번만 고쳐 씀</span></div>
       <div class="ov-cell ov-cell--x"></div>
 
       <div class="ov-who ov-who--s">프로그램</div>
       <div class="ov-cell ov-cell--s ov-cell--from"><span class="ov-up">↑ 없으면</span><b>먼저</b> 식약처 신고 조회<br><span class="ov-gate">②</span>함량 원문 검사<span class="srcs"><span class="src src--mf">식약처</span></span></div>
-      <div class="ov-cell ov-cell--s ov-cell--from"><span class="ov-up">↓ 모은 주제로</span>논문 건수 · 검색량 · 최근 글 수 → 트렌드 점수<span class="srcs"><span class="src src--pm">PubMed</span><span class="src src--nv">네이버</span></span></div>
+      <div class="ov-cell ov-cell--s ov-cell--from"><span class="ov-up">↕ 주고받기</span>① 최근 네이버 제목 모으기<br>② 그 주제로 논문 건수 · 검색량 · 최근 글 수 → 트렌드 점수<br>③ 이미 쓴 논문 확인<span class="srcs"><span class="src src--pm">PubMed</span><span class="src src--nv">네이버</span></span></div>
       <div class="ov-cell ov-cell--x"></div>
       <div class="ov-cell ov-cell--s">PubMed 조회 · 인용수<br><span class="ov-gate">②</span>빠진 항목 검사<span class="srcs"><span class="src src--pm">PubMed</span><span class="src src--ep">Europe PMC</span></span></div>
-      <div class="ov-cell ov-cell--s"><span class="ov-gate">②</span>판정이 바뀌었나 검사</div>
-      <div class="ov-cell ov-cell--s"><span class="ov-gate">①</span>초록과 글자 대조<span class="srcs"><span class="src src--pm">PubMed</span></span></div>
+      <div class="ov-cell ov-cell--s"><span class="ov-gate">②</span>판정·배점 검사<span class="ov-note">앞 단계 판정을 바꿨나 · 점수 계산이 맞나</span></div>
+      <div class="ov-cell ov-cell--s"><span class="ov-gate">①</span>초록과 글자 대조<span class="ov-note">이미 쓴 논문에 🔁 표시</span><span class="srcs"><span class="src src--pm">PubMed</span></span></div>
       <div class="ov-cell ov-cell--s"><span class="ov-gate">①</span>원고 숫자 재대조<span class="srcs"><span class="src src--pm">PubMed</span></span></div>
-      <div class="ov-cell ov-cell--s">HTML · 목록 · 기록</div>
+      <div class="ov-cell ov-cell--s">HTML · 목록 · 기록<span class="ov-note">맨 위 「초록 기준」 안내 · 경고 상자</span></div>
     </div>
     <p class="ov-srclegend">
       <span><span class="src src--pm">PubMed</span>논문·초록 — NCBI 키 (필수)</span>
       <span><span class="src src--ep">Europe PMC</span>인용수 — 키 없음</span>
-      <span><span class="src src--nv">네이버</span>검색량·뉴스·블로그 — 네이버 키 (선택)</span>
+      <span><span class="src src--nv">네이버</span>최근 제목·검색량·뉴스·블로그 — 네이버 키 (선택)</span>
       <span><span class="src src--mf">식약처</span>제품 신고정보 — 식품안전나라 키 (선택)</span>
-      <span><span class="src src--web">웹 검색</span>화제·제품 — 키 없음</span>
+      <span><span class="src src--web">웹 검색</span>해외 맥락·제품 — 키 없음</span>
     </p>
     <p class="ov-cap">사람은 두 번 고르고(제품명이면 세 번), 판단은 AI 담당이, 확인은 프로그램이 합니다 · P0~P9 는 진행 줄에 찍히는 단계 번호 · 빨간 동그라미는 아래 확인 단계 번호 · 폰에서는 옆으로 밀어 봅니다</p>
   </div>
@@ -1111,8 +1111,8 @@ P5 검증 완료 — 주장 25건 중 <b>검증 25건, 폐기 0건</b>, 효과�
         <div class="sc-axes">
           <div class="sc-axis">
             <p class="sc-axis__h"><span class="sc-dot sc-1"></span>검색 규모 40</p>
-            <p class="sc-axis__q">주제 검색이 성분 전체 검색의 몇 %인가 (내 팔로워 성별·연령만)</p>
-            <ul class="sc-steps"><li>10% 이상<b>40</b></li><li>3% 이상<b>30</b></li><li>1% 이상<b>20</b></li><li>0.3% 이상<b>10</b></li><li>그 아래<b>0</b></li></ul>
+            <p class="sc-axis__q">이번 주제들 중 가장 많이 찾는 주제에 비해 얼마나 찾나 (내 팔로워 성별·연령만)</p>
+            <ul class="sc-steps"><li>75% 이상<b>40</b></li><li>40% 이상<b>30</b></li><li>15% 이상<b>20</b></li><li>5% 이상<b>10</b></li><li>그 아래<b>0</b></li></ul>
           </div>
           <div class="sc-axis">
             <p class="sc-axis__h"><span class="sc-dot sc-2"></span>상승세 40</p>
