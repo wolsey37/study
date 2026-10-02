@@ -330,6 +330,8 @@
   .ov-cell--a { background:var(--green-soft); border:1.5px solid var(--green); }
   .ov-cell--s { background:var(--paper-2); border:1.5px solid var(--ink-faint); }
   .ov-cell--x { border:1px dashed var(--rule); }
+  .ov-agent { display:block; margin-top:.25rem; font-family:var(--mono); font-size:.62rem; font-weight:600;
+    color:var(--green); letter-spacing:0; line-height:1.35; word-break:break-word; }
   .ov-cell--from { position:relative; }
   .ov-up { position:absolute; top:-.78rem; left:50%; transform:translateX(-50%); z-index:1; white-space:nowrap;
     font-size:.64rem; font-weight:700; line-height:1.3; padding:0 .35rem; border-radius:4px;
@@ -591,13 +593,13 @@
   <div class="ov-fig ov-lane-wrap">
     <div class="ov-lane">
       <div></div>
-      <div class="ov-h">제품 확인<small><b>P0</b> · 제품명일 때만</small></div>
-      <div class="ov-h">모으기<small><b>P1</b> · 후보 · 화제</small></div>
+      <div class="ov-h">제품 확인<small><b>P0</b> · 제품명일 때만</small><span class="ov-agent">product-reader</span></div>
+      <div class="ov-h">모으기<small><b>P1</b> · 후보 · 화제</small><span class="ov-agent">trend-scout</span></div>
       <div class="ov-h">고르기<small><b>P2</b> · 주제</small></div>
-      <div class="ov-h">찾기<small><b>P3</b> · 논문 검색</small></div>
-      <div class="ov-h">채점<small><b>P4</b> · 점수 · 인용</small></div>
+      <div class="ov-h">찾기<small><b>P3</b> · 논문 검색</small><span class="ov-agent">paper-hunter</span></div>
+      <div class="ov-h">채점<small><b>P4</b> · 점수 · 인용</small><span class="ov-agent">content-scorer</span></div>
       <div class="ov-h">숫자 검증<small><b>P5</b> · 원문 대조</small></div>
-      <div class="ov-h">쓰기 · 검토<small><b>P6 · P7</b> · 원고</small></div>
+      <div class="ov-h">쓰기 · 검토<small><b>P6 · P7</b> · 원고</small><span class="ov-agent">brief-writer · brief-reviewer</span></div>
       <div class="ov-h">출력 · 기록<small><b>P8 · P9</b> · HTML · 발행</small></div>
 
       <div class="ov-who ov-who--p">사람</div>
