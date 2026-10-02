@@ -624,7 +624,7 @@
 
       <div class="ov-who ov-who--s">프로그램</div>
       <div class="ov-cell ov-cell--s ov-cell--from"><span class="ov-up">↑ 없으면</span><b>먼저</b> 식약처 신고 조회<br><span class="ov-gate">②</span>함량 원문 검사<span class="srcs"><span class="src src--mf">식약처</span></span></div>
-      <div class="ov-cell ov-cell--s ov-cell--from"><span class="ov-up">↓ 모은 주제로</span>논문 건수 · 검색량 → 트렌드 점수<span class="srcs"><span class="src src--pm">PubMed</span><span class="src src--nv">네이버</span></span></div>
+      <div class="ov-cell ov-cell--s ov-cell--from"><span class="ov-up">↓ 모은 주제로</span>논문 건수 · 검색량 · 최근 글 수 → 트렌드 점수<span class="srcs"><span class="src src--pm">PubMed</span><span class="src src--nv">네이버</span></span></div>
       <div class="ov-cell ov-cell--x"></div>
       <div class="ov-cell ov-cell--s">PubMed 조회 · 인용수<br><span class="ov-gate">②</span>빠진 항목 검사<span class="srcs"><span class="src src--pm">PubMed</span><span class="src src--ep">Europe PMC</span></span></div>
       <div class="ov-cell ov-cell--s"><span class="ov-gate">②</span>판정이 바뀌었나 검사</div>
@@ -635,7 +635,7 @@
     <p class="ov-srclegend">
       <span><span class="src src--pm">PubMed</span>논문·초록 — NCBI 키 (필수)</span>
       <span><span class="src src--ep">Europe PMC</span>인용수 — 키 없음</span>
-      <span><span class="src src--nv">네이버</span>검색량 — 네이버 키 (선택)</span>
+      <span><span class="src src--nv">네이버</span>검색량·뉴스·블로그 — 네이버 키 (선택)</span>
       <span><span class="src src--mf">식약처</span>제품 신고정보 — 식품안전나라 키 (선택)</span>
       <span><span class="src src--web">웹 검색</span>화제·제품 — 키 없음</span>
     </p>
@@ -792,7 +792,7 @@
       <ol>
         <li><a class="dl" href="https://www.ncloud.com/product/applicationService/naverApiHub" target="_blank" rel="noopener noreferrer">네이버 클라우드 플랫폼 NAVER API HUB</a> 가입 · 로그인</li>
         <li>콘솔 → 과금정보 및 비용관리 → 결제 정보 관리에서 <strong>카드 등록</strong> (무료 구간만 써도 필요합니다)</li>
-        <li>콘솔 → Application Services → NAVER API HUB → Application 등록에서 <strong>검색어 트렌드</strong> 선택</li>
+        <li>콘솔 → Application Services → NAVER API HUB → Application 등록에서 <strong>검색어 트렌드</strong>와 <strong>검색</strong>을 둘 다 선택</li>
         <li>Application 의 <strong>인증 정보</strong>에서 Client ID · Client Secret 을 복사해
           <code>NAVER_CLIENT_ID</code> · <code>NAVER_CLIENT_SECRET</code> 칸에 넣고 다시 엽니다</li>
       </ol>
@@ -1103,9 +1103,9 @@ P5 검증 완료 — 주장 25건 중 <b>검증 25건, 폐기 0건</b>, 효과�
           </div>
           <div class="sc-axis">
             <p class="sc-axis__h"><span class="sc-dot sc-4"></span>최근 화제 20</p>
-            <p class="sc-axis__q">최근 90일 안에 관련 기사·발표가 있었나</p>
-            <ul class="sc-steps"><li>2건 이상<b>20</b></li><li>1건<b>12</b></li><li>없음<b>0</b></li></ul>
-            <p class="sc-note">기사 날짜를 확인한 것만 셉니다</p>
+            <p class="sc-axis__q">최근 90일 동안 네이버 뉴스·블로그에 글이 몇 건 나왔나</p>
+            <ul class="sc-steps"><li>뉴스 10건 이상<b>10</b></li><li>뉴스 3건 이상<b>6</b></li><li>블로그 100건 이상<b>10</b></li><li>블로그 30건 이상<b>6</b></li></ul>
+            <p class="sc-note">뉴스·블로그 점수를 더합니다(각 최대 10). 네이버 검색을 못 쓰면 AI 담당이 찾은 기사 날짜로 셉니다</p>
           </div>
         </div>
         <p class="ov-cap">실제로 잰 예 (2026-09-29) — 마그네슘 × 흡수율·제형: 검색 규모 30 (성분 검색의 9.6%) + 상승세 15 (변화 적음 1.17배) + 최근 화제 0 = <b>45</b> ·
