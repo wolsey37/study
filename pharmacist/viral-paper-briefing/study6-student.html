@@ -337,6 +337,15 @@
     font-size:.64rem; font-weight:700; line-height:1.3; padding:0 .35rem; border-radius:4px;
     background:var(--paper); color:var(--ink-soft); border:1px solid var(--rule); }
   .ov-note { display:block; margin-top:.2rem; font-size:.7rem; color:var(--ink-soft); }
+  .apilist { margin:.5rem 0 .6rem; border:1px solid var(--rule); border-radius:8px; overflow:hidden; font-size:.82rem; max-width:34rem; }
+  .apilist__h, .apilist__r { display:grid; grid-template-columns:2.2rem 8rem 1fr; align-items:center; padding:.3rem .6rem; }
+  .apilist__h { background:var(--paper-2); font-weight:700; }
+  .apilist__r { border-top:1px solid var(--rule); color:var(--ink-faint); }
+  .apilist__r.is-on { color:var(--ink); font-weight:700; background:var(--green-soft); }
+  .apilist__box { width:1.05rem; height:1.05rem; border:1.5px solid var(--ink-faint); border-radius:3px; display:inline-flex;
+    align-items:center; justify-content:center; font-size:.75rem; line-height:1; }
+  .apilist__r.is-on .apilist__box { background:#3B9BE0; border-color:#3B9BE0; color:#fff; }
+  @media (max-width:30rem) { .apilist__h, .apilist__r { grid-template-columns:2rem 6.5rem 1fr; font-size:.74rem; } }
   .srcs { display:flex; flex-wrap:wrap; gap:.2rem; margin-top:.3rem; }
   .src { display:inline-block; font-size:.64rem; font-weight:700; line-height:1.5; padding:0 .38rem; border-radius:999px;
     color:#fff; white-space:nowrap; letter-spacing:.01em; }
@@ -756,7 +765,16 @@
       <ol>
         <li><a class="dl" href="https://www.ncloud.com/product/applicationService/naverApiHub" target="_blank" rel="noopener noreferrer">네이버 클라우드 플랫폼 NAVER API HUB</a> 가입 · 로그인</li>
         <li>콘솔 → 과금정보 및 비용관리 → 결제 정보 관리에서 <strong>카드 등록</strong> (무료 구간만 써도 필요합니다)</li>
-        <li>콘솔 → Application Services → NAVER API HUB → Application 등록에서 <strong>검색어 트렌드</strong>와 <strong>검색</strong>을 둘 다 선택</li>
+        <li>콘솔 → Application Services → NAVER API HUB → Application 등록. API 목록에서 <strong>검색어트렌드 · 뉴스 · 블로그</strong> 세 개를 체크합니다
+          <div class="apilist" role="img" aria-label="API 목록에서 검색어트렌드, 뉴스, 블로그 세 개 체크, 쇼핑인사이트와 지역은 체크 안 함">
+            <div class="apilist__h"><span></span><span>API 이름</span><span>설명</span></div>
+            <div class="apilist__r"><span class="apilist__box"></span><span>쇼핑인사이트</span><span>Data Lab Shopping Insight API</span></div>
+            <div class="apilist__r is-on"><span class="apilist__box">✓</span><span>검색어트렌드</span><span>Data Lab Search Trend API</span></div>
+            <div class="apilist__r is-on"><span class="apilist__box">✓</span><span>뉴스</span><span>NAVER Search News API</span></div>
+            <div class="apilist__r is-on"><span class="apilist__box">✓</span><span>블로그</span><span>NAVER Search Blog API</span></div>
+            <div class="apilist__r"><span class="apilist__box"></span><span>지역</span><span>NAVER Search Local API</span></div>
+          </div>
+          검색어트렌드는 검색량, 뉴스 · 블로그는 「요즘 글이 얼마나 올라오나」(최근 화제)에 씁니다. 뉴스 · 블로그를 빼먹으면 최근 화제를 AI가 찾은 기사 날짜로 대신 셉니다</li>
         <li>Application 의 <strong>인증 정보</strong>에서 Client ID · Client Secret 을 복사해
           <code>NAVER_CLIENT_ID</code> · <code>NAVER_CLIENT_SECRET</code> 칸에 넣고 다시 엽니다</li>
       </ol>
@@ -904,9 +922,9 @@
           <strong>논문 건수</strong>는 재료가 얼마나 있는지입니다. 7편과 102편은 나올 논문의 폭이 다릅니다.
           <strong>트렌드 점수</strong>는 요즘 이 주제를 찾는지를 <strong>실제로 잰</strong> 값입니다(100점: 검색 규모 40 · 상승세 40 · 최근 화제 20).
           네이버 키가 있으면 30-40대 여성 검색만 걸러서 재고, 줄도 이 점수 순으로 섭니다.
-          예를 들어 마그네슘 × 흡수율·제형은 45점이었습니다 (성분 검색의 9.6% · 변화 적음 1.17배, 2026-09-29).
+          예를 들어 오메가3 × 체지방·대사는 30점이었습니다 (검색 규모 10 + 최근 화제 20 — 뉴스가 하루 3건 넘게 올라옴, 2026-10-01).
           오메가3 주제들은 같은 날 전부 「검색량 적음」이었습니다 — 성분과 주제를 붙여 검색하는 사람이 적다는 뜻입니다.
-          키가 없으면 최근 90일 안의 관련 기사 수만 셉니다. 점수가 높다고 좋은 주제는 아닙니다 — 근거는 따로 봅니다.
+          키가 없으면 AI 담당이 찾은 최근 90일 기사만 셉니다. 점수가 높다고 좋은 주제는 아닙니다 — 근거는 따로 봅니다.
         </p>
         <p>
           <strong>사전 주제와 트렌드 주제가 한 줄에</strong> 섞여 있습니다. 트렌드 주제는
@@ -1067,12 +1085,12 @@ P5 검증 완료 — 주장 25건 중 <b>검증 25건, 폐기 0건</b>, 효과�
           </div>
           <div class="sc-axis">
             <p class="sc-axis__h"><span class="sc-dot sc-4"></span>최근 화제 20</p>
-            <p class="sc-axis__q">최근 90일 동안 네이버 뉴스·블로그에 글이 몇 건 나왔나</p>
-            <ul class="sc-steps"><li>뉴스 10건 이상<b>10</b></li><li>뉴스 3건 이상<b>6</b></li><li>블로그 100건 이상<b>10</b></li><li>블로그 30건 이상<b>6</b></li></ul>
-            <p class="sc-note">뉴스·블로그 점수를 더합니다(각 최대 10). 네이버 검색을 못 쓰면 AI 담당이 찾은 기사 날짜로 셉니다</p>
+            <p class="sc-axis__q">요즘 네이버 뉴스·블로그에 하루 몇 건씩 글이 올라오나</p>
+            <ul class="sc-steps"><li>뉴스 하루 2건 이상<b>15</b></li><li>뉴스 하루 0.5건 이상<b>10</b></li><li>뉴스 하루 0.1건 이상<b>5</b></li><li>블로그 하루 50건 이상<b>+5</b></li><li>블로그 하루 10건 이상<b>+3</b></li></ul>
+            <p class="sc-note">블로그는 광고 글이 많아 비중을 낮췄습니다. 네이버 뉴스·블로그를 못 쓰면 AI 담당이 찾은 기사 날짜로 셉니다</p>
           </div>
         </div>
-        <p class="ov-cap">실제로 잰 예 (2026-09-29) — 마그네슘 × 흡수율·제형: 검색 규모 30 (성분 검색의 9.6%) + 상승세 15 (변화 적음 1.17배) + 최근 화제 0 = <b>45</b> ·
+        <p class="ov-cap">실제로 잰 예 (2026-10-01) — 오메가3 × 체지방·대사: 검색 규모 10 (성분 검색의 0.4%) + 상승세 0 (검색량 적음) + 최근 화제 20 (뉴스 하루 3.4건 · 블로그 하루 175건) = <b>30</b> ·
           네이버 키가 없으면 앞의 두 칸을 못 재서 점수는 비고 최근 화제만 나옵니다</p>
       </div>
 
