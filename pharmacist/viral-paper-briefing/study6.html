@@ -336,6 +336,8 @@
   .ov-up { position:absolute; top:-.78rem; left:50%; transform:translateX(-50%); z-index:1; white-space:nowrap;
     font-size:.64rem; font-weight:700; line-height:1.3; padding:0 .35rem; border-radius:4px;
     background:var(--paper); color:var(--ink-soft); border:1px solid var(--rule); }
+  .ov-case { display:block; font-size:.62rem; font-weight:800; color:var(--ink-soft); letter-spacing:.02em; margin-bottom:.1rem; }
+  .ov-case--sep { margin-top:.45rem; padding-top:.35rem; border-top:1px dashed var(--rule); }
   .ov-note { display:block; margin-top:.2rem; font-size:.66rem; line-height:1.35; color:var(--ink-soft); }
   .apilist { margin:.5rem 0 .6rem; border:1px solid var(--rule); border-radius:8px; overflow:hidden; font-size:.82rem; max-width:34rem; }
   .apilist__h, .apilist__r { display:grid; grid-template-columns:2.2rem 8rem 1fr; align-items:center; padding:.3rem .6rem; }
@@ -635,7 +637,7 @@
       <div class="ov-cell ov-cell--x"></div>
 
       <div class="ov-who ov-who--s">프로그램</div>
-      <div class="ov-cell ov-cell--s ov-cell--from"><span class="ov-up">↑ 없으면</span><b>먼저</b> 식약처 신고 조회<br><span class="ov-gate ov-gate--2">②</span>함량 원문 검사<span class="srcs"><span class="src src--mf">식약처</span></span></div>
+      <div class="ov-cell ov-cell--s ov-cell--from"><span class="ov-up">↑ 없으면</span><span class="ov-case">제품이면</span><b>먼저</b> 식약처 신고 조회<br><span class="ov-gate ov-gate--2">②</span>함량 원문 검사<span class="srcs"><span class="src src--mf">식약처</span></span><span class="ov-case ov-case--sep">사전에 없는 성분이면</span>MeSH 후보 찾기<span class="srcs"><span class="src src--pm">PubMed</span></span></div>
       <div class="ov-cell ov-cell--s ov-cell--from"><span class="ov-up">↕ 주고받기</span>① 최근 네이버 제목 모으기<br>② 그 주제로 논문 건수 · 검색량 · 최근 글 수 → 트렌드 점수<br>③ 이미 쓴 논문 확인<span class="srcs"><span class="src src--pm">PubMed</span><span class="src src--nv">네이버</span></span></div>
       <div class="ov-cell ov-cell--x"></div>
       <div class="ov-cell ov-cell--s">PubMed 조회 · 인용수<br><span class="ov-gate ov-gate--2">②</span>빠진 항목 검사<span class="srcs"><span class="src src--pm">PubMed</span><span class="src src--ep">Europe PMC</span></span></div>
