@@ -1,0 +1,1746 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="성분이나 제품명을 넣으면 계정 오디언스에 맞는 바이럴 논문을 골라 한 장으로 만드는 /브리핑 도구. 숫자는 전부 PubMed 원문과 대조합니다. 약사 세미나 실습 자료.">
+<meta property="og:title" content="바이럴 논문 브리핑 — 약사 세미나">
+<title>바이럴 논문 브리핑 — 약사 세미나</title>
+<style>
+  :root {
+    --paper:#FBFAF7; --paper-2:#F3F1EB; --ink:#1B2420;
+    --ink-soft:#5A6560; --ink-faint:#8B948F;
+    --green:#1F6B4A; --green-soft:#E3EFE8;
+    --clay:#A8452F; --clay-soft:#F6E7E2;
+    --amber:#B5832A; --amber-soft:#F7EEDA;
+    --rule:#DFDBD2;
+    --sans:'Apple SD Gothic Neo',Pretendard,'Malgun Gothic','Noto Sans KR',system-ui,sans-serif;
+    --mono:ui-monospace,'SF Mono',SFMono-Regular,Menlo,'D2Coding',monospace;
+    --measure:64ch;
+    --s1:.5rem; --s2:.875rem; --s3:1.375rem; --s4:2.25rem; --s5:3.5rem; --s6:5.5rem; --s7:8rem;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --paper:#121714; --paper-2:#1B2320; --ink:#E8EDE9; --ink-soft:#A3AEA8; --ink-faint:#6E7A74;
+      --green:#57B489; --green-soft:#163024; --clay:#E08A72; --clay-soft:#331C16;
+      --amber:#D6A84E; --amber-soft:#302512; --rule:#2B3531; }
+  }
+  :root[data-theme="dark"] { --paper:#121714; --paper-2:#1B2320; --ink:#E8EDE9; --ink-soft:#A3AEA8; --ink-faint:#6E7A74;
+    --green:#57B489; --green-soft:#163024; --clay:#E08A72; --clay-soft:#331C16;
+    --amber:#D6A84E; --amber-soft:#302512; --rule:#2B3531; }
+  :root[data-theme="light"] { --paper:#FBFAF7; --paper-2:#F3F1EB; --ink:#1B2420; --ink-soft:#5A6560; --ink-faint:#8B948F;
+    --green:#1F6B4A; --green-soft:#E3EFE8; --clay:#A8452F; --clay-soft:#F6E7E2;
+    --amber:#B5832A; --amber-soft:#F7EEDA; --rule:#DFDBD2; }
+
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans);
+    font-size:17px; line-height:1.85; -webkit-font-smoothing:antialiased; word-break:keep-all; }
+  .deck { max-width:76rem; margin:0 auto; padding:0 var(--s3) var(--s7); }
+
+  .cover { min-height:60vh; display:flex; flex-direction:column; justify-content:center; gap:var(--s3); padding:var(--s6) 0 var(--s4); }
+  .cover__tag { font-family:var(--mono); font-size:.75rem; letter-spacing:.18em; text-transform:uppercase; color:var(--green); }
+  .cover__title { margin:0; font-size:clamp(2.3rem,6.5vw,4.2rem); line-height:1.1; letter-spacing:-.04em; font-weight:800; max-width:17ch; text-wrap:balance; }
+  .cover__sub { margin:0; max-width:var(--measure); font-size:clamp(1.05rem,2vw,1.25rem); color:var(--ink-soft); }
+  .cover__meta { margin-top:var(--s2); padding-top:var(--s2); border-top:1px solid var(--rule);
+    font-family:var(--mono); font-size:.78rem; color:var(--ink-faint); display:flex; flex-wrap:wrap; gap:var(--s1) var(--s3); }
+
+  .modebar { position:sticky; top:0; z-index:20; display:flex; flex-wrap:wrap; align-items:center; gap:var(--s2);
+    padding:.7rem 0; background:color-mix(in srgb, var(--paper) 92%, transparent);
+    backdrop-filter:blur(8px); border-bottom:1px solid var(--rule); margin-bottom:var(--s3); }
+  .modebar__total { font-family:var(--mono); font-size:.78rem; color:var(--ink-faint); }
+
+  .prep { border:1px solid var(--amber); background:var(--amber-soft); padding:var(--s3); display:flex; flex-direction:column; gap:var(--s2); }
+  .prep__lab { margin:0; font-family:var(--mono); font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:var(--amber); }
+  .prep__h { margin:0; font-size:1.1rem; font-weight:740; }
+  .prep ul { margin:0; padding-left:1.2rem; display:flex; flex-direction:column; gap:.4rem; font-size:.95rem; }
+  .prep__note { margin:0; font-size:.9rem; color:var(--ink-soft); }
+  .prep__no { margin:0; padding-top:var(--s2); border-top:1px solid color-mix(in srgb, var(--amber) 40%, transparent); font-size:.95rem; }
+
+  .toc { display:grid; grid-template-columns:repeat(auto-fit,minmax(15rem,1fr)); gap:var(--s2); }
+  .toc__item { border:1px solid var(--rule); padding:var(--s3); display:flex; flex-direction:column; gap:.3rem;
+    text-decoration:none; color:inherit; transition:background .12s, border-color .12s; }
+  .toc__item:hover, .toc__item:focus-visible { background:var(--green-soft); border-color:var(--green); }
+  .toc__n { font-family:var(--mono); font-size:.72rem; letter-spacing:.14em; color:var(--green); }
+  .toc__t { font-weight:700; font-size:1.02rem; }
+  .toc__d { font-size:.88rem; color:var(--ink-soft); }
+  .toc__time { font-family:var(--mono); font-size:.72rem; color:var(--ink-faint); margin-top:.2rem; }
+
+  .sec { padding-top:var(--s6); scroll-margin-top:4rem; display:flex; flex-direction:column; gap:var(--s3); }
+  .sec__n { font-family:var(--mono); font-size:.75rem; letter-spacing:.16em; text-transform:uppercase; color:var(--green); }
+  .sec__h { margin:0; font-size:clamp(1.7rem,3.8vw,2.5rem); line-height:1.2; letter-spacing:-.03em; font-weight:780; max-width:22ch; text-wrap:balance; }
+  .sec__lead { margin:0; max-width:var(--measure); font-size:1.08rem; color:var(--ink-soft); }
+  .sec__sub { margin:0; font-size:1.14rem; font-weight:740; letter-spacing:-.02em; }
+  .prose { display:flex; flex-direction:column; gap:var(--s2); max-width:var(--measure); }
+  .prose p, .prose ul, .prose ol { margin:0; }
+  .prose ul, .prose ol { padding-left:1.15rem; display:flex; flex-direction:column; gap:var(--s1); }
+  strong { font-weight:700; }
+
+  .claim { margin:0; padding:var(--s4) 0; border-top:2px solid var(--ink); border-bottom:2px solid var(--ink);
+    font-size:clamp(1.2rem,2.6vw,1.7rem); line-height:1.45; font-weight:700; letter-spacing:-.02em; max-width:30ch; }
+  .claim em { font-style:normal; color:var(--green); }
+
+  .easy { display:flex; flex-direction:column; gap:var(--s1); padding:var(--s3);
+    background:var(--paper-2); border:1px solid var(--rule); border-left:3px solid var(--ink-soft); }
+  .easy__lab { margin:0; font-family:var(--mono); font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-soft); }
+  .easy p { margin:0; font-size:1.02rem; max-width:var(--measure); }
+  .easy__pair { display:grid; grid-template-columns:repeat(auto-fit,minmax(15rem,1fr)); gap:var(--s2); margin-top:.2rem; }
+  .easy__side { padding:var(--s2) var(--s3); background:var(--paper); border-left:3px solid var(--clay); }
+  .easy__side--o { border-left-color:var(--green); }
+  .easy__side p { margin:0; font-size:.95rem; }
+  .easy__k { display:block; font-family:var(--mono); font-size:.7rem; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--clay); margin-bottom:.2rem; }
+  .easy__side--o .easy__k { color:var(--green); }
+
+  .lab { border:1px solid var(--rule); border-top:3px solid var(--green); display:flex; flex-direction:column; }
+  .lab__head { padding:var(--s3); display:flex; flex-direction:column; gap:.35rem; border-bottom:1px solid var(--rule); }
+  .lab__n { font-family:var(--mono); font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:var(--green);
+    display:flex; flex-wrap:wrap; gap:var(--s2); align-items:baseline; }
+  .lab__min { color:var(--ink-faint); }
+  .lab__do { margin:0; font-size:1.18rem; font-weight:740; letter-spacing:-.02em; }
+  .lab__why { margin:0; font-size:.94rem; color:var(--ink-soft); max-width:var(--measure); }
+  .lab__body { padding:var(--s3); display:flex; flex-direction:column; gap:var(--s3); min-width:0; }
+
+  .say { display:flex; flex-direction:column; gap:.4rem; min-width:0; }
+  .say__lab { margin:0; font-family:var(--mono); font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--green);
+    display:flex; align-items:center; justify-content:space-between; gap:var(--s2); }
+
+  .copybtn { flex:none; font-family:var(--sans); font-size:.72rem; font-weight:650;
+    letter-spacing:0; text-transform:none; cursor:pointer;
+    padding:.35rem .75rem; border:1px solid var(--rule); border-radius:2px;
+    background:transparent; color:var(--ink-soft);
+    transition:background .12s, border-color .12s, color .12s; }
+  .copybtn:hover { border-color:var(--green); color:var(--green); background:var(--green-soft); }
+  .copybtn:focus-visible { outline:2px solid var(--green); outline-offset:2px; }
+  .copybtn[data-state="done"] { border-color:var(--green); background:var(--green); color:var(--paper); }
+  .copybtn[data-state="fail"] { border-color:var(--clay); background:var(--clay-soft); color:var(--clay); }
+  @media (prefers-reduced-motion: reduce) { .copybtn { transition:none; } }
+  .say__box { margin:0; padding:var(--s2) var(--s3); background:var(--paper-2); border-left:3px solid var(--green);
+    font-family:var(--mono); font-size:.84rem; line-height:1.8; white-space:pre-wrap; overflow-x:auto; color:var(--ink); }
+  .say__box b { font-weight:700; color:var(--green); }
+  .say__box u { text-decoration:none; color:var(--clay); font-weight:650; }
+  .say__box i { font-style:normal; color:var(--ink-faint); }
+
+  .reply { display:flex; flex-direction:column; gap:.4rem; min-width:0; }
+  .reply__lab { margin:0; font-family:var(--mono); font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint); }
+  .reply__box { margin:0; padding:var(--s2) var(--s3); background:var(--paper); border:1px dashed var(--ink-faint);
+    font-family:var(--mono); font-size:.82rem; line-height:1.8; white-space:pre-wrap; overflow-x:auto; color:var(--ink); }
+  .reply__box b { font-weight:700; color:var(--green); }
+  .reply__box u { text-decoration:none; color:var(--clay); font-weight:650; }
+  .reply__box mark { background:color-mix(in srgb, var(--green) 20%, transparent); padding:0 .15em; }
+
+  .ok { margin:0; padding:var(--s2) var(--s3); background:var(--green-soft); border-left:3px solid var(--green); font-size:.94rem; }
+  .ok b { color:var(--green); }
+  .stuck { margin:0; padding:var(--s2) var(--s3); background:var(--amber-soft); border-left:3px solid var(--amber); font-size:.94rem; }
+  .stuck b { color:var(--amber); }
+  .step { margin:0; font-size:.98rem; font-weight:700; display:flex; gap:.5rem; align-items:baseline; }
+  .step span { font-family:var(--mono); font-size:.78rem; color:var(--green); }
+
+  .cards { display:flex; flex-direction:column; gap:var(--s2); }
+  .card { border:1px solid var(--rule); padding:var(--s3); display:flex; flex-direction:column; gap:var(--s2); }
+  .card--flag { border-left:3px solid var(--clay); }
+  .card__top { display:flex; flex-wrap:wrap; align-items:baseline; gap:var(--s2); }
+  .card__tag { font-family:var(--mono); font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; padding:.18rem .5rem; background:var(--green-soft); color:var(--green); }
+  .card--flag .card__tag { background:var(--clay-soft); color:var(--clay); }
+  .card__h { margin:0; font-size:1.06rem; font-weight:720; }
+  .card p { margin:0; font-size:.96rem; }
+
+  .quote { margin:0; padding:var(--s2) var(--s3); background:var(--paper-2); border:1px solid var(--rule); font-size:.96rem; line-height:1.75; }
+  .quote--o { border-color:var(--green); background:var(--green-soft); }
+  .quote--warn { border-color:var(--amber); background:var(--amber-soft); }
+  mark { background:color-mix(in srgb, var(--clay) 26%, transparent); color:inherit; padding:.05em .18em; border-radius:2px; }
+  code { font-family:var(--mono); font-size:.86em; padding:.1em .35em; background:var(--green-soft); border-radius:2px; }
+
+  .tw { overflow-x:auto; }
+  table { width:100%; min-width:30rem; border-collapse:collapse; font-size:.95rem; }
+  caption { text-align:left; padding-bottom:var(--s1); font-family:var(--mono); font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint); }
+  th,td { text-align:left; padding:.7rem .9rem; border-bottom:1px solid var(--rule); vertical-align:top; }
+  thead th { font-size:.78rem; letter-spacing:.04em; color:var(--ink-soft); font-weight:650; border-bottom-width:2px; }
+  tbody th { font-weight:650; white-space:nowrap; }
+  .no { color:var(--clay); font-weight:650; }
+  .hard { color:var(--green); font-weight:700; }
+
+  .diagram { font-family:var(--mono); font-size:.85rem; line-height:1.85; padding:var(--s3);
+    background:var(--paper-2); border:1px solid var(--rule); overflow-x:auto; white-space:pre; }
+  .diagram b { font-weight:700; color:var(--green); }
+  .diagram u { text-decoration:none; color:var(--clay); font-weight:650; }
+
+  .arc { display:grid; grid-template-columns:repeat(auto-fit,minmax(14rem,1fr)); gap:var(--s2); }
+  .arc__i { padding:var(--s3); border:1px solid var(--rule); display:flex; flex-direction:column; gap:.35rem; }
+  .arc__i--now { border-color:var(--green); border-width:2px; background:var(--green-soft); }
+  .arc__i--past { background:var(--paper-2); }
+  .arc__n { font-family:var(--mono); font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint); }
+  .arc__i--now .arc__n { color:var(--green); font-weight:700; }
+  .arc__t { margin:0; font-size:1.04rem; font-weight:730; letter-spacing:-.01em; }
+  .arc__d { margin:0; font-size:.92rem; color:var(--ink-soft); }
+
+  pre.code { margin:0; min-width:0; background:var(--paper-2); border:1px solid var(--rule);
+    padding:var(--s3); overflow-x:auto; font-family:var(--mono); font-size:.83rem; line-height:1.75; color:var(--ink); }
+  pre.code b { font-weight:700; color:var(--green); }
+  pre.code i { font-style:normal; color:var(--ink-faint); }
+  pre.code u { text-decoration:none; color:var(--clay); font-weight:650; }
+
+  .duo { display:grid; grid-template-columns:repeat(auto-fit,minmax(20rem,1fr)); gap:var(--s2); align-items:start; }
+
+  .end { margin-top:var(--s7); padding:var(--s5) var(--s4); background:var(--ink); color:var(--paper); display:flex; flex-direction:column; gap:var(--s2); }
+  .end h2 { margin:0; font-size:clamp(1.4rem,3vw,1.9rem); font-weight:760; letter-spacing:-.02em; }
+  .end p { margin:0; max-width:var(--measure); color:color-mix(in srgb,var(--paper) 76%, transparent); }
+  .end strong { color:var(--paper); }
+  .end ul { margin:0; padding-left:1.2rem; display:flex; flex-direction:column; gap:.45rem;
+    max-width:var(--measure); color:color-mix(in srgb,var(--paper) 76%, transparent); }
+  .end code { background:color-mix(in srgb,var(--paper) 16%, transparent); color:var(--paper); }
+  .end__final { margin-top:var(--s3); padding-top:var(--s3); border-top:1px solid color-mix(in srgb,var(--paper) 25%, transparent); font-size:1.05rem; }
+
+  hr.r { width:100%; height:1px; border:0; background:var(--rule); margin:0; }
+  a { color:var(--green); }
+  a:focus-visible, button:focus-visible { outline:2px solid var(--green); outline-offset:3px; }
+
+  .need { display:flex; flex-direction:column; gap:var(--s1); padding:var(--s3);
+    background:var(--clay-soft); border-left:3px solid var(--clay); }
+  .need__lab { margin:0; font-family:var(--mono); font-size:.72rem; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--clay); font-weight:700; }
+  .need p { margin:0; font-size:1rem; max-width:var(--measure); }
+
+  .dl { display:inline-flex; align-items:baseline; gap:.5rem; text-decoration:none;
+    padding:.65rem 1.1rem; border:1.5px solid var(--green); background:var(--green-soft);
+    color:var(--green); font-weight:750; font-size:.98rem; border-radius:2px;
+    transition:background .12s, color .12s; }
+  .dl:hover, .dl:focus-visible { background:var(--green); color:var(--paper); }
+  .dl small { font-family:var(--mono); font-weight:400; font-size:.78em; opacity:.8; }
+
+  /* 비교 구조도 */
+  .cmp { display:grid; grid-template-columns:repeat(auto-fit,minmax(17rem,1fr)); gap:var(--s2); }
+  .cmp__panel { border:1px solid var(--rule); background:var(--paper-2); padding:var(--s3) var(--s2) var(--s2);
+    display:flex; flex-direction:column; align-items:center; gap:.75rem; }
+  .cmp__panel--x { border-top:3px solid var(--clay); }
+  .cmp__panel--o { border-top:3px solid var(--green); }
+  .cmp__t { margin:0; font-family:var(--mono); font-size:.72rem; letter-spacing:.14em;
+    text-transform:uppercase; font-weight:700; color:var(--clay); }
+  .cmp__panel--o .cmp__t { color:var(--green); }
+
+  .dg { border:1px solid var(--rule); background:var(--paper-2); padding:var(--s2); overflow-x:auto; }
+  .dg svg { display:block; width:100%; min-width:34rem; height:auto; }
+  .dg .ttl { font-family:var(--sans); font-size:13px; font-weight:800; fill:var(--ink); }
+  .dg .bx { stroke-width:1.4; }
+  .dg .bx-main { fill:var(--clay-soft); stroke:var(--clay); }
+  .dg .bx-sub  { fill:var(--amber-soft); stroke:var(--amber); }
+  .dg .bx-task { fill:var(--green-soft); stroke:var(--green); stroke-width:2; stroke-dasharray:5 3; }
+  .dg .bx-mate { fill:var(--paper); stroke:var(--green); }
+  .dg .bx-res  { fill:none; stroke:var(--ink-faint); stroke-dasharray:3 3; }
+  .dg .nm { font-family:var(--mono); font-size:10.5px; font-weight:700; fill:var(--ink); }
+  .dg .nm-res { fill:var(--ink-faint); font-weight:400; }
+  .dg .lb { font-family:var(--sans); font-size:9px; fill:var(--ink-faint); }
+  .dg .lb-o { fill:var(--green); font-weight:700; }
+  .dg .ln { fill:none; stroke:var(--ink-faint); stroke-width:1.2; }
+  .dg .ln-o { fill:none; stroke:var(--green); stroke-width:1.6; }
+  .dg .ah { fill:var(--ink-faint); }
+  .dg .ah-o { fill:var(--green); }
+  .dg .sep { stroke:var(--rule); stroke-width:1; }
+  .cmp__pros { margin:0; width:100%; padding-top:.7rem; border-top:1px dashed var(--rule);
+    display:flex; flex-direction:column; gap:.45rem; }
+  .cmp__pros p { margin:0; display:flex; gap:.45rem; align-items:baseline;
+    font-size:.86rem; line-height:1.55; color:var(--ink-soft); text-align:left; }
+  .cmp__pros p b { flex:none; font-family:var(--mono); font-weight:700; font-size:.95em; }
+  .cmp__pros .p b { color:var(--green); }
+  .cmp__pros .m b { color:var(--clay); }
+  .cmp__pros strong { color:var(--ink); }
+
+  /* 팀원 명단 */
+  .roster { display:grid; grid-template-columns:repeat(auto-fit,minmax(16rem,1fr)); gap:var(--s2); }
+  .roster__i { border:1px solid var(--rule); border-top:3px solid var(--green); padding:var(--s3);
+    display:flex; flex-direction:column; gap:.4rem; }
+  .roster__nm { font-size:1.15rem; font-weight:780; color:var(--green); letter-spacing:-.01em; }
+  .roster__nm small { font-family:var(--mono); font-size:.68em; color:var(--ink-faint); font-weight:600; letter-spacing:0; }
+  .roster__r { margin:0; font-size:1.06rem; font-weight:730; letter-spacing:-.01em; }
+  .roster__d { margin:0; font-size:.93rem; color:var(--ink-soft); }
+  .roster__i--script .roster__nm { color:var(--ink-soft); }
+  .roster__no { margin:0; margin-top:.2rem; padding-top:.55rem; border-top:1px dashed var(--rule);
+    font-size:.9rem; color:var(--clay); font-weight:650; }
+
+  /* 메시지 카드 */
+  .msg { border:1px solid var(--rule); background:var(--paper-2); padding:var(--s2) var(--s3);
+    display:flex; flex-direction:column; gap:.4rem; min-width:0; }
+  .msg--lead { border-left:3px solid var(--ink-soft); }
+  .msg--x { border-color:var(--clay); background:var(--clay-soft); }
+  .msg__hd { font-family:var(--mono); font-size:.73rem; letter-spacing:.06em;
+    color:var(--ink-faint); display:flex; flex-wrap:wrap; gap:.45rem; align-items:baseline; }
+  .msg__f { color:var(--green); font-weight:700; }
+  .msg__t { color:var(--clay); font-weight:700; }
+  .msg__b { margin:0; font-family:var(--mono); font-size:.82rem; line-height:1.75;
+    white-space:pre-wrap; overflow-x:auto; color:var(--ink); }
+  .msg__b b { font-weight:700; color:var(--green); }
+  .msg__b u { text-decoration:none; color:var(--clay); font-weight:650; }
+
+  @media (max-width:40rem) {
+    body { font-size:16px; }
+    .deck { padding:0 var(--s2) var(--s6); }
+    .sec { padding-top:var(--s5); }
+  }
+
+  /* ===== 한눈에 보기 도식 ===== */
+  #overview, #overview > * { min-width:0; max-width:100%; }
+  .ov-fig { margin:var(--s3) 0; min-width:0; }
+  .ov-cap { margin:.5rem 0 0; font-size:.85rem; color:var(--ink-faint); text-align:center; }
+  /* ① 넣는 것 → 나오는 것 */
+  .ov-io { display:grid; grid-template-columns:1fr auto 1.1fr auto 1.3fr; align-items:stretch; gap:.6rem; }
+  .ov-box { border:1.5px solid var(--rule); background:var(--paper-2); padding:.9rem 1rem; border-radius:10px;
+    display:flex; flex-direction:column; gap:.3rem; justify-content:center; }
+  .ov-box__k { margin:0; font-family:var(--mono); font-size:.7rem; letter-spacing:.12em; color:var(--ink-faint); text-transform:uppercase; }
+  .ov-box__v { margin:0; font-weight:760; font-size:1.02rem; line-height:1.45; }
+  .ov-box__v small { display:block; font-weight:500; font-size:.82rem; color:var(--ink-soft); }
+  .ov-box--cmd { border-color:var(--green); background:var(--green-soft); text-align:center; }
+  .ov-box--cmd .ov-box__v { font-family:var(--mono); color:var(--green); }
+  .ov-box--out { border-color:var(--ink-soft); }
+  .ov-arrow { align-self:center; font-size:1.6rem; color:var(--ink-faint); }
+  /* ② 결과물 와이어프레임 */
+  .ov-page { border:1.5px solid var(--ink-soft); border-radius:12px; padding:.9rem; background:var(--paper);
+    display:flex; flex-direction:column; gap:.5rem; max-width:40rem; margin:0 auto; }
+  .ov-row { display:flex; align-items:center; gap:.7rem; }
+  .ov-blk { flex:1; min-width:0; border-radius:7px; padding:.45rem .7rem; font-size:.88rem; background:var(--paper-2); border:1px solid var(--rule); }
+  .ov-lab { width:6.5rem; flex:none; font-size:.78rem; color:var(--ink-faint); text-align:right; line-height:1.3; }
+  .ov-tiles { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:.35rem; flex:1; min-width:0; }
+  .ov-tile { border:1px solid var(--rule); border-radius:6px; text-align:center; padding:.25rem 0; font-size:.72rem; color:var(--ink-soft); background:var(--paper-2); }
+  .ov-tile b { display:block; font-size:1.05rem; color:var(--ink); }
+  .ov-paper { flex:1; min-width:0; border:1.5px solid var(--green); border-radius:8px; padding:.5rem .6rem; background:var(--green-soft);
+    display:flex; flex-direction:column; gap:.3rem; }
+  .ov-paper__t { margin:0; font-weight:760; font-size:.88rem; }
+  .ov-chips { display:flex; flex-wrap:wrap; gap:.3rem; }
+  .ov-chip { font-size:.72rem; padding:.1rem .45rem; border-radius:999px; background:var(--paper); border:1px solid var(--rule); color:var(--ink-soft); }
+  .ov-chip--ok { border-color:var(--green); color:var(--green); font-weight:700; }
+  .ov-blk--def { background:var(--clay-soft); border-color:var(--clay); }
+  .ov-blk--no { color:var(--ink-faint); border-style:dashed; }
+  .ov-blk--memo { background:var(--amber-soft); border-color:var(--amber); }
+  /* ③ 스윔레인 */
+  .ov-lane-wrap { overflow-x:auto; max-width:100%; -webkit-overflow-scrolling:touch; }
+  .ov-lane { display:grid; grid-template-columns:6.2rem repeat(8, minmax(7rem,1fr)); gap:.35rem; min-width:66rem; }
+  .ov-h small b { font-family:var(--mono); font-weight:700; color:var(--ink-soft); }
+  .fold { margin:0; border:1px solid var(--line, var(--ink-faint)); border-radius:8px; background:var(--paper-2); }
+  .fold > summary { cursor:pointer; padding:var(--s2) var(--s3); font-weight:700; list-style-position:inside; }
+  .fold > summary small { font-weight:400; color:var(--ink-faint); }
+  .fold__body { padding:0 var(--s3) var(--s3); display:flex; flex-direction:column; gap:var(--s2); }
+  .ex { margin:0; }
+  .ex__lab { margin:0 0 .3rem; font-family:var(--mono); font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint); }
+  .ex__box { margin:0; padding:var(--s2) var(--s3); background:var(--paper); border:1px dashed var(--ink-faint); white-space:pre-wrap;
+    font-family:var(--mono); font-size:.84rem; line-height:1.6; }
+  .ov-h { font-size:.8rem; font-weight:760; text-align:center; padding:.4rem .2rem; border-bottom:2px solid var(--ink-soft); }
+  .ov-h small { display:block; font-weight:500; font-size:.7rem; color:var(--ink-faint); }
+  .ov-who { font-size:.85rem; font-weight:780; display:flex; align-items:center; justify-content:flex-end; padding-right:.5rem; }
+  .ov-who--p { color:var(--amber); } .ov-who--a { color:var(--green); } .ov-who--s { color:var(--ink-soft); }
+  .ov-cell { min-height:3.1rem; border-radius:8px; padding:.35rem .45rem; font-size:.78rem; line-height:1.35; }
+  .ov-cell--p { background:var(--amber-soft); border:1.5px solid var(--amber); font-weight:700; }
+  .ov-cell--a { background:var(--green-soft); border:1.5px solid var(--green); }
+  .ov-cell--s { background:var(--paper-2); border:1.5px solid var(--ink-faint); }
+  .ov-cell--x { border:1px dashed var(--rule); }
+  .ov-gate { display:inline-flex; align-items:center; justify-content:center; width:1.25rem; height:1.25rem; border-radius:50%;
+    background:var(--clay); color:#fff; font-size:.72rem; font-weight:800; margin-right:.2rem; vertical-align:middle; }
+  .ov-legend { display:grid; grid-template-columns:repeat(auto-fit,minmax(14rem,1fr)); gap:.6rem; margin-top:.8rem; }
+  .ov-leg { border:1px solid var(--rule); border-radius:10px; padding:.6rem .8rem; font-size:.88rem; display:flex; gap:.5rem; align-items:flex-start; }
+  .ov-leg b { display:block; }
+  /* ⑤ 오늘 순서 */
+  .ov-steps { display:grid; grid-template-columns:repeat(6, minmax(0,1fr)); gap:.5rem; align-items:center; }
+  .ov-step { border:1.5px solid var(--rule); border-radius:10px; padding:.6rem .5rem; text-align:center; background:var(--paper-2); position:relative; }
+  .ov-step__n { display:block; font-family:var(--mono); font-size:.72rem; color:var(--ink-faint); }
+  .ov-step__t { display:block; font-weight:760; font-size:.9rem; line-height:1.35; }
+  .ov-step__d { display:block; font-size:.74rem; color:var(--ink-soft); margin-top:.2rem; }
+  .ov-step--main { border-color:var(--green); background:var(--green-soft); }
+  .ov-step--opt { border-style:dashed; }
+  @media (max-width:48rem) {
+    .ov-io { grid-template-columns:1fr; }
+    .ov-arrow { transform:rotate(90deg); justify-self:center; }
+    .ov-steps { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .ov-legend { grid-template-columns:1fr; }
+    .ov-lab { font-size:.7rem; }
+    .ov-lab { width:4.6rem; }
+  }
+
+  /* ===== 점수·등급 측정 도식 ===== */
+  .sc-bar { display:flex; height:2.4rem; border-radius:8px; overflow:hidden; border:1px solid var(--rule); font-size:.78rem; font-weight:700; }
+  .sc-seg { display:flex; align-items:center; justify-content:center; color:#fff; text-align:center; line-height:1.15; padding:0 .2rem; min-width:0; }
+  .sc-seg small { display:block; font-weight:500; font-size:.68rem; opacity:.9; }
+  .sc-1 { background:#2F7D5B; } .sc-2 { background:#3E8FB0; } .sc-3 { background:#7A6BB5; } .sc-4 { background:#C0843A; } .sc-5 { background:#B5574A; }
+  .sc-rest { background:var(--paper-2); color:var(--ink-faint); }
+  .sc-scale { display:flex; justify-content:space-between; font-family:var(--mono); font-size:.7rem; color:var(--ink-faint); margin-top:.25rem; }
+  .sc-axes { display:grid; grid-template-columns:repeat(auto-fit,minmax(13rem,1fr)); gap:.6rem; margin-top:.9rem; }
+  .sc-axis { border:1px solid var(--rule); border-radius:10px; padding:.7rem .8rem; background:var(--paper-2); }
+  .sc-axis__h { margin:0 0 .35rem; font-weight:780; font-size:.95rem; display:flex; align-items:center; gap:.45rem; }
+  .sc-dot { width:.75rem; height:.75rem; border-radius:3px; flex:none; }
+  .sc-axis__q { margin:0 0 .4rem; font-size:.82rem; color:var(--ink-soft); }
+  .sc-steps { margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:.2rem; font-size:.8rem; }
+  .sc-steps li { display:flex; justify-content:space-between; gap:.5rem; border-bottom:1px dashed var(--rule); padding-bottom:.15rem; }
+  .sc-steps b { font-family:var(--mono); }
+  .sc-note { margin:.45rem 0 0; font-size:.74rem; color:var(--ink-faint); }
+  .sc-ex { border:1.5px solid var(--green); border-radius:12px; padding:.9rem 1rem; background:var(--green-soft); }
+  .sc-ex__t { margin:0 0 .5rem; font-weight:760; }
+  .sc-why { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:.4rem; margin-top:.6rem; font-size:.76rem; line-height:1.4; }
+  .sc-why.sc-why--4 { grid-template-columns:repeat(4,minmax(0,1fr)); }
+  .sc-why div { background:var(--paper); border-radius:8px; padding:.4rem .5rem; border-top:3px solid var(--rule); }
+  .sc-ladder { display:flex; flex-direction:column; gap:.35rem; }
+  .sc-rung { display:grid; grid-template-columns:3.2rem 1fr 1fr; gap:.6rem; align-items:center; border:1px solid var(--rule); border-radius:10px; padding:.55rem .7rem; font-size:.86rem; }
+  .sc-rung__g { font-family:var(--mono); font-weight:800; font-size:1.15rem; text-align:center; border-radius:8px; padding:.2rem 0; color:#fff; }
+  .sc-g1 { background:#2F7D5B; } .sc-g2 { background:#5E9A4A; } .sc-g3 { background:#C0843A; } .sc-g4 { background:#B5574A; }
+  .sc-rung__use { color:var(--ink-soft); font-size:.8rem; }
+  .sc-grid { display:grid; grid-template-columns:auto 1fr 1fr; gap:.4rem; align-items:stretch; max-width:40rem; margin:0 auto; }
+  .sc-ax { font-size:.75rem; color:var(--ink-faint); display:flex; align-items:center; justify-content:center; text-align:center; font-weight:700; }
+  .sc-cell { border-radius:10px; padding:.7rem; font-size:.86rem; line-height:1.45; border:1.5px solid var(--rule); }
+  .sc-cell b { display:block; font-size:.95rem; }
+  .sc-cell--best { background:var(--green-soft); border-color:var(--green); }
+  .sc-cell--risk { background:var(--clay-soft); border-color:var(--clay); }
+  .sc-cell--ok { background:var(--paper-2); }
+  .sc-cell--no { background:var(--paper-2); border-style:dashed; color:var(--ink-faint); }
+  @media (max-width:48rem) {
+    .sc-why { grid-template-columns:1fr 1fr; }
+    .sc-why.sc-why--4 { grid-template-columns:1fr 1fr; }
+    .sc-rung { grid-template-columns:2.6rem 1fr; }
+    .sc-rung__use { grid-column:2; }
+    .sc-bar { font-size:.66rem; }
+  }
+
+</style>
+</head>
+<body>
+
+<div class="deck">
+
+<header class="cover">
+  <p class="cover__tag">약사 세미나 · 교육 자료 · 실습</p>
+  <h1 class="cover__title">바이럴 논문 브리핑</h1>
+  <p class="cover__sub">
+    성분이나 제품명을 넣으면 <strong>콘텐츠로 만들면 잘 퍼질 논문</strong>을 찾아 줍니다.
+    같은 오메가3라도 <strong>계정 오디언스에 따라 다른 논문</strong>이 나오고,
+    <strong>그 시기에 화제인 이슈</strong>까지 논문으로 확인합니다.
+    숫자는 <strong>전부 원문과 대조</strong>해 검증합니다.
+  </p>
+  <div class="cover__meta">
+    <span>실습 폴더: briefing (<a href="https://raw.githubusercontent.com/wolsey37/study/main/pharmacist/viral-paper-briefing/briefing-kit.zip" download target="_blank" rel="noopener noreferrer">briefing-kit.zip 받기</a>)</span>
+    <span>전체 약 65분 (브리핑이 도는 20분 포함)</span>
+    <span>실습 5개</span>
+    <span>고칠 파일: 계정 프로필 하나</span>
+  </div>
+</header>
+
+<div class="modebar">
+  <span class="modebar__total">전체 약 65분 · 도구를 쓰는 순서대로 따라 하는 자료</span>
+</div>
+
+<!-- 배경 -->
+<section class="sec" id="bg" style="padding-top:var(--s4)">
+  <p class="sec__n">배경 · 3분</p>
+  <h2 class="sec__h">「잘 퍼질 논문 찾아줘」가 왜 어려운가</h2>
+
+  <div class="prose">
+    <p>
+      그냥 검색하면 안 됩니다.
+      PubMed에 <code>omega-3</code> 를 치면 <strong>4만 4천 건</strong>이 나옵니다 (2026-09-29).
+      상위 10편은 오메가3 논문이긴 한데 주제가 뇌·폐경, 다낭성난소, 근육, 운동, 임신, 자가면역으로
+      <strong>제각각</strong>입니다. 이 중에서 <strong>내 팔로워가 궁금해할 주제</strong>이면서
+      <strong>믿을 만하고 숫자가 있는 논문</strong>을 골라내는 것이 일입니다.
+    </p>
+  </div>
+
+  <div class="easy">
+    <p class="easy__lab">오늘 만드는 것을 한 문장으로</p>
+    <p>
+      <strong>성분 하나를 넣으면</strong>, 논문을 정밀하게 골라 점수를 매기고
+      숫자를 검증해서, <strong>계정에 맞는 브리핑 파일 한 장</strong>을 만들어 주는 명령입니다.
+      명령 이름은 <code>/브리핑</code> 입니다.
+    </p>
+  </div>
+
+  <div class="diagram"><b>1</b>   입력           성분(오메가3) 또는 제품명(알티지 오메가3 1200)
+<b>2</b>   제품 확인       식약처 신고 정보 · 한 번 고른 제품은 저장   <i>← 제품명일 때 사람이 고릅니다</i>
+<b>3</b>   후보 모으기     사전 주제 + 그 시기 화제 주제 · 건수 · 검색량
+<b>4</b>   주제 고르기     한 화면에서 한 번                 <i>← 사람이 고릅니다</i>
+<b>5</b>   논문 검색       PubMed + Europe PMC(인용수)
+<b>6</b>   채점           콘텐츠 적합도 · 근거등급
+<b>7</b>   숫자 검증       초록 원문과 대조                 <i>← 스크립트</i>
+<b>8</b>   원고 쓰기       계정 톤에 맞춰
+<b>9</b>   원고 검토       숫자 다시 대조 + 다른 담당이 문장 검토   <i>← 스크립트 + 에이전트</i>
+<b>10</b>  브리핑 출력     HTML 한 장 · 전체 목록            <i>← 스크립트</i>
+<b>11</b>  발행 기록       이번에 쓸 논문 체크 → 나중에 반응   <i>← 사람이 고릅니다</i></div>
+
+  <p class="claim">사람이 고르는 자리는 <em>두 군데</em>입니다.<br>어떤 주제로 볼지, 그리고 마지막에 무엇을 쓸지. (제품명으로 넣으면 어느 제품인지 한 번 더)</p>
+</section>
+
+<nav class="toc">
+  <a class="toc__item" href="#overview"><span class="toc__n">0</span><span class="toc__t">실습 전에 — 이 도구가 하는 일</span><span class="toc__d">나오는 것 · 누가 무엇을 · 믿을 수 있게 하는 장치 · 오늘 순서</span><span class="toc__time">5분</span></a>
+  <a class="toc__item" href="#prep0"><span class="toc__n">준비</span><span class="toc__t">시작 전에 네 가지</span><span class="toc__d">폴더 열기 · NCBI 키 · 식약처 키 · 다시 열고 확인</span><span class="toc__time">5분</span></a>
+  <a class="toc__item" href="#s1"><span class="toc__n">01</span><span class="toc__t">계정 프로필을 고칩니다</span><span class="toc__d">오디언스·톤·금지표현 · 주제는 적지 않습니다</span><span class="toc__time">6분</span></a>
+  <a class="toc__item" href="#s2"><span class="toc__n">02</span><span class="toc__t">브리핑을 돌립니다</span><span class="toc__d">/브리핑 오메가3 · 주제 한 번 고르기 · 기다리기</span><span class="toc__time">5분 + 20분</span></a>
+  <a class="toc__item" href="#s3"><span class="toc__n">03</span><span class="toc__t">결과를 읽습니다</span><span class="toc__d">목록 · 점수 세 개 · 표시와 경고 · 검토 메모</span><span class="toc__time">10분</span></a>
+  <a class="toc__item" href="#s4"><span class="toc__n">04</span><span class="toc__t">쓸 논문을 기록합니다</span><span class="toc__d">발행 기록 · 며칠 뒤 반응 · 점수와 비교</span><span class="toc__time">5분</span></a>
+  <a class="toc__item" href="#s5"><span class="toc__n">05</span><span class="toc__t">제품명으로 돌려 봅니다</span><span class="toc__d">어느 제품인지 고르기 · 📦 제품 표시값 · 시간이 남으면</span><span class="toc__time">8분</span></a>
+  <a class="toc__item" href="#a1"><span class="toc__n">A</span><span class="toc__t">부록 — 검색어가 결과를 바꿉니다</span><span class="toc__d">MeSH [majr] 가 무엇인지</span><span class="toc__time">읽을거리</span></a>
+  <a class="toc__item" href="#why"><span class="toc__n">B</span><span class="toc__t">부록 — 왜 이렇게 나눴는가</span><span class="toc__d">에이전트 6명 · 스크립트 10개 · 실제로 났던 사고</span><span class="toc__time">읽을거리</span></a>
+  <a class="toc__item" href="#stuck"><span class="toc__n">?</span><span class="toc__t">막혔을 때</span><span class="toc__d">키가 안 들어감 · 승인 창 · 느림 · 결과가 적음</span><span class="toc__time">필요할 때</span></a>
+</nav>
+
+<!-- 한눈에 보기 -->
+<section class="sec" id="overview">
+  <p class="sec__n">한눈에 보기 · 5분</p>
+  <h2 class="sec__h">실습 전에 — 이 도구가 하는 일</h2>
+
+  <p class="sec__sub">1 · 넣는 것 한 줄, 나오는 것 한 장</p>
+  <div class="ov-fig">
+    <div class="ov-io">
+      <div class="ov-box">
+        <p class="ov-box__k">넣는 것</p>
+        <p class="ov-box__v">성분<small>오메가3</small></p>
+        <p class="ov-box__v">또는 제품명<small>알티지 오메가3 1200</small></p>
+      </div>
+      <div class="ov-arrow">→</div>
+      <div class="ov-box ov-box--cmd">
+        <p class="ov-box__k">명령</p>
+        <p class="ov-box__v">/브리핑</p>
+        <p class="ov-box__k" style="text-transform:none;letter-spacing:0">약 20분 · 중간에 두 번 물어봄</p>
+      </div>
+      <div class="ov-arrow">→</div>
+      <div class="ov-box ov-box--out">
+        <p class="ov-box__k">나오는 것</p>
+        <p class="ov-box__v">브리핑 HTML 한 장<small>내 팔로워에게 잘 퍼질 논문 · 검증된 숫자 · 후킹 문구</small></p>
+        <p class="ov-box__v">목록.html<small>지금까지 돌린 것 전체 · 달·성분·제품으로 거르기</small></p>
+      </div>
+    </div>
+  </div>
+
+  <p class="sec__sub">2 · 나오는 브리핑은 이렇게 생겼습니다</p>
+  <div class="ov-fig">
+    <div class="ov-page">
+      <div class="ov-row"><span class="ov-lab">맨 위</span>
+        <div class="ov-tiles">
+          <div class="ov-tile"><b>36</b>논문</div><div class="ov-tile"><b>26</b>경고 없음</div>
+          <div class="ov-tile"><b>2</b>근거약함</div><div class="ov-tile"><b>11</b>숫자 없음</div>
+        </div></div>
+      <div class="ov-row"><span class="ov-lab">지금 화제</span><div class="ov-blk">그 시기 뉴스·검색에서 뜬 이슈 → 콘텐츠 도입부</div></div>
+      <div class="ov-row"><span class="ov-lab">주력 주제<br>1·2·3순위</span>
+        <div class="ov-paper">
+          <p class="ov-paper__t">1순위 — 월경통 메타분석 (PMID …)</p>
+          <div class="ov-chips"><span class="ov-chip">대상자</span><span class="ov-chip">콘텐츠 적합도</span><span class="ov-chip">근거등급</span>
+            <span class="ov-chip ov-chip--ok">✅ 검증된 핵심 숫자</span><span class="ov-chip">초록 원문</span><span class="ov-chip">후킹 3개 · 복사</span></div>
+        </div></div>
+      <div class="ov-row"><span class="ov-lab">부차 주제</span><div class="ov-blk">같은 구성 — 곁들일 주제·다음 콘텐츠</div></div>
+      <div class="ov-row"><span class="ov-lab">방어 소재</span><div class="ov-blk ov-blk--def">부작용·효과 없음 + 용량 조건 → 「용량 보고 드세요」</div></div>
+      <div class="ov-row"><span class="ov-lab">쓰지 않는 것</span><div class="ov-blk ov-blk--no">점수는 있지만 권하지 않는 논문과 이유</div></div>
+      <div class="ov-row"><span class="ov-lab">맨 끝</span><div class="ov-blk ov-blk--memo">검토 메모 — 다른 담당이 짚은 문장 → 발행 전 확인</div></div>
+    </div>
+    <p class="ov-cap">실습 3에서 실제 결과로 한 칸씩 읽습니다</p>
+  </div>
+
+  <p class="sec__sub">3 · 누가 언제 무엇을 하나</p>
+  <div class="ov-fig ov-lane-wrap">
+    <div class="ov-lane">
+      <div></div>
+      <div class="ov-h">제품 확인<small><b>P0</b> · 제품명일 때만</small></div>
+      <div class="ov-h">모으기<small><b>P1</b> · 후보 · 화제</small></div>
+      <div class="ov-h">고르기<small><b>P2</b> · 주제</small></div>
+      <div class="ov-h">찾기<small><b>P3</b> · 논문 검색</small></div>
+      <div class="ov-h">채점<small><b>P4</b> · 점수 · 인용</small></div>
+      <div class="ov-h">숫자 검증<small><b>P5</b> · 원문 대조</small></div>
+      <div class="ov-h">쓰기 · 검토<small><b>P6 · P7</b> · 원고</small></div>
+      <div class="ov-h">출력 · 기록<small><b>P8 · P9</b> · HTML · 발행</small></div>
+
+      <div class="ov-who ov-who--p">사람</div>
+      <div class="ov-cell ov-cell--p">어느 제품인지 고르기</div>
+      <div class="ov-cell ov-cell--x"></div>
+      <div class="ov-cell ov-cell--p">주제 고르기</div>
+      <div class="ov-cell ov-cell--x"></div>
+      <div class="ov-cell ov-cell--x"></div>
+      <div class="ov-cell ov-cell--x"></div>
+      <div class="ov-cell ov-cell--x"></div>
+      <div class="ov-cell ov-cell--p">쓸 논문 고르기</div>
+
+      <div class="ov-who ov-who--a">에이전트</div>
+      <div class="ov-cell ov-cell--a">신고 정보가 없으면 웹에서</div>
+      <div class="ov-cell ov-cell--a">화제 모으기</div>
+      <div class="ov-cell ov-cell--x"></div>
+      <div class="ov-cell ov-cell--a">논문 골라내기</div>
+      <div class="ov-cell ov-cell--a">점수 · 경고 · 인용문</div>
+      <div class="ov-cell ov-cell--x"></div>
+      <div class="ov-cell ov-cell--a">원고 쓰기<br><span class="ov-gate">③</span>다른 담당이 검토</div>
+      <div class="ov-cell ov-cell--x"></div>
+
+      <div class="ov-who ov-who--s">스크립트</div>
+      <div class="ov-cell ov-cell--s">식약처 신고 조회<br><span class="ov-gate">②</span>함량 원문 검사</div>
+      <div class="ov-cell ov-cell--s">논문 건수 · 검색량</div>
+      <div class="ov-cell ov-cell--x"></div>
+      <div class="ov-cell ov-cell--s">PubMed 조회<br><span class="ov-gate">②</span>빠진 항목 검사</div>
+      <div class="ov-cell ov-cell--s"><span class="ov-gate">②</span>판정이 바뀌었나 검사</div>
+      <div class="ov-cell ov-cell--s"><span class="ov-gate">①</span>초록과 글자 대조</div>
+      <div class="ov-cell ov-cell--s"><span class="ov-gate">①</span>원고 숫자 재대조</div>
+      <div class="ov-cell ov-cell--s">HTML · 목록 · 기록</div>
+    </div>
+    <p class="ov-cap">사람은 두 번 고르고(제품명이면 세 번), 판단은 에이전트가, 확인은 스크립트가 합니다 · P0~P9 는 진행 줄에 찍히는 단계 번호 · 빨간 동그라미는 아래 관문 번호 · 폰에서는 옆으로 밀어 봅니다</p>
+  </div>
+
+  <p class="sec__sub">4 · 결과를 믿을 수 있게 하는 관문 세 개</p>
+  <div class="ov-legend">
+    <div class="ov-leg"><span class="ov-gate">①</span><div><b>숫자 대조</b>초록 원문에 글자 그대로 없으면 지웁니다. 원고에서도 한 번 더 — 반올림도 걸립니다</div></div>
+    <div class="ov-leg"><span class="ov-gate">②</span><div><b>빠진 항목 검사</b>필수 항목이 빠졌거나 앞 단계 판정이 바뀌면 다음 단계로 못 갑니다</div></div>
+    <div class="ov-leg"><span class="ov-gate">③</span><div><b>원고 검토</b>숫자가 맞아도 문장이 틀릴 수 있어 다른 담당이 초록과 견줘 봅니다</div></div>
+  </div>
+
+  <p class="sec__sub">5 · 오늘 실습은 이 순서로</p>
+  <div class="ov-fig">
+    <div class="ov-steps">
+      <div class="ov-step"><span class="ov-step__n">준비</span><span class="ov-step__t">키 넣기</span><span class="ov-step__d">NCBI 는 꼭 · 넣고 다시 열기</span></div>
+      <div class="ov-step"><span class="ov-step__n">실습 1</span><span class="ov-step__t">프로필 고치기</span><span class="ov-step__d">누가 보는 계정</span></div>
+      <div class="ov-step ov-step--main"><span class="ov-step__n">실습 2</span><span class="ov-step__t">/브리핑 오메가3</span><span class="ov-step__d">주제 하나 고르고 20분</span></div>
+      <div class="ov-step"><span class="ov-step__n">실습 3</span><span class="ov-step__t">결과 읽기</span><span class="ov-step__d">브라우저로 · 초록 기준</span></div>
+      <div class="ov-step"><span class="ov-step__n">실습 4</span><span class="ov-step__t">쓸 논문 기록</span><span class="ov-step__d">끝에 물어봄</span></div>
+      <div class="ov-step ov-step--opt"><span class="ov-step__n">실습 5</span><span class="ov-step__t">제품명으로</span><span class="ov-step__d">시간이 남으면</span></div>
+    </div>
+  </div>
+
+  <p class="claim">고치는 파일은 <em>계정 프로필 하나</em>입니다.<br>나머지는 들어 있는 그대로 씁니다.</p>
+</section>
+
+<!-- 준비 -->
+<section class="sec" id="prep0">
+  <p class="sec__n">준비 · 5분</p>
+  <h2 class="sec__h">시작 전에 네 가지</h2>
+
+  <div class="need">
+    <p class="need__lab">강의 전에 미리 — 사전 과제</p>
+    <p>
+      <strong>Claude Code</strong> 가 설치돼 있고 로그인돼 있어야 합니다 (Claude 유료 요금제 필요).
+      <strong>Python 3</strong> 도 필요합니다 — Mac 에는 들어 있고, Windows 는 python.org 에서 설치한 뒤
+      이 자료의 <code>python3</code> 를 <code>python</code> 으로 바꿔 치십시오.
+      <strong>NCBI 계정</strong>도 미리 만들어 두십시오 (아래 「둘」). 강의장에서 가입하면 인증 메일을 기다리느라 늦어집니다.
+    </p>
+  </div>
+
+  <p class="sec__sub">하나 — 폴더 안에서 Claude Code를 엽니다</p>
+
+  <div class="prose">
+    <p>
+      실습 폴더는 <code>briefing-kit.zip</code> 을 풀면 나오는 <code>briefing</code> 입니다. 도구가 도는 데 필요한 것만 들어 있고,
+      <strong>지난 실행 결과물은 없는 깨끗한 상태</strong>입니다.
+      오늘 <strong>채우는 파일은 키 파일 하나</strong>, <strong>고치는 파일은 계정 프로필 하나</strong>입니다.
+    </p>
+    <ol>
+      <li><a class="dl" href="https://raw.githubusercontent.com/wolsey37/study/main/pharmacist/viral-paper-briefing/briefing-kit.zip" download target="_blank" rel="noopener noreferrer">briefing-kit.zip 받기</a> (약 130KB)</li>
+      <li>받은 파일을 더블클릭해 풉니다 — <code>briefing</code> 폴더가 나옵니다</li>
+      <li>터미널에서 <code>cd briefing</code> 후 <code>claude</code>, 또는 앱에서 이 폴더를 엽니다</li>
+    </ol>
+    <p>
+      폴더 밖에서 열면 명령(<code>/브리핑</code>)과 담당 설정이 보이지 않습니다. <strong>반드시 이 폴더 안에서</strong> 여십시오.
+    </p>
+  </div>
+
+<pre class="code" style="font-size:.82rem">briefing/
+├── .claude/
+│   ├── settings.json        허용 명령 목록 (고칠 일 없음)
+│   ├── settings.local.json  <b>← 키 칸 4개, 값은 비어 있음</b>
+│   ├── agents/              담당 6명 (앞 번호 = 단계. p3- 는 P3)
+│   └── commands/브리핑.md    명령 하나
+├── 사전/지방산/오메가3.md    성분 → 검색어 표 (성분마다 파일 하나)
+├── 계정/프로필.md           <b>← 오늘 고칠 파일</b> (계정은 하나)
+├── 제품/                    비어 있음 — 한 번 고른 제품이 저장됩니다
+├── 발행/발행기록.json        비어 있음 — 쓴 논문과 반응이 쌓입니다
+├── scripts/                 검사·렌더 스크립트 10개
+└── 브리핑/                비어 있음 — 실행하면 아래처럼 생깁니다
+    ├── 목록.html            전체 실행 목록 (달 · 성분 · 제품으로 거르기)
+    └── 2026-09/             달마다 묶음
+        └── 2026-09-28_오메가3/
+            ├── 2026-09-28_오메가3.html   ← 최종 결과
+            └── 과정/         검색·채점 과정 파일 (지워도 됨)</pre>
+
+  <p class="sec__sub">둘 — NCBI API 키를 넣습니다 (오늘은 꼭 넣습니다)</p>
+
+  <div class="prose">
+    <p>
+      PubMed를 키 없이 쓰면 <strong>초당 3회 제한</strong>입니다. 이 제한은 <strong>인터넷 연결(IP) 단위</strong>라,
+      강의장처럼 여러 명이 같은 와이파이로 돌리면 서로 막힙니다.
+      키가 있으면 사람마다 <strong>초당 10회</strong>가 됩니다. 무료이고 1분이면 발급됩니다.
+    </p>
+
+    <ol>
+      <li><a class="dl" href="https://www.ncbi.nlm.nih.gov/account/" target="_blank" rel="noopener noreferrer">ncbi.nlm.nih.gov/account</a> 로그인</li>
+      <li>Account Settings → API Key Management → Create an API Key</li>
+    </ol>
+  </div>
+
+  <div class="say">
+    <p class="say__lab">키를 넣습니다</p>
+    <p class="say__box">.claude/settings.local.json 의 NCBI_API_KEY 빈 칸에
+"<u>발급받은키</u>" 를 넣어줘.</p>
+  </div>
+
+  <p class="sec__sub">셋 — 식품안전나라(식약처) 키를 넣습니다 (없어도 됩니다)</p>
+
+  <div class="prose">
+    <p>
+      <strong>제품명으로 넣었을 때</strong>(「알티지 오메가3 1200」) 식약처 품목제조신고 정보에서
+      <strong>원료 · 1일 함량 · 섭취 시 주의사항</strong>을 찾아옵니다.
+      키가 없으면 웹에서 찾는데, 공식 신고 정보보다 덜 정확합니다.
+    </p>
+    <ol>
+      <li><a class="dl" href="https://www.foodsafetykorea.go.kr" target="_blank" rel="noopener noreferrer">foodsafetykorea.go.kr</a> 회원가입 · 로그인</li>
+      <li><a class="dl" href="https://www.foodsafetykorea.go.kr/api/main.do" target="_blank" rel="noopener noreferrer">데이터활용서비스</a> → 데이터공개 → <strong>건강기능식품 품목제조신고(원재료)</strong> → Open-API 이용신청</li>
+      <li>바로 승인됩니다. 발급된 키는 <strong>인증키 신청 현황</strong>에서 복사합니다 (무료 · 하루 1,000건)</li>
+    </ol>
+  </div>
+
+  <div class="say">
+    <p class="say__lab">키를 넣습니다</p>
+    <p class="say__box">.claude/settings.local.json 의 FOODSAFETY_API_KEY 빈 칸에
+"<u>발급받은 인증키</u>" 를 넣어줘.</p>
+  </div>
+
+  <p class="sec__sub">넷 — 닫았다가 다시 열고, 들어갔는지 봅니다</p>
+
+  <div class="prose">
+    <p>
+      키 파일은 <strong>Claude Code 를 시작할 때만</strong> 읽습니다. 넣은 뒤 <code>/exit</code> 로 닫고
+      같은 폴더에서 <code>claude</code> 로 다시 여십시오. 그다음 이렇게 시킵니다.
+    </p>
+  </div>
+
+  <div class="say">
+    <p class="say__lab">다시 연 뒤에 이렇게 칩니다</p>
+    <p class="say__box">python3 scripts/runs.py keys 돌려줘</p>
+  </div>
+
+  <div class="reply">
+    <p class="reply__lab">이렇게 나오면 됩니다 (키 값은 나오지 않습니다)</p>
+    <p class="reply__box">{"NCBI": "<b>있음</b>", "네이버": "없음", "식약처": "<b>있음</b>"}</p>
+  </div>
+
+  <div class="stuck">
+    <b>「settings.local.json 에는 있지만 이 세션에는 아직 없습니다」가 나오면</b> 다시 열지 않은 것입니다.
+    키가 있는데도 「없음」으로 돌면 PubMed 조회가 <strong>3배 느려집니다</strong> — 실제로 그렇게 돈 적이 있습니다.
+  </div>
+
+  <details class="fold">
+    <summary>집에서 — 네이버 데이터랩 키 <small>(카드 등록이 필요해 오늘은 넣지 않습니다)</small></summary>
+    <div class="fold__body">
+      <p>
+        주제를 고를 때 <strong>내 팔로워 또래가 실제로 무엇을 검색하는지</strong>를 보여줍니다 —
+        30-40대 여성의 최근 4주 검색이 직전 8주보다 몇 배인지 같은 숫자입니다.
+        키가 없으면 그 칸만 비고 나머지는 그대로 돕니다.
+      </p>
+      <ol>
+        <li><a class="dl" href="https://www.ncloud.com/product/applicationService/naverApiHub" target="_blank" rel="noopener noreferrer">네이버 클라우드 플랫폼 NAVER API HUB</a> 가입 · 로그인</li>
+        <li>콘솔 → 과금정보 및 비용관리 → 결제 정보 관리에서 <strong>카드 등록</strong> (무료 구간만 써도 필요합니다)</li>
+        <li>콘솔 → Application Services → NAVER API HUB → Application 등록에서 <strong>검색어 트렌드</strong> 선택</li>
+        <li>Application 의 <strong>인증 정보</strong>에서 Client ID · Client Secret 을 복사해
+          <code>NAVER_CLIENT_ID</code> · <code>NAVER_CLIENT_SECRET</code> 칸에 넣고 다시 엽니다</li>
+      </ol>
+      <p>
+        검색어 트렌드는 3만 건까지 무료이고, 브리핑 한 번에 2~3건 씁니다.
+        네이버 개발자센터(developers.naver.com)에서는 <strong>2026년 7월 31일부터 데이터랩 키를 새로 받을 수 없습니다.</strong>
+        전에 받아 둔 키가 있으면 같은 칸에 넣어도 됩니다 (2027년 6월 30일까지 동작).
+      </p>
+    </div>
+  </details>
+</section>
+
+<!-- 실습 1 -->
+<section class="sec" id="s1">
+  <div class="lab">
+    <div class="lab__head">
+      <p class="lab__n"><span>실습 1</span><span class="lab__min">6분</span></p>
+      <h2 class="lab__do">계정 프로필을 고칩니다</h2>
+      <p class="lab__why">
+        누가 보는 계정인지, 어떤 말투를 쓰는지, <strong>쓰면 안 되는 표현이 뭔지</strong>를
+        적어 둡니다. 채점과 브리핑 문안이 이걸 읽습니다.
+      </p>
+    </div>
+    <div class="lab__body">
+
+      <div class="prose">
+        <p>
+          파일은 <code>계정/프로필.md</code> 하나입니다. 계정은 한 번에 하나이고, 지금은 예시 값이 들어 있습니다.
+          <strong>값만 본인 계정으로 바꾸면 됩니다.</strong>
+        </p>
+      </div>
+
+      <div class="say">
+        <p class="say__lab">이렇게 시킵니다</p>
+        <p class="say__box">계정/프로필.md 를 내 계정으로 바꿔줘.
+
+계정 이름: <u>내 계정 이름</u>
+플랫폼: <u>인스타그램 릴스</u>
+오디언스: <u>30-40대 여성. 다이어트·영양제 관심</u>
+평소 다루는 주제: <u>다이어트·체지방, 여성 건강, 피로</u>
+말투: <u>친근한 존댓말. 이모지 많이 씀</u>
+쓰면 안 되는 말: <u>완치, 치료, 낫습니다</u></p>
+      </div>
+
+      <div class="easy">
+        <p class="easy__lab">주제는 왜 안 적나요</p>
+        <p>
+          <strong>성분마다 주제 이름이 다르기 때문입니다.</strong>
+          오메가3에는 「중성지방·여성질환·눈건강」이 있고,
+          마그네슘에는 「수면·근육·편두통」이 있습니다.
+        </p>
+        <p>
+          계정에 <code>주력주제: 중성지방</code> 이라고 박아 두면 오메가3는 잘 돌지만,
+          <strong>마그네슘을 돌리는 순간 맞는 주제가 하나도 없어</strong> 아무것도 안 나옵니다.
+          그래서 주제는 <strong>돌릴 때마다 고릅니다.</strong>
+        </p>
+      </div>
+
+      <div class="ok">
+        <b>금지표현은 쓸수록 정확해집니다.</b>
+        실제로 지적받은 표현을 계속 추가하십시오.
+        원고를 쓰는 담당이 이 목록을 피해 쓰고, <strong>검토 담당이 한 번 더</strong> 봅니다.
+        그래도 기계 필터는 아니니 발행 전에는 직접 읽어 보십시오.
+      </div>
+
+      <div class="stuck">
+        <b>오디언스 연령·성별은 인스타 인사이트에서 확인하십시오.</b>
+        공개된 게시물만 봐서는 <strong>정확한 분포를 알 수 없습니다.</strong>
+        인스타 앱 → 프로페셔널 대시보드 → 팔로워 화면 한 장이면 됩니다.
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- 실습 2 -->
+<section class="sec" id="s2">
+  <div class="lab">
+    <div class="lab__head">
+      <p class="lab__n"><span>실습 2</span><span class="lab__min">5분 + 기다리기 20분 · 오늘의 핵심</span></p>
+      <h2 class="lab__do">브리핑을 돌립니다</h2>
+      <p class="lab__why">
+        명령 한 줄이면 됩니다. <strong>두 번 물어봅니다</strong> — 처음에 어떤 주제로 볼지,
+        끝나고 어떤 논문을 쓸지. 그 시기 화제 주제도 <strong>같은 화면에</strong> 올라옵니다.
+      </p>
+    </div>
+    <div class="lab__body">
+
+      <div class="say">
+        <p class="say__lab">이렇게 칩니다</p>
+        <p class="say__box">/브리핑 오메가3</p>
+      </div>
+
+      <div class="stuck">
+        <b>승인 창이 뜨면</b> — 도구가 쓰는 스크립트는 미리 허용해 두어서 거의 뜨지 않습니다.
+        그래도 뜨면 내용을 읽어 보고, <code>scripts/</code> 의 파이썬 스크립트나 웹 검색이면
+        「예」를 누르십시오. 파일을 지우는 명령처럼 낯선 것이면 「아니요」를 누르고 강사에게 물어보십시오.
+      </div>
+
+      <p class="sec__sub">물어보기 전에 — 고를 재료를 먼저 모읍니다</p>
+
+      <div class="prose">
+        <p>
+          사전에 적힌 주제마다 <strong>논문이 몇 편인지</strong> 세고, 그 시기 화제를 훑어
+          <strong>새 주제 후보</strong>를 찾고, 네이버에서 <strong>검색량 추이</strong>를 잽니다.
+          그리고 <strong>지난 콘텐츠에서 이미 쓴 논문</strong>이 있는지 봅니다. 이걸 다 모은 뒤에 한 번 물어봅니다.
+        </p>
+      </div>
+
+      <p class="sec__sub">한 번의 질문 — 어떤 주제로 볼까요</p>
+
+      <div class="reply">
+        <p class="reply__lab">이렇게 물어봅니다</p>
+        <p class="reply__box">「오메가3」 주제 후보입니다. 이번에 다룰 것을 골라 주세요.
+네이버 키가 없어 트렌드 점수는 비우고 최근 화제만 셌습니다
+
+  주제       트렌드         논문      출처     추천·화제
+  <b>심방세동</b>   - · 화제 12    <b>~88편</b>     트렌드   <i>식약처 심방세동 경고문구·허가사항 강화 보도</i>
+  여성질환    - · 화제 0     <b>24편</b>     사전     <i>여성 건강 축 · PCOS 개명 제안 보도</i>
+  중성지방    - · 화제 0    <b>102편</b>     사전     <i>다이어트·대사 축</i>
+  눈건강      - · 화제 0     <b>37편</b>     사전     <i>대규모 추적연구에서 예방효과 없음</i>
+  산패        - · 화제 0      <b>7편</b>     사전
+
+  🔁 여성질환 — PMID 35266254 (PMS 메타분석)을 2026-09-15에 쓰셨습니다   <i>← 발행 기록이 있을 때만</i>
+
+이어서 선택 상자가 뜹니다 — 「주력 주제」 하나, 「곁들일 주제」 여러 개</p>
+      </div>
+
+      <div class="ex">
+        <p class="ex__lab">오늘은 이렇게 고릅니다 (글로 치지 않고 상자에서 클릭)</p>
+        <p class="ex__box">주력 주제    ▸ 여성질환
+곁들일 주제  ▸ 곁들이지 않음</p>
+      </div>
+
+      <div class="prose">
+        <p>
+          주제 하나에 20분 안팎, 셋이면 30~40분 걸립니다. 강의 시간 안에 끝나도록 <strong>오늘은 하나만</strong> 고르십시오.
+          나머지는 집에서 같은 명령으로 돌리면 됩니다.
+        </p>
+      </div>
+
+      <div class="easy">
+        <p class="easy__lab">이 화면에서 보는 것</p>
+        <p>
+          <strong>논문 건수</strong>는 재료가 얼마나 있는지입니다. 7편과 102편은 나올 논문의 폭이 다릅니다.
+          <strong>트렌드 점수</strong>는 요즘 이 주제를 찾는지를 <strong>실측</strong>한 값입니다(100점: 검색 규모 40 · 상승세 40 · 최근 화제 20).
+          네이버 키가 있으면 30-40대 여성 검색만 걸러서 재고, 줄도 이 점수 순으로 섭니다.
+          예를 들어 마그네슘 × 흡수율·제형은 45점이었습니다 (성분 검색의 9.6% · 보합 1.17배, 2026-09-29).
+          오메가3 주제들은 같은 날 전부 「검색량 적음」이었습니다 — 성분과 주제를 붙여 검색하는 사람이 적다는 뜻입니다.
+          키가 없으면 최근 90일 안의 관련 기사 수만 셉니다. 점수가 높다고 좋은 주제는 아닙니다 — 근거는 따로 봅니다.
+        </p>
+        <p>
+          <strong>사전 주제와 트렌드 주제가 한 줄에</strong> 섞여 있습니다. 트렌드 주제는
+          덧붙이는 옵션이 아니라 <strong>똑같은 후보</strong>입니다. 추천이 붙어 있어도
+          <strong>고르는 것은 사람</strong>입니다.
+        </p>
+      </div>
+
+      <div class="ok">
+        <b>그 시기 화제가 주제 후보로 올라옵니다.</b>
+        미리 정해 둔 주제 목록에 <strong>없던 주제</strong>가 여기서 올라옵니다.
+        실제로 <strong>「심방세동·부정맥 안전성」</strong> 주제가 이렇게 발굴됐고,
+        논문을 찾아보니 <strong>근거등급이 가장 높게(S1)</strong> 나왔습니다.
+      </div>
+
+      <div class="prose">
+        <p>
+          주제마다 논문을 찾고, 초록을 다시 받아 숫자를 뽑아 원문과 대조하고, 다 쓴 원고를 다른 담당이
+          한 번 더 검토하기 때문에 시간이 걸립니다. <strong>진행 상황이 단계마다 한 줄씩</strong> 찍힙니다.
+        </p>
+        <p>
+          화면의 건수는 최근 7년 · 사람 대상 · 사전의 조건(중성지방은 혈중 수치만)으로 센 것입니다.
+          검색어가 건수를 어떻게 바꾸는지는 부록 A에 있습니다.
+        </p>
+      </div>
+
+      <div class="reply">
+        <p class="reply__lab">강사가 세 주제로 돌렸을 때 실제로 지나간 줄 (한 주제면 더 짧습니다)</p>
+        <p class="reply__box">P3 논문 검색 — 여성질환 · 중성지방 · 심방세동
+여성질환 완료 (15편, 근거등급 S3, off-target 1편)
+중성지방 완료 (15편, <b>S1</b>, off-target 5편)
+심방세동 완료 (15편, <b>S1</b>, off-target 2편)
+…
+P5 검증 완료 — 주장 25건 중 <b>검증 25건, 폐기 0건</b>, 효과크기 없음 11건</p>
+      </div>
+
+      <div class="stuck">
+        <b>「폐기」가 나와도 정상입니다.</b>
+        초록 원문에 그 숫자가 <strong>그대로 있는지 대조해서 실패한 것</strong>입니다.
+        폐기된 숫자는 브리핑에 <strong>아예 안 실립니다</strong> — 방향만 서술됩니다.
+        「효과크기 없음」은 초록에 쓸 숫자가 없던 논문입니다.
+      </div>
+
+      <div class="easy">
+        <p class="easy__lab">검증기가 하는 일</p>
+        <p>
+          브리핑에 들어갈 숫자마다 <strong>PubMed에서 초록을 다시 받아</strong>
+          그 문장이 원문에 <strong>글자 그대로 있는지</strong> 대조합니다.
+          없으면 <strong>그 숫자를 통째로 지웁니다.</strong>
+        </p>
+        <p>
+          <strong>AI에게 「이 숫자 맞아?」라고 다시 묻지 않습니다.</strong>
+          같은 방식으로 지어냈다면 <strong>두 번째도 지어낼 수 있기</strong> 때문입니다.
+          원문을 다시 받아 대조해야 사실이 됩니다.
+        </p>
+      </div>
+
+      <div class="ok">
+        <b>이 검사는 사람이 건너뛸 수 없습니다.</b>
+        검증을 안 거친 파일은 브리핑 작성 단계가 <strong>아예 읽지 않습니다.</strong>
+        「검증하라」고 부탁하는 게 아니라, <strong>안 하면 다음으로 못 가게</strong> 막아 뒀습니다.
+      </div>
+
+      <div class="ok">
+        <b>기다리는 동안 실습 3의 「점수 세 개」 설명을 먼저 읽어 두십시오.</b>
+        브리핑이 끝나면 마지막에 <strong>쓸 논문을 기록할지</strong> 물어봅니다 — 그건 실습 4에서 답합니다.
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- 실습 3 -->
+<section class="sec" id="s3">
+  <div class="lab">
+    <div class="lab__head">
+      <p class="lab__n"><span>실습 3</span><span class="lab__min">10분 · 브리핑이 끝나면</span></p>
+      <h2 class="lab__do">결과를 읽습니다</h2>
+      <p class="lab__why">
+        결과는 <strong>HTML 한 장</strong>입니다. <strong>더블클릭해 브라우저(Chrome·Safari)로</strong> 여십시오 —
+        앱 안의 미리보기 창에서는 논문 링크가 열리지 않을 수 있습니다.
+        <strong>점수 세 개가 각각 무엇을 보는지</strong>만 익히면 됩니다.
+      </p>
+    </div>
+    <div class="lab__body">
+
+      <div class="prose">
+        <p>
+          <code>브리핑/목록.html</code> 을 열면 지금까지 돌린 것이 한 표에 있고,
+          달 · 성분 · 제품으로 거를 수 있습니다.
+          결과는 실행 폴더 안의 <code>&lt;날짜&gt;_&lt;입력&gt;.html</code> 이고,
+          과정 파일은 그 안의 <code>과정/</code> 에 따로 있어 <strong>통째로 지워도 됩니다.</strong>
+        </p>
+      </div>
+
+      <p class="sec__sub">점수는 세 개 — 각각 다른 것을 봅니다</p>
+
+      <div class="cmp">
+        <div class="cmp__panel">
+          <p class="cmp__t">트렌드 점수 <small>주제 · 0~100</small></p>
+          <div class="cmp__pros">
+            <p>요즘 이 주제를 찾나</p>
+            <p>네이버 검색량·최근 기사로 실측<br>주제를 고를 때(실습 2 화면) 씁니다</p>
+          </div>
+        </div>
+        <div class="cmp__panel">
+          <p class="cmp__t">콘텐츠 적합도 <small>논문 · 0~100</small></p>
+          <div class="cmp__pros">
+            <p>이 논문으로 만들기 좋은가</p>
+            <p>숫자 30 · 의외성 25<br>오디언스적합 25 · 최신성 20</p>
+          </div>
+        </div>
+        <div class="cmp__panel cmp__panel--o">
+          <p class="cmp__t">근거등급 <small>주제 · S1~S4</small></p>
+          <div class="cmp__pros">
+            <p>믿을 만한가</p>
+            <p>메타분석·RCT가 있는가<br>결과가 일관되는가</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="easy">
+        <p class="easy__lab">왜 셋으로 나누고, 곱하지 않나요</p>
+        <p>
+          <strong>트렌드는 주제의 인기</strong>라 같은 주제의 논문 15편에 모두 같은 값이 붙습니다.
+          그래서 주제를 고를 때만 쓰고, 그 안에서 어느 논문으로 만들지는 <strong>콘텐츠 적합도</strong>가 가립니다.
+          「잘 퍼질까」를 맞히는 점수는 아직 없습니다 — 그래서 이름도 「바이럴 점수」가 아니라
+          <strong>하는 일 그대로</strong> 붙였습니다.
+        </p>
+        <p>
+          점수를 곱하면 <strong>「근거는 튼튼한데 지루한 메타분석」</strong>과
+          <strong>「자극적인데 근거가 약한 소재」</strong>가 비슷한 값으로 섞입니다.
+          약사 콘텐츠에서는 <strong>만들기 좋은데 근거가 약한 조합이 가장 위험</strong>합니다.
+          그래서 나란히 두고, 콘텐츠 적합도 70점 이상인데 <strong>그 논문 자체가 약하면</strong>
+          <strong><code>근거약함</code> 경고</strong>를 따로 붙입니다.
+        </p>
+      </div>
+
+      <p class="sec__sub">트렌드 점수는 이렇게 잽니다 — 주제마다, 스크립트가 실측</p>
+
+      <div class="ov-fig">
+        <div class="sc-bar">
+          <div class="sc-seg sc-1" style="flex:40">검색 규모<small>40</small></div>
+          <div class="sc-seg sc-2" style="flex:40">상승세<small>40</small></div>
+          <div class="sc-seg sc-4" style="flex:20">최근 화제<small>20</small></div>
+        </div>
+        <div class="sc-scale"><span>0</span><span>40</span><span>80</span><span>100</span></div>
+        <div class="sc-axes">
+          <div class="sc-axis">
+            <p class="sc-axis__h"><span class="sc-dot sc-1"></span>검색 규모 40</p>
+            <p class="sc-axis__q">주제 검색이 성분 전체 검색의 몇 %인가 (내 오디언스 성별·연령만)</p>
+            <ul class="sc-steps"><li>10% 이상<b>40</b></li><li>3% 이상<b>30</b></li><li>1% 이상<b>20</b></li><li>0.3% 이상<b>10</b></li><li>그 아래<b>0</b></li></ul>
+          </div>
+          <div class="sc-axis">
+            <p class="sc-axis__h"><span class="sc-dot sc-2"></span>상승세 40</p>
+            <p class="sc-axis__q">최근 4주 검색 ÷ 직전 8주</p>
+            <ul class="sc-steps"><li>2배 이상<b>40</b></li><li>상승 (1.3배↑)<b>30</b></li><li>보합<b>15</b></li><li>하락 · 검색량 적음<b>0</b></li></ul>
+          </div>
+          <div class="sc-axis">
+            <p class="sc-axis__h"><span class="sc-dot sc-4"></span>최근 화제 20</p>
+            <p class="sc-axis__q">최근 90일 안에 관련 기사·발표가 있었나</p>
+            <ul class="sc-steps"><li>2건 이상<b>20</b></li><li>1건<b>12</b></li><li>없음<b>0</b></li></ul>
+            <p class="sc-note">기사 날짜를 확인한 것만 셉니다</p>
+          </div>
+        </div>
+        <p class="ov-cap">실측 예 (2026-09-29) — 마그네슘 × 흡수율·제형: 검색 규모 30 (성분 검색의 9.6%) + 상승세 15 (보합 1.17배) + 최근 화제 0 = <b>45</b> ·
+          네이버 키가 없으면 앞의 두 칸을 못 재서 점수는 비고 최근 화제만 나옵니다</p>
+      </div>
+
+      <p class="sec__sub">콘텐츠 적합도는 이렇게 매깁니다 — 논문마다, 네 항목의 합</p>
+
+      <div class="ov-fig">
+        <div class="sc-bar">
+          <div class="sc-seg sc-3" style="flex:30">숫자가용성<small>30</small></div>
+          <div class="sc-seg sc-4" style="flex:25">의외성<small>25</small></div>
+          <div class="sc-seg sc-5" style="flex:25">오디언스<small>25</small></div>
+          <div class="sc-seg sc-2" style="flex:20">최신성<small>20</small></div>
+        </div>
+        <div class="sc-scale"><span>0</span><span>30</span><span>55</span><span>80</span><span>100</span></div>
+
+        <div class="sc-axes">
+          <div class="sc-axis">
+            <p class="sc-axis__h"><span class="sc-dot sc-3"></span>숫자가용성 30</p>
+            <p class="sc-axis__q">콘텐츠에 쓸 숫자가 초록에 있나</p>
+            <ul class="sc-steps"><li>수치 + 신뢰구간<b>30</b></li><li>수치만<b>20</b></li><li>p값만<b>8</b></li><li>없음<b>0</b></li></ul>
+            <p class="sc-note">쇼츠는 숫자 하나가 후킹입니다 — 「줄었다」보다 「25% 줄었다」. 이 숫자는 원문 대조를 거칩니다</p>
+          </div>
+          <div class="sc-axis">
+            <p class="sc-axis__h"><span class="sc-dot sc-4"></span>의외성 25</p>
+            <p class="sc-axis__q">통념과 다른 결론인가</p>
+            <ul class="sc-steps"><li>통념을 뒤집음<b>25</b></li><li>새로운 연결<b>18</b></li><li>통념 확인<b>10</b></li></ul>
+            <p class="sc-note">근거 문장을 못 대면 10점 — 인상으로 25점을 주지 않습니다</p>
+          </div>
+          <div class="sc-axis">
+            <p class="sc-axis__h"><span class="sc-dot sc-5"></span>오디언스적합 25</p>
+            <p class="sc-axis__q">연구 대상자가 내 팔로워와 같은 사람인가</p>
+            <ul class="sc-steps"><li>성별·연령·상태 겹침<b>25</b></li><li>일부만 겹침<b>15</b></li><li>대상자 정보 없음<b>10</b></li><li>겹치지 않음<b>0</b></li></ul>
+            <p class="sc-note">30-40대 여성 계정: 가임기 여성 PMS 25 · 임신부 15 · 60대 심혈관질환자 0</p>
+          </div>
+          <div class="sc-axis">
+            <p class="sc-axis__h"><span class="sc-dot sc-2"></span>최신성 20</p>
+            <p class="sc-axis__q">얼마나 새 논문인가</p>
+            <ul class="sc-steps"><li>0~2년 전<b>20</b></li><li>3~5년 전<b>14</b></li><li>6~10년 전<b>8</b></li><li>11년 이상<b>3</b></li></ul>
+            <p class="sc-note">햇수 = 올해 − 출판연도. 계산이라 스크립트가 다시 맞춰 봅니다</p>
+          </div>
+        </div>
+        <p class="ov-cap">인용수는 점수에 넣지 않고 참고로만 표시합니다 — 갓 나온 메타분석은 인용이 0이라 손해를 봅니다</p>
+      </div>
+
+      <p class="sec__sub">실제로 계산해 보면 — 월경통 메타분석 (PMID 37545015)</p>
+
+      <div class="ov-fig sc-ex">
+        <p class="sc-ex__t">2024년 · 메타분석 · 대상자 월경통 여성 → <b>85점</b></p>
+        <div class="sc-bar">
+          <div class="sc-seg sc-3" style="flex:30">30</div>
+          <div class="sc-seg sc-4" style="flex:10">10</div>
+          <div class="sc-seg sc-5" style="flex:25">25</div>
+          <div class="sc-seg sc-2" style="flex:20">20</div>
+          <div class="sc-seg sc-rest" style="flex:15">못 받은 15</div>
+        </div>
+        <div class="sc-why sc-why--4">
+          <div style="border-top-color:#7A6BB5"><b>숫자가용성 30</b><br>효과크기와 신뢰구간이 초록에 있음 ✅</div>
+          <div style="border-top-color:#C0843A"><b>의외성 10</b><br>「통증이 줄었다」는 기대한 방향 → 통념 확인</div>
+          <div style="border-top-color:#B5574A"><b>오디언스 25</b><br>대상자 여성·월경통 → 팔로워와 겹침</div>
+          <div style="border-top-color:#3E8FB0"><b>최신성 20</b><br>2024년 → 2026년 기준 2년 전</div>
+        </div>
+      </div>
+
+      <p class="sec__sub">근거등급은 이렇게 매깁니다 — 논문 한 편이 아니라 주제 단위</p>
+
+      <div class="ov-fig">
+        <div class="sc-ladder">
+          <div class="sc-rung"><span class="sc-rung__g sc-g1">S1</span><span>메타분석·체계적 문헌고찰에 긍정 결과가 있고, 그 성분을 권고하는 <b>학회 지침</b>도 있음</span><span class="sc-rung__use">가장 튼튼 — 그래도 「연구에서 ~로 나타났습니다」로 말합니다</span></div>
+          <div class="sc-rung"><span class="sc-rung__g sc-g2">S2</span><span>무작위 대조시험(RCT) <b>다수</b>가 긍정 (3분의 2 이상)</span><span class="sc-rung__use">튼튼 — 조건을 붙여 말합니다</span></div>
+          <div class="sc-rung"><span class="sc-rung__g sc-g3">S3</span><span>RCT가 적거나 결과가 <b>엇갈림</b>, 관찰연구 위주</span><span class="sc-rung__use">「연구가 있다」 수준으로 — 효과를 단정하지 않습니다</span></div>
+          <div class="sc-rung"><span class="sc-rung__g sc-g4">S4</span><span>사람 대상 RCT가 <b>없음</b>(동물·시험관만) 또는 메타분석이 부정</span><span class="sc-rung__use">쓰지 않습니다</span></div>
+        </div>
+        <p class="ov-cap">같은 실행에서도 주제마다 다릅니다 — 오메가3 여성질환 <b>S3</b>, 중성지방 <b>S1</b>. 논문 표에는 그 논문이 속한 주제의 등급이 붙습니다</p>
+      </div>
+
+      <p class="sec__sub">콘텐츠 적합도와 근거를 나란히 놓고 보면</p>
+
+      <div class="ov-fig">
+        <div class="sc-grid">
+          <div></div>
+          <div class="sc-ax">이 논문이 견고<br>(일관된 긍정 메타분석 등)</div>
+          <div class="sc-ax">이 논문이 약함<br>(주요 결과 무의미 · 대리지표만 · 소규모 단일 RCT)</div>
+          <div class="sc-ax">만들기 좋음<br>70점 이상</div>
+          <div class="sc-cell sc-cell--best"><b>1순위 후보</b>콘텐츠 본론으로</div>
+          <div class="sc-cell sc-cell--risk"><b>⚠ 근거약함</b>가장 위험한 조합 — 1순위로 올리지 않고 이유와 함께 경고를 붙입니다</div>
+          <div class="sc-ax">70점 미만</div>
+          <div class="sc-cell sc-cell--ok"><b>참고 소재</b>근거로 뒷받침할 때</div>
+          <div class="sc-cell sc-cell--no"><b>쓰지 않음</b>「쓰지 않는 것」 표로 · 단일연구·소규모 경고</div>
+        </div>
+        <p class="ov-cap">주제 등급(S3·S4)만으로는 붙이지 않습니다 — 여성질환이 S3여도 월경통 메타분석은 견고해서 경고가 없습니다</p>
+      </div>
+
+      <p class="sec__sub">브리핑에서 이 표시들을 봅니다</p>
+
+      <div class="prose">
+        <div class="tw"><table>
+          <thead><tr><th>표시</th><th>뜻</th><th>어떻게 씁니까</th></tr></thead>
+          <tbody>
+            <tr><td><b>맨 위 「초록 기준입니다」</b></td><td>숫자·대상자·근거 판단을 초록만 보고 만들었다는 안내 (늘 붙음)</td><td>쓸 논문은 본문에서 연령·1일 용량·연구비 출처를 확인하십시오</td></tr>
+            <tr><td><b>✅ 검증됨</b></td><td>그 숫자가 초록 원문에 실제로 있음</td><td>그대로 써도 됩니다</td></tr>
+            <tr><td><b>⚠ 근거약함</b></td><td>70점 이상인데 그 논문 자체가 약함 (이유가 함께 적힘)</td><td>1순위로 올리지 마십시오</td></tr>
+            <tr><td><b>⚠ 지침배치</b></td><td>학회 지침과 반대 방향</td><td>주제를 좁혀 쓰십시오</td></tr>
+            <tr><td><b>방어 소재</b></td><td>부작용·효과없음 논문</td><td>제품 소개 콘텐츠와 섞지 마십시오</td></tr>
+            <tr><td><b>맨 위 「출처를 못 찾은 숫자」</b></td><td>고쳐 쓰고도 원문에서 못 찾은 숫자</td><td>원문을 확인하기 전에 쓰지 마십시오</td></tr>
+            <tr><td><b>맨 끝 「검토 메모」</b></td><td>다른 담당이 원고를 초록과 견줘 짚은 문장</td><td>맞는 지적인지 직접 판단하십시오</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <div class="easy">
+        <p class="easy__lab">원고가 나온 뒤 한 번 더</p>
+        <p>
+          숫자가 맞아도 <strong>문장이 틀릴 수 있습니다.</strong> 「고용량에서 위험」을
+          「저용량은 괜찮다」로 옮기는 식입니다. 그래서 원고를 쓴 담당과 <strong>다른 담당</strong>이
+          원고를 초록과 견줘 봅니다.
+        </p>
+        <p>
+          큰 지적이 있으면 <strong>한 번만</strong> 고쳐 씁니다. 그래도 남은 지적은 브리핑 맨 끝
+          <strong>「검토 메모」</strong>에 실립니다. 이것은 사실 확인이 아니라 표시입니다 —
+          맞는 지적인지는 약사가 판단합니다.
+        </p>
+      </div>
+
+      <div class="ok">
+        <b>「방어 소재」를 빼지 않는 이유가 있습니다.</b>
+        근거가 강한 부작용 정보는 약사가 반드시 알아야 하고,
+        <strong>먼저 알고 말해 주면 오히려 신뢰를 얻습니다.</strong>
+        다만 <strong>「이 제품 위험해요」가 아니라 「용량 보고 드세요」</strong>로 씁니다 —
+        조건을 빼고 위험만 말하면 공포 조장이 됩니다.
+      </div>
+
+      <div class="prose">
+        <p>
+          논문마다 <strong>후킹 문구가 3개씩</strong> 들어 있고,
+          <strong>복사 버튼</strong>이 붙어 있습니다. 영상 자막에 바로 붙여 넣으시면 됩니다.
+          하나만 주면 고를 수가 없어서 셋입니다.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- 실습 4 -->
+<section class="sec" id="s4">
+  <div class="lab">
+    <div class="lab__head">
+      <p class="lab__n"><span>실습 4</span><span class="lab__min">5분</span></p>
+      <h2 class="lab__do">쓸 논문을 기록합니다</h2>
+      <p class="lab__why">
+        브리핑 끝에 <strong>이번에 쓸 논문</strong>을 물어봅니다. 기록해 두면 다음 브리핑에서
+        「🔁 이미 씀」이 붙고, 나중에 반응을 적으면 <strong>점수가 맞았는지</strong> 볼 수 있습니다.
+      </p>
+    </div>
+    <div class="lab__body">
+
+      <div class="reply">
+        <p class="reply__lab">마지막에 이렇게 물어봅니다</p>
+        <p class="reply__box">이번 콘텐츠에 쓰실 논문을 기록해 둘까요?
+기록해 두면 다음 브리핑에서 「🔁 이미 씀」 으로 표시되고,
+나중에 반응을 적으면 콘텐츠 적합도가 맞았는지 볼 수 있습니다.
+
+  1. PMID 37545015 — 월경통 메타분석 (75점)
+  2. PMID 35266254 — PMS 메타분석 (69점)
+  …</p>
+      </div>
+
+      <div class="ex">
+        <p class="ex__lab">오늘은 선택 상자에서 이렇게 고릅니다 — 아직 발행 전이니까요</p>
+        <p class="ex__box">▸ 나중에</p>
+      </div>
+
+      <div class="prose">
+        <p>
+          「나중에」도 정상입니다. 기록하는 명령을 알려 주고 끝납니다. 실제로 콘텐츠에 쓴 논문만 기록해야
+          나중에 반응과 비교할 수 있습니다 — 쓰지도 않은 논문을 넣으면 비교가 흐려집니다.
+        </p>
+      </div>
+
+      <div class="ex">
+        <p class="ex__lab">발행하고 며칠 뒤에는 이렇게 알려 줍니다 (예시 — 번호와 숫자는 본인 것으로)</p>
+        <p class="ex__box">37545015 반응 기록해줘. 조회 12400 저장 310 댓글 47</p>
+      </div>
+
+      <div class="ok">
+        <b>반응이 5편 이상 쌓이면</b> 점수와 실제 반응을 비교할 수 있습니다.
+        「숫자가용성 점수가 높았던 논문이 실제로 저장도 많았나」를 <strong>점수 항목마다</strong> 보여줍니다.
+        반응을 못 맞히는 항목은 비중을 줄이면 됩니다 —
+        <strong>「잘 퍼질 논문」이 추측에서 데이터로 바뀌는 유일한 길</strong>입니다.
+      </div>
+
+      <div class="say">
+        <p class="say__lab">점수와 반응을 비교해 봅니다</p>
+        <p class="say__box">python3 scripts/publish_log.py report 돌려줘</p>
+      </div>
+
+      <div class="reply">
+        <p class="reply__lab">오늘 돌리면 이렇게 나옵니다</p>
+        <p class="reply__box">기록이 없습니다.</p>
+      </div>
+
+      <div class="prose">
+        <p>
+          기록이 쌓이면 논문마다 점수와 반응이 한 줄씩 나오고, 5편이 되기 전까지는
+          「반응이 기록된 논문 N건 — 5건 이상 쌓이면 점수와 반응의 상관을 냅니다」라고 알려 줍니다.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- 실습 5 -->
+<section class="sec" id="s5">
+  <div class="lab">
+    <div class="lab__head">
+      <p class="lab__n"><span>실습 5</span><span class="lab__min">8분 · 시간이 남으면</span></p>
+      <h2 class="lab__do">제품명으로 돌려 봅니다</h2>
+      <p class="lab__why">
+        성분 대신 <strong>제품 이름</strong>을 넣으면, 제일 먼저 <strong>어느 제품인지</strong> 물어봅니다.
+        제품 고르는 화면까지 보고 <strong>Esc 로 멈춰도</strong> 됩니다.
+      </p>
+    </div>
+    <div class="lab__body">
+
+      <div class="say">
+        <p class="say__lab">이렇게 칩니다</p>
+        <p class="say__box">/브리핑 알티지 오메가3 1200</p>
+      </div>
+
+      <div class="reply">
+        <p class="reply__lab">사전에 없는 이름이라 먼저 이렇게 묻습니다</p>
+        <p class="reply__box">「알티지 오메가3 1200」은 성분 이름인가요, 제품 이름인가요?</p>
+      </div>
+
+      <div class="ex">
+        <p class="ex__lab">선택 상자에서 이렇게 고릅니다</p>
+        <p class="ex__box">▸ 제품 이름</p>
+      </div>
+
+      <div class="reply">
+        <p class="reply__lab">그러면 제품 후보를 보여 줍니다 (2026-09-29 실제 조회)</p>
+        <p class="reply__box">「알티지 오메가3 1200」으로 찾은 제품입니다. 어느 제품인가요?
+(식약처 품목제조신고 기준 · 함량은 신고된 표시량)
+
+  1. 아크 어써라이즈 식물성 알티지 오메가3 1200mg
+                                코스맥스바이오(주)  EPA+DHA <b>1200mg</b>  <u>⚠ 원료가 조류 유지</u>
+  2. 알티지 오메가3              주식회사한미양행    EPA+DHA <b>600mg</b>
+  3. 알티지 오메가3              (주)알피바이오      EPA+DHA <b>600 mg</b>
+  4. 알티지 오메가3              코스맥스엔비티(주)  EPA+DHA <b>500mg</b>
+  …</p>
+      </div>
+
+      <div class="easy">
+        <p class="easy__lab">왜 제품을 고르게 하나요</p>
+        <p>
+          <strong>같은 이름의 제품이 여러 회사에 있습니다.</strong> 「알티지 오메가3」만 해도
+          신고된 EPA+DHA가 500mg부터 1,200mg까지 다릅니다. 이름 속 <strong>「1200」이 함량인지 캡슐 무게인지</strong>는
+          신고 정보를 봐야 알고, 위 1번처럼 이름은 오메가3인데 <strong>원료가 조류 유지(식물성)</strong>인
+          제품도 있습니다. 이름만 보고 기계가 고르면 틀립니다.
+        </p>
+        <p>
+          고른 제품의 함량은 브리핑에 <strong>「📦 제품 표시값」</strong>으로 실립니다.
+          「고용량(1일 1g 초과)에서만 위험」 같은 논문 옆에 <strong>이 제품의 1일 함량이 나란히</strong> 놓여,
+          복약지도 문장을 바로 만들 수 있습니다.
+        </p>
+      </div>
+
+      <div class="ok">
+        <b>한 번 고른 제품은 저장됩니다.</b> 다음에 같은 이름으로 넣으면 조회와 고르기 없이 바로 시작합니다
+        (<code>제품/목록.md</code> 에 쌓입니다). 식품안전나라 키가 없으면 웹에서 찾는데, 공식 신고 정보보다 덜 정확합니다.
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- 부록 A -->
+<section class="sec" id="a1">
+  <div class="lab">
+    <div class="lab__head">
+      <p class="lab__n"><span>부록 A</span><span class="lab__min">읽을거리 · 해 봐도 됩니다</span></p>
+      <h2 class="lab__do">같은 주제를 세 가지 방식으로 검색해 봅니다</h2>
+      <p class="lab__why">
+        <strong>검색어를 어떻게 짜느냐가 전부입니다.</strong> 도구가 MeSH 주제어로 검색하는 이유를
+        직접 확인해 보는 실습입니다.
+      </p>
+    </div>
+    <div class="lab__body">
+
+      <div class="need">
+        <p class="need__lab">이걸 안 하면</p>
+        <p>
+          「오메가3 중성지방 논문 찾아줘」로 나온 <strong>수천 건 중 상위 10편</strong>을 그대로 씁니다.
+          거기에는 <strong>식물성 ALA 메타분석</strong>(어유 오메가3가 아닙니다), 화학·흡수율 총설,
+          안구건조 <strong>제형</strong> 연구가 섞여 있습니다. 그대로 콘텐츠를 만들면
+          <strong>다른 물질·다른 이야기</strong>를 오메가3 중성지방 이야기라고 말하게 됩니다.
+        </p>
+      </div>
+
+      <div class="say">
+        <p class="say__lab">이렇게 시킵니다</p>
+        <p class="say__box">오메가3와 중성지방 논문을 PubMed에서 세 가지 방식으로 검색해서
+건수만 비교해줘. retmax=0 으로 건수만 받으면 돼.
+
+1. 자유 검색: omega-3 AND triglycerides
+2. 제목·초록 지정: omega-3[tiab] AND triglyceride*[tiab]
+3. MeSH 주제어에 [majr] 붙이기: "Fatty Acids, Omega-3"[majr] AND "Triglycerides"[majr]
+
+세 방식의 건수를 표로 보여줘.</p>
+      </div>
+
+      <div class="reply">
+        <p class="reply__lab">2026-09-29 에 이렇게 나왔습니다 (건수는 검색하는 날에 따라 달라집니다)</p>
+        <p class="reply__box">방식                     건수     상위 10편에 섞인 것
+자유 검색               <u>4,686</u>     식물성 ALA 메타분석, 화학·흡수율 총설
+제목·초록 지정          2,221     류마티스·자폐·다낭성난소 논문 (중성지방은 곁다리 지표)
+MeSH 주제어 <b>[majr]</b>      <b>454</b>     안구건조 <u>제형</u> RCT, 정맥영양 지질에멀전</p>
+      </div>
+
+      <div class="prose">
+        <p>
+          MeSH 로 좁혀도 끝이 아닙니다. 트리글리세리드는 <strong>혈중 수치</strong>이기도 하고
+          <strong>제형 이름</strong>(재에스터화 트리글리세리드)이기도 해서 둘 다 걸립니다.
+          그래서 도구의 사전은 「혈중(<code>/blood</code>)」만 고르고 정맥영양을 <strong>빼는 조건</strong>까지 적어 둡니다.
+          여기에 사람 대상 · 최근 7년을 더한 것이 실습 2 화면의 <strong>102편</strong>이고,
+          도구는 그 안에서 메타분석 → RCT 순으로 15편을 고른 뒤 한 편씩 다시 걸러냅니다.
+        </p>
+      </div>
+
+      <div class="easy">
+        <p class="easy__lab">MeSH가 뭔가요</p>
+        <p>
+          <strong>미국 국립의학도서관이 논문마다 손으로 붙인 주제 태그</strong>입니다.
+          사서가 논문을 다 읽고 「이 논문의 주제는 이것이다」라고 분류해 둔 것이지요.
+        </p>
+        <div class="easy__pair">
+          <div class="easy__side">
+            <p class="easy__k">자유 검색</p>
+            <p>초록에 그 단어가 <strong>한 번이라도 나오면</strong> 걸립니다. 지나가는 언급까지 전부.</p>
+          </div>
+          <div class="easy__side easy__side--o">
+            <p class="easy__k">MeSH <code>[majr]</code></p>
+            <p><strong>이 논문의 주요 주제</strong>가 그것일 때만 걸립니다. 사람이 붙인 태그라 정확합니다.</p>
+          </div>
+        </div>
+      </div>
+
+      <p class="sec__sub">이번엔 주제만 바꿔 봅니다</p>
+
+      <div class="say">
+        <p class="say__lab">이어서 이렇게 시킵니다</p>
+        <p class="say__box">같은 오메가3인데 주제만 바꿔서 두 번 더 검색해줘.
+둘 다 [majr] 방식으로.
+
+1. 오메가3 × 중성지방
+2. 오메가3 × 여성질환(월경통·PMS·자궁내막증)
+
+건수와 상위 논문 제목을 나란히 보여줘.
+겹치는 논문이 있는지도 알려줘.</p>
+      </div>
+
+      <div class="reply">
+        <p class="reply__lab">도구와 같은 조건(사람 · 최근 7년)으로 세면 이렇게 나옵니다 (2026-09-29)</p>
+        <p class="reply__box">중성지방  <b>102건</b>   icosapent ethyl(고순도 EPA) 심혈관 RCT · 스타틴 병용 …
+여성질환   <b>24건</b>   PMS 메타분석, 월경통 메타분석, 다낭성난소 …
+
+<u>겹치는 논문 0건</u></p>
+      </div>
+
+      <div class="ok">
+        <b>계정 오디언스에 맞춰 다른 논문을 찾는 것</b>이
+        <strong>검색어를 나누는 것만으로 실제로 구현</strong>됩니다.
+        30-40대 여성에게 <strong>중성지방 감소는 남 얘기</strong>이고,
+        <strong>월경통이 줄었다는 내 얘기</strong>입니다.
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- 왜 이렇게 -->
+<section class="sec" id="why">
+  <p class="sec__n">부록 B · 읽을거리</p>
+  <h2 class="sec__h">왜 이렇게 나눴는가</h2>
+
+  <div class="prose">
+    <p>
+      <strong>판단이 필요한 일은 에이전트</strong>가, <strong>기계적인 검사는 스크립트</strong>가 합니다.
+      이 구분이 이 구성의 전부입니다.
+    </p>
+  </div>
+
+  <div class="roster">
+    <div class="roster__i">
+      <p class="roster__nm">trend-scout</p>
+      <p class="roster__r">에이전트</p>
+      <p class="roster__d">그 시기 화제 키워드를 모으고 주제 후보를 뽑습니다</p>
+    </div>
+    <div class="roster__i">
+      <p class="roster__nm">paper-hunter</p>
+      <p class="roster__r">에이전트</p>
+      <p class="roster__d">논문을 찾고 골라냅니다. 초록을 읽되 <strong>숫자와 문장은 넘기지 않습니다</strong></p>
+    </div>
+    <div class="roster__i">
+      <p class="roster__nm">content-scorer</p>
+      <p class="roster__r">에이전트</p>
+      <p class="roster__d">초록에서 숫자를 뽑고 콘텐츠 적합도를 매깁니다</p>
+    </div>
+    <div class="roster__i">
+      <p class="roster__nm">brief-writer</p>
+      <p class="roster__r">에이전트</p>
+      <p class="roster__d">계정 톤에 맞춰 원고를 씁니다</p>
+    </div>
+    <div class="roster__i">
+      <p class="roster__nm">product-reader</p>
+      <p class="roster__r">에이전트</p>
+      <p class="roster__d">식약처 신고 정보에 없는 제품만 웹에서 찾습니다</p>
+    </div>
+    <div class="roster__i">
+      <p class="roster__nm">brief-reviewer</p>
+      <p class="roster__r">에이전트</p>
+      <p class="roster__d">다 쓴 원고를 초록과 견줘, 출처보다 센 문장을 짚습니다. <strong>고쳐 쓰지는 않습니다</strong></p>
+    </div>
+    <div class="roster__i roster__i--script">
+      <p class="roster__nm">pubmed.py</p>
+      <p class="roster__r">스크립트</p>
+      <p class="roster__d">PubMed 조회 창구. 검색·채점·검증이 <strong>같은 초록</strong>을 보게 합니다</p>
+    </div>
+    <div class="roster__i roster__i--script">
+      <p class="roster__nm">validate_schema.py</p>
+      <p class="roster__r">스크립트</p>
+      <p class="roster__d">필수 항목이 빠졌는지 검사합니다</p>
+    </div>
+    <div class="roster__i roster__i--script">
+      <p class="roster__nm">verify_numbers.py</p>
+      <p class="roster__r">스크립트</p>
+      <p class="roster__d">숫자를 초록 원문과 대조합니다</p>
+    </div>
+    <div class="roster__i roster__i--script">
+      <p class="roster__nm">audit_numbers.py</p>
+      <p class="roster__r">스크립트</p>
+      <p class="roster__d">다 쓴 원고의 숫자가 전부 출처에 있는지 다시 봅니다. 반올림도 잡습니다</p>
+    </div>
+    <div class="roster__i roster__i--script">
+      <p class="roster__nm">render_html.py</p>
+      <p class="roster__r">스크립트</p>
+      <p class="roster__d">브리핑을 HTML로 만듭니다</p>
+    </div>
+    <div class="roster__i roster__i--script">
+      <p class="roster__nm">product_lookup.py</p>
+      <p class="roster__r">스크립트</p>
+      <p class="roster__d">제품명으로 식약처 신고 정보를 찾아 원료·함량을 원문 그대로 가져옵니다</p>
+    </div>
+    <div class="roster__i roster__i--script">
+      <p class="roster__nm">naver_trend.py</p>
+      <p class="roster__r">스크립트</p>
+      <p class="roster__d">주제별 네이버 검색량을 재고 <strong>트렌드 점수</strong>를 매깁니다</p>
+    </div>
+    <div class="roster__i roster__i--script">
+      <p class="roster__nm">publish_log.py</p>
+      <p class="roster__r">스크립트</p>
+      <p class="roster__d">쓴 논문과 반응을 기록하고, 점수와 비교합니다</p>
+    </div>
+    <div class="roster__i roster__i--script">
+      <p class="roster__nm">check_dictionary.py</p>
+      <p class="roster__r">스크립트</p>
+      <p class="roster__d">사전이 낡았는지 점검합니다</p>
+    </div>
+    <div class="roster__i roster__i--script">
+      <p class="roster__nm">runs.py</p>
+      <p class="roster__r">스크립트</p>
+      <p class="roster__d">실행마다 폴더를 만들고, 전체 목록 페이지를 만듭니다</p>
+    </div>
+  </div>
+
+  <p class="sec__sub">왜 검색 담당은 숫자를 넘기지 않게 했나</p>
+
+  <div class="prose">
+    <p>
+      <strong>검증되지 않은 숫자가 새어 나가는 통로</strong>가 되기 때문입니다.
+      검색 담당도 초록을 읽고 방향·대상자를 판정하지만, 초록 문장과 숫자는 결과 파일에 넣지 않습니다.
+      숫자는 <strong>채점 단계에서만</strong> 뽑고, 그 숫자는 전부 대조를 거칩니다.
+    </p>
+  </div>
+
+  <p class="sec__sub">스크립트가 필요한 이유 — 실제로 났던 사고</p>
+
+  <div class="cards">
+    <div class="card card--flag">
+      <div class="card__top"><span class="card__tag">사고 1</span></div>
+      <p class="card__h">「반드시 옮겨라」라고 적었는데 안 옮겼습니다</p>
+      <p>
+        채점 담당 설명서에 <strong>「방향 값을 반드시 그대로 옮겨라」</strong>라고 적어 뒀습니다.
+        그런데 실제 결과 파일에는 <strong>그 항목이 통째로 없었습니다.</strong>
+        다음 단계는 그 사실을 모른 채, 초록을 다시 읽고 <strong>스스로 재판정</strong>했습니다.
+        원래 <code>mixed</code>였던 논문이 최종 브리핑에서 <code>negative</code>로 바뀌어 있었습니다.
+      </p>
+      <p>
+        <strong>설명서에 적는 것과 실제로 지켜지는 것은 다른 문제입니다.</strong>
+        스크립트가 검사해서, 빠져 있으면 <strong>다음 단계로 못 갑니다.</strong>
+      </p>
+    </div>
+    <div class="card card--flag">
+      <div class="card__top"><span class="card__tag">사고 2</span></div>
+      <p class="card__h">요약 숫자를 원고 담당 AI가 직접 세고 있었습니다</p>
+      <p>
+        브리핑 맨 위 요약표에 <strong>「근거약함 없음 8편」</strong>이라고 적혀 있었는데
+        실제로는 <strong>12편</strong>이었습니다. 27편을 눈으로 세다 어긋난 것입니다.
+        <strong>스무 개가 넘으면 AI도 셈이 틀립니다.</strong>
+      </p>
+      <p>
+        스크립트가 정확히 세어 파일에 넣어 두고,
+        브리핑을 만들 때 <strong>그 숫자와 대조</strong>합니다. 어긋나면 멈춥니다.
+      </p>
+    </div>
+  </div>
+
+  <p class="claim">「이렇게 해줘」라고 부탁하는 대신,<br><em>안 하면 다음으로 못 가게</em> 막아 둡니다.</p>
+</section>
+
+<!-- 막혔을 때 -->
+<section class="sec" id="stuck">
+  <p class="sec__n">막혔을 때</p>
+  <h2 class="sec__h">자주 나오는 것들</h2>
+
+  <div class="cards">
+    <div class="card">
+      <div class="card__top"><span class="card__tag">키</span></div>
+      <p class="card__h">키를 넣었는데 「없음」으로 나옵니다</p>
+      <p>
+        Claude Code 를 <strong>다시 열지 않은 것</strong>입니다. <code>/exit</code> 로 닫고 같은 폴더에서 다시 연 뒤
+        <code>python3 scripts/runs.py keys</code> 로 확인하십시오. 그래도 없으면 키 파일의
+        따옴표·쉼표가 빠지지 않았는지 보십시오.
+      </p>
+    </div>
+    <div class="card">
+      <div class="card__top"><span class="card__tag">선택</span></div>
+      <p class="card__h">선택 상자 대신 글로 물어봅니다</p>
+      <p>
+        「상자로 물어봐 줘」라고 한 번 말하면 다시 상자로 묻습니다. 글로 답해도 진행은 되지만,
+        주제 이름을 <strong>화면에 적힌 그대로</strong> 적어야 엉뚱한 주제로 가지 않습니다.
+      </p>
+    </div>
+    <div class="card">
+      <div class="card__top"><span class="card__tag">명령</span></div>
+      <p class="card__h">/브리핑 이 없다고 나옵니다</p>
+      <p>
+        <strong><code>briefing</code> 폴더 밖에서 연 것</strong>입니다. 폴더 안에서 다시 여십시오.
+        Windows 에서 <code>python3</code> 가 없다고 나오면 <code>python</code> 으로 치십시오.
+      </p>
+    </div>
+    <div class="card">
+      <div class="card__top"><span class="card__tag">검색</span></div>
+      <p class="card__h">논문이 몇 편 안 나옵니다</p>
+      <p>
+        <strong>적은 것도 결과입니다.</strong> 그 주제에 인체 연구가 별로 없다는 뜻이고,
+        그건 콘텐츠를 만들 때 알아야 할 정보입니다.
+        검색어를 억지로 넓히면 <strong>엉뚱한 논문이 섞입니다.</strong>
+      </p>
+    </div>
+    <div class="card">
+      <div class="card__top"><span class="card__tag">검색</span></div>
+      <p class="card__h">off-target이 절반이 넘습니다</p>
+      <p>
+        <strong>정상입니다.</strong> 검색어는 넓게 걸리기 때문에 걸러내는 것이 일입니다.
+        특히 <strong>트렌드에서 발굴한 새 주제</strong>는 사전에 제외 조건이 없어
+        평소보다 많이 걸립니다. 브리핑에 그 사실이 적혀 나옵니다.
+      </p>
+    </div>
+    <div class="card">
+      <div class="card__top"><span class="card__tag">숫자</span></div>
+      <p class="card__h">효과크기가 null인 논문이 많습니다</p>
+      <p>
+        초록에 <strong>수치가 아예 없거나</strong>, 대조에 실패해 지워진 것입니다.
+        그런 논문은 브리핑에서 <strong>숫자 없이 방향만</strong> 서술됩니다 —
+        「감소하는 방향으로 나왔습니다」처럼요.
+      </p>
+    </div>
+    <div class="card">
+      <div class="card__top"><span class="card__tag">속도</span></div>
+      <p class="card__h">30분이 넘게 걸리기도 합니다</p>
+      <p>
+        주제를 여러 개 고르면 그만큼 늘어납니다. 원고 검토에서 고쳐 쓰기가 붙으면 10분쯤 더 걸립니다.
+        <strong>NCBI 키를 넣으면 검색 단계가 빨라집니다.</strong>
+        급하면 주제를 하나만 골라 돌리십시오.
+      </p>
+    </div>
+    <div class="card">
+      <div class="card__top"><span class="card__tag">사전</span></div>
+      <p class="card__h">사전에 없는 성분을 넣었습니다</p>
+      <p>
+        <strong>멈추지 않습니다.</strong> MeSH 후보를 찾아 보여주고 고르게 합니다.
+        다만 동의어·제외 목록이 없어 <strong>평소보다 부정확</strong>합니다.
+        쓸 만했으면 사전에 넣어 두라고 안내해 줍니다.
+      </p>
+    </div>
+    <div class="card">
+      <div class="card__top"><span class="card__tag">정리</span></div>
+      <p class="card__h">폴더가 계속 쌓입니다</p>
+      <p>
+        실행 폴더마다 <code>과정/</code> 은 <strong>통째로 지워도 됩니다.</strong>
+        결과 HTML · 원고 · <code>실행.json</code> 은 그 바깥에 있어 남습니다.
+      </p>
+    </div>
+  </div>
+</section>
+
+<footer class="end" id="end">
+  <h2>오늘 한 것</h2>
+
+  <p>
+    <strong>고친 파일은 하나</strong>입니다. 계정 프로필 (<code>계정/프로필.md</code>).
+    사전도 에이전트도 스크립트도 <strong>들어 있는 그대로</strong> 썼습니다.
+  </p>
+
+  <p>
+    <strong>한 흐름을 돌렸습니다.</strong>
+    프로필을 고치고, <code>/브리핑</code> 한 줄로 주제를 골라 돌리고,
+    결과를 <strong>점수 세 개와 경고</strong>로 읽고, 쓸 논문을 기록했습니다.
+    그 사이 숫자는 <strong>전부 초록 원문과 대조</strong>를 거쳤고, 결과는 <strong>초록 기준</strong>이라
+    쓸 논문은 본문을 직접 확인해야 한다는 것도 봤습니다.
+  </p>
+
+  <p>
+    <strong>사람이 고르는 자리는 두 군데</strong>였습니다 (제품명으로 넣으면 제품까지 세 군데).
+    어떤 주제로 볼지 고르는 자리, 그리고 나온 브리핑에서
+    <strong>무엇을 콘텐츠로 만들지</strong> 고르는 자리.
+    그 사이는 전부 위임했습니다.
+  </p>
+
+  <p class="end__final">
+    트렌드 점수는 <strong>실측</strong>이지만 「찾는 사람이 많다」까지만 알려 줍니다.
+    콘텐츠 적합도는 <strong>규칙대로 매긴 점수</strong>이지, 반응으로 검증된 배점이 아닙니다.
+    발행 후 반응이 점수와 다르면 <strong>배점표를 고쳐 가며 맞추십시오.</strong>
+    배점표는 <code>.claude/agents/p4-content-scorer.md</code> 에 한국어로 적혀 있고, 바꿀 때는
+    검사 스크립트(<code>scripts/validate_schema.py</code>)의 표도 함께 고쳐 달라고 하십시오.
+  </p>
+</footer>
+
+</div>
+<script>
+(function () {
+  // 프롬프트 상자마다 복사 버튼을 답니다.
+  // <i>로 감싼 설명(← 주석)은 복사에서 제외합니다.
+  function textOf(box) {
+    var clone = box.cloneNode(true);
+    clone.querySelectorAll('i').forEach(function (n) { n.remove(); });
+    return clone.textContent.replace(/[ \t]+$/gm, '').trim();
+  }
+
+  function legacyCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed';
+    ta.style.top = '-1000px';
+    document.body.appendChild(ta);
+    ta.select();
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+    ta.remove();
+    return ok;
+  }
+
+  document.querySelectorAll('.say').forEach(function (wrap) {
+    var lab = wrap.querySelector('.say__lab');
+    var box = wrap.querySelector('.say__box');
+    if (!lab || !box) return;
+
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'copybtn';
+    btn.textContent = '복사';
+    btn.setAttribute('aria-label', '이 명령을 클립보드에 복사');
+
+    var timer;
+    btn.addEventListener('click', function () {
+      var text = textOf(box);
+      clearTimeout(timer);
+
+      var settle = function (ok) {
+        btn.textContent = ok ? '복사됨' : '복사 실패';
+        btn.setAttribute('data-state', ok ? 'done' : 'fail');
+        timer = setTimeout(function () {
+          btn.textContent = '복사';
+          btn.removeAttribute('data-state');
+        }, 1600);
+      };
+
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(
+          function () { settle(true); },
+          function () { settle(legacyCopy(text)); }
+        );
+      } else {
+        settle(legacyCopy(text));
+      }
+    });
+
+    lab.appendChild(btn);
+  });
+})();
+</script>
+
+
+</body>
+</html>
